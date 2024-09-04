@@ -16,6 +16,7 @@ namespace Chirp.CLI
             {
                 try
                 {
+                    Console.WriteLine("readning");
                     CSVDatabaseService<Cheep> csv = new();
                     IAsyncEnumerable<Cheep> list = await csv.ReadAsync(1);
                     await foreach(Cheep c in list)
@@ -31,13 +32,15 @@ namespace Chirp.CLI
             {
                 try
                 {
-                    using StreamWriter writer = File.AppendText("./chirp_cli_db.csv");
-                    var cheep = args[1];
+                    Console.WriteLine("cheeping");
+                    var str = args[1];
                     var userName = Environment.UserName;
                     var unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                    await writer.WriteLineAsync("\n" + userName + ',' + '"' + cheep + '"' + ',' + unixTimestamp);
+                    var cheep = new Cheep(userName, str, unixTimestamp);
+                    CSVDatabaseService<Cheep> csv = new();
+                    await csv.StoreAsync(cheep);
                 }
-                catch (IOException e)
+                catch (Exception e)
                 {
                     Console.WriteLine("The file could not be written to:");
                     Console.WriteLine(e.Message);
