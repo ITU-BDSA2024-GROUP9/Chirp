@@ -23,7 +23,9 @@ namespace SimpleDB.Services
         public async Task StoreAsync(T record)
         {
             await Task.Run(() => {
-                throw new NotImplementedException();
+                using (var writer = new StreamWriter("./Data/chirp_cli_db.csv"))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                    csv.WriteRecord<T>(record);
             });
         }
     }
