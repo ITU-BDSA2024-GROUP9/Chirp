@@ -13,20 +13,18 @@ namespace SimpleDB.Services
 {
     public class CSVDatabaseService<T> : IDatabaseRepository<T> where T : IPost
     {
-        public async Task<IAsyncEnumerable<T>> ReadAsync(int? count)
+        public IEnumerable<T> Read(int? count)
         {
             using (var reader = new StreamReader("./Data/chirp_cli_db.csv"))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                return csv.GetRecordsAsync<T>();
+                return csv.GetRecords<T>();
         }
 
-        public async Task StoreAsync(T record)
+        public void Store(T record)
         {
-            await Task.Run(() => {
-                using (var writer = new StreamWriter("./Data/chirp_cli_db.csv"))
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                    csv.WriteRecord<T>(record);
-            });
+            using (var writer = new StreamWriter("./Data/chirp_cli_db.csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                csv.WriteRecord<T>(record);
         }
     }
 }

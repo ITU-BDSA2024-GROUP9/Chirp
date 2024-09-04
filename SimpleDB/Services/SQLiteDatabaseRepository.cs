@@ -10,12 +10,12 @@ namespace SimpleDB.Services
 {
     public class SQLiteDatabaseRepository<T> : IDatabaseRepository<T> where T : IPost
     {
-        public Task<IAsyncEnumerable<T>> ReadAsync(int? count)
+        IEnumerable<T> IDatabaseRepository<T>.Read(int? count)
         {
             throw new NotImplementedException();
         }
 
-        public Task StoreAsync(T record)
+        void IDatabaseRepository<T>.Store(T record)
         {
             throw new NotImplementedException();
         }

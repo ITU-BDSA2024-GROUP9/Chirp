@@ -9,7 +9,7 @@ namespace SimpleDB.Interfaces
 {
     interface IDatabaseRepository<T> where T : IPost
     {
-        public Task<IAsyncEnumerable<T>> ReadAsync(int? count = null);
-        public Task StoreAsync(T record);
+        public IEnumerable<T> Read(int? count = null);
+        public void Store(T record);
     }
 }
