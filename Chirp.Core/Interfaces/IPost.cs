@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chirp.CLI.Classes
+namespace Chirp.Core.Interfaces
 {
-    public record Cheep(string Author, string Message, long Timestamp);
+    internal interface IPost
+    {
+        public string Message { get; set; }
+    }
 }
