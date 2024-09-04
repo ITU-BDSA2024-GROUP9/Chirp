@@ -15,7 +15,7 @@ namespace SimpleDB.Services
     {
         public IEnumerable<T> Read(int? count)
         {
-            using (var reader = new StreamReader("./Data/chirp_cli_db.csv"))
+            using (var reader = new StreamReader("/SimpleDB/Data/chirp_cli_db.csv"))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 return csv.GetRecords<T>();
         }
