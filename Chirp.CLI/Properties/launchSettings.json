@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Chirp.CLI": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
