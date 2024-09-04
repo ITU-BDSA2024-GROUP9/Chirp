@@ -1,4 +1,4 @@
-using Chirp.CLI.Classes;
+using Chirp.Core.Classes;
 
 namespace Chirp.CLI;
     internal class UserInterface
