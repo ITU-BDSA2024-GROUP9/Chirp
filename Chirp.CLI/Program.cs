@@ -10,14 +10,15 @@ namespace Chirp.CLI
             Run(args);
         }
 
-        private static async void Run(string[] args)
+        private static void Run(string[] args)
         {
             if (args[0] == "read")
             {
                 try
                 {
                     CSVDatabaseService<Cheep> csv = new();
-                    IEnumerable<Cheep> list = csv.Read(10);
+                    IEnumerable<Cheep> list = csv.Read(1);
+                    Console.WriteLine(list.Count());
                     foreach (Cheep cheep in list)
                     {
                         UserInterface.ShowCheep(cheep);
