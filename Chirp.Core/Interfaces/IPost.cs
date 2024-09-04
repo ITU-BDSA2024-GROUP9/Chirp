@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Chirp.Core.Interfaces
 {
-    internal interface IPost
+    public interface IPost
     {
-        public string Message { get; set; }
+        public string Author { get; }
+        public string Message { get; }
+        public long Timestamp { get; }
     }
 }

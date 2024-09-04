@@ -1,4 +1,5 @@
-﻿using SimpleDB.Interfaces;
+﻿using Chirp.Core.Interfaces;
+using SimpleDB.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SimpleDB.Services
 {
-    public class SQLiteDatabaseRepository<T> : IDatabaseRepository<T>
+    public class SQLiteDatabaseRepository<T> : IDatabaseRepository<T> where T : IPost
     {
         Task<IEnumerable<T>> IDatabaseRepository<T>.ReadAsync(int? count)
         {
