@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
 using Chirp.Core.Classes;
+using System.Reflection;
 
 namespace SimpleDB.Services
 {
@@ -15,14 +16,14 @@ namespace SimpleDB.Services
     {
         public IEnumerable<T> Read(int? count)
         {
-            using (var reader = new StreamReader("/SimpleDB/Data/chirp_cli_db.csv"))
+            using (var reader = new StreamReader(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"./Data/chirp_cli_db.csv")))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 return csv.GetRecords<T>();
         }
 
         public void Store(T record)
         {
-            using (var writer = new StreamWriter("./Data/chirp_cli_db.csv"))
+            using (var writer = new StreamWriter(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"./Data/chirp_cli_db.csv")))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                 csv.WriteRecord<T>(record);
         }
