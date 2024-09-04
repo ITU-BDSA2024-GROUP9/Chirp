@@ -12,11 +12,6 @@ namespace Chirp.CLI
 
         private static async void Run(string[] args)
         {
-            Console.WriteLine("test");
-            CSVDatabaseService<Cheep> t = new();
-            Console.WriteLine("test");
-            var x = await t.ReadAsync(1);
-            Console.WriteLine("test");
             if (args[0] == "read")
             {
                 try
