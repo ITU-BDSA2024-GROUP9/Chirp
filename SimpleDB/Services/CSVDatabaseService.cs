@@ -2,9 +2,12 @@
 using SimpleDB.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsvHelper;
+using Chirp.Core.Classes;
 
 namespace SimpleDB.Services
 {
@@ -12,6 +15,14 @@ namespace SimpleDB.Services
     {
         Task<IEnumerable<T>> IDatabaseRepository<T>.ReadAsync(int? count)
         {
+            using (var reader = new StreamReader("SimpleDB/Data/chirp_cli_db.csv"))
+            {
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    var records = csv.GetRecords<Cheep>();
+                } 
+            }
+            
             throw new NotImplementedException();
         }
 
