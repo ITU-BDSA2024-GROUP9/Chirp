@@ -16,19 +16,13 @@ namespace Chirp.CLI
             {
                 try
                 {
-                    using StreamReader reader = new("./chirp_cli_db.csv");
-                    int i = 0;
-                    while (!reader.EndOfStream)
+                    CSVDatabaseService<Cheep> csv = new();
+                    IEnumerable<Cheep> list = csv.Read(10);
+                    foreach (Cheep cheep in list)
                     {
-                        i++;
-                        string[]? text = (await reader.ReadLineAsync())?.Split(",\"");
-                        if (text == null || i == 1)
-                        {
-                            continue;
-                        }
-                        string[]? text2 = text[1].Split("\",");
-                        Cheep cheep = new Cheep(text[0],text2[0],long.Parse(text2[1]));
+                        UserInterface.ShowCheep(cheep);
                     }
+                    
                 }
                 catch (IOException e)
                 {
@@ -46,7 +40,7 @@ namespace Chirp.CLI
                     var unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                     var cheep = new Cheep(userName, str, unixTimestamp);
                     CSVDatabaseService<Cheep> csv = new();
-                    await csv.StoreAsync(cheep);
+                    csv.Store(cheep);
                 }
                 catch (Exception e)
                 {
