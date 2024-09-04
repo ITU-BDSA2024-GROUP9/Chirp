@@ -1,4 +1,6 @@
-﻿namespace Chirp.CLI
+﻿using Chirp.Core.Classes;
+
+namespace Chirp.CLI
 {
     internal class Program
     {
@@ -24,7 +26,8 @@
                             continue;
                         }
                         string[]? text2 = text[1].Split("\",");
-                        Console.WriteLine("{0} @ {1}: {2}", text[0], DateTimeOffset.FromUnixTimeSeconds(long.Parse(text2[1])).ToString("MM/dd/yy HH:mm:ss"), text2[0]);
+                        Cheep cheep = new Cheep(text[0],text2[0],long.Parse(text2[1]));
+                        UserInterface.ShowCheep(cheep);
                     }
                 }
                 catch (IOException e)
