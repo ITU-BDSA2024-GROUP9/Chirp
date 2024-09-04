@@ -18,7 +18,7 @@ namespace SimpleDB.Services
         {
             using (var reader = new StreamReader(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Data/chirp_cli_db.csv")))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                return csv.GetRecords<T>();
+                return csv.GetRecords<T>().ToList<T>();
         }
 
         public void Store(T record)
