@@ -8,5 +8,6 @@ namespace Chirp.CLI.Interfaces
 {
     internal interface IPost
     {
+        public string Message { get; set; }
     }
 }
