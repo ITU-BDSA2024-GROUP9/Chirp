@@ -19,8 +19,8 @@ namespace SimpleDB.Services
         {
             var currentDirectory = Directory.GetCurrentDirectory();
             var projectDirectory = Path.Combine(currentDirectory, "..", "SimpleDB", "Data");
-            var test = Path.Combine(projectDirectory, "chirp_cli_db.csv");
-            return test;
+            var filePath = Path.Combine(projectDirectory, "chirp_cli_db.csv");
+            return filePath;
         }
         public IEnumerable<T> Read(int? count)
         {
