@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CsvHelper;
 using Chirp.Core.Classes;
 using System.Reflection;
+using CsvHelper.Configuration;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace SimpleDB.Services
@@ -26,18 +27,30 @@ namespace SimpleDB.Services
         {
             using (var reader = new StreamReader(getFilePath()))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            
                 return csv.GetRecords<T>().ToList<T>();
         }
 
         public void Store(T record)
         {
             using (var writer = new StreamWriter(getFilePath(), true))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            using (var csv = new CsvWriter(writer, getConfig()))
             {
                 csv.NextRecord(); // Next line in the CSV file
-                csv.WriteRecord<T>(record);
+                csv.WriteRecord(record);
+                
             }
                 
         }
+
+        private CsvConfiguration getConfig()
+        
+        {
+            return new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                ShouldQuote = args => args.Row.Index == 1
+            };
+        }
+        
     }
 }
