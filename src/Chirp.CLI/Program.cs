@@ -5,25 +5,24 @@ namespace Chirp.CLI
 {
     internal class Program
     {
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
-            Run(args);
+            await Run(args);
         }
 
-        private static void Run(string[] args)
+        async private static Task Run(string[] args)
         {
             if (args[0] == "read")
             {
                 try
                 {
-                    CSVDatabaseService<Cheep> csv = new();
-                    IEnumerable<Cheep> list = csv.Read(1);
-                    Console.WriteLine(list.Count());
+                    var csv = CSVDatabaseService<Cheep>.Instance;
+                    var list = await csv.Read(args[1] == "all" ? null : int.Parse(args[1]));
                     foreach (Cheep cheep in list)
                     {
                         UserInterface.ShowCheep(cheep);
                     }
-                    
+
                 }
                 catch (IOException e)
                 {
@@ -40,8 +39,8 @@ namespace Chirp.CLI
                     var userName = Environment.UserName;
                     var unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                     var cheep = new Cheep(userName, str, unixTimestamp);
-                    CSVDatabaseService<Cheep> csv = new();
-                    csv.Store(cheep);
+                    var csv = CSVDatabaseService<Cheep>.Instance;
+                    await csv.Store(cheep);
                 }
                 catch (Exception e)
                 {
