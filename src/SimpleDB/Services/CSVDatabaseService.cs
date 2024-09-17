@@ -49,7 +49,7 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                using var reader = new StreamReader(GetFilePath());
+                using var reader = new StreamReader(new FileStream(GetFilePath(), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite));
                 using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
                 var records = csv.GetRecordsAsync<T>();
@@ -76,7 +76,7 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                using var writer = new StreamWriter(GetFilePath(), true);
+                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Append, FileAccess.Write, FileShare.ReadWrite));
                 using var csv = new CsvWriter(writer, GetConfig());
                 await csv.NextRecordAsync(); // Next line in the CSV file
                 csv.WriteRecord(record);
@@ -92,7 +92,7 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                using var reader = new StreamReader(GetFilePath());
+                using var reader = new StreamReader(new FileStream(GetFilePath(), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite));
                 using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
                 var records = csv.GetRecordsAsync<T>();
                 var list = new List<T>();
@@ -104,7 +104,7 @@ namespace SimpleDB.Services
                     }
                 }
                 reader.Close();
-                using var writer = new StreamWriter(GetFilePath());
+                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Append, FileAccess.Write, FileShare.ReadWrite));
                 using var csvWriter = new CsvWriter(writer, GetConfig());
                 await csvWriter.WriteRecordsAsync(list);
             }
@@ -128,10 +128,10 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                using var reader = new StreamReader(GetFilePath("chirp_cli_db_default.csv"));
+                using var reader = new StreamReader(new FileStream(GetFilePath("chirp_cli_db_default.csv"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
                 var toWrite = await reader.ReadToEndAsync();
                 reader.Close();
-                using var writer = new StreamWriter(GetFilePath(), false);
+                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Append, FileAccess.Write, FileShare.ReadWrite));
                 await writer.WriteAsync(toWrite);
                 writer.Close();
             }
