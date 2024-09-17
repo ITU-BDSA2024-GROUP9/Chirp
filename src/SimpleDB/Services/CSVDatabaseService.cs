@@ -104,6 +104,7 @@ namespace SimpleDB.Services
                     }
                 }
                 reader.Close();
+                csv.Dispose();
                 using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
                 using var csvWriter = new CsvWriter(writer, GetConfig());
                 await csvWriter.WriteRecordsAsync(list);

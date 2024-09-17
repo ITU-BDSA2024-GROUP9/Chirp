@@ -65,5 +65,6 @@ public class End2End
 
 		// Assert
         Assert.Contains("cheeping", output);
+        await csv.ArrangeTestDatabase();
     }
 }
