@@ -1,6 +1,8 @@
 using Chirp.Core.Classes;
 using SimpleDB.Services;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
 namespace Chirp.SimpleDB;
 
 public class UnitTests
