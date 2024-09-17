@@ -2,7 +2,7 @@ using Chirp.Core.Classes;
 
 namespace Chirp.CLI;
 
-// THIS IS NOT AN INTERFACE
+// THIS IS NOT AN INTERFACE, change to an interface
 internal class UserInterface
 {
     public static void ShowCheep(Cheep c)
