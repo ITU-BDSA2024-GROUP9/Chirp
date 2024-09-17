@@ -25,6 +25,7 @@ public class UnitTests
         // Arrange
         var cheep = new Cheep("toremove", "toremove", 1690981487);
         var csv = CSVDatabaseService<Cheep>.Instance;
+        await csv.ArrangeTestDatabase();
 
         // Act
         await csv.Store(cheep);
@@ -41,6 +42,7 @@ public class UnitTests
         // Arrange
         var cheep = new Cheep("a", "b", 1690981487);
         var csv = CSVDatabaseService<Cheep>.Instance;
+        await csv.ArrangeTestDatabase();
 
         // Act
         await csv.Store(cheep);

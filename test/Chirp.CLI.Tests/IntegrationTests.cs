@@ -12,12 +12,13 @@ public class IntegrationTests
         // Arrange
         var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 		var csvDB = CSVDatabaseService<Cheep>.Instance;
+        await csvDB.ArrangeTestDatabase();
         // Act
         Cheep _cheep = new("a", "b", time);
 		await csvDB.Store(_cheep);
     
         // Assert
-		Assert.Equal((await csvDB.Read()).Last(), _cheep);
+		Assert.Equal(_cheep, (await csvDB.Read()).Last());
 
 		// Act
 		await csvDB.Delete(_cheep);
