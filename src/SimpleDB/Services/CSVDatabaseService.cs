@@ -18,6 +18,7 @@ namespace SimpleDB.Services
     {
         private static CSVDatabaseService<T>? instance = null;
         private static readonly object padlock = new();
+        private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
 
         public static CSVDatabaseService<T> Instance
         {
@@ -45,48 +46,72 @@ namespace SimpleDB.Services
         }
         async public Task<List<T>> Read(int? count = null)
         {
-            using var reader = new StreamReader(GetFilePath());
-            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-
-            var records = csv.GetRecordsAsync<T>();
-            var list = new List<T>();
-            int i = 0;
-            await foreach (var record in records)
+            await semaphore.WaitAsync();
+            try
             {
-                if (count.HasValue && i++ >= count.Value)
+                using var reader = new StreamReader(GetFilePath());
+                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+                var records = csv.GetRecordsAsync<T>();
+                var list = new List<T>();
+                int i = 0;
+                await foreach (var record in records)
                 {
-                    break;
+                    if (count.HasValue && i++ >= count.Value)
+                    {
+                        break;
+                    }
+                    list.Add(record);
                 }
-                list.Add(record);
+                return list;
             }
-            return list;
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
         async public Task Store(T record)
         {
-            using var writer = new StreamWriter(GetFilePath(), true);
-            using var csv = new CsvWriter(writer, GetConfig());
-            await csv.NextRecordAsync(); // Next line in the CSV file
-            csv.WriteRecord(record);
+            await semaphore.WaitAsync();
+            try
+            {
+                using var writer = new StreamWriter(GetFilePath(), true);
+                using var csv = new CsvWriter(writer, GetConfig());
+                await csv.NextRecordAsync(); // Next line in the CSV file
+                csv.WriteRecord(record);
+            }
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
         async public Task Delete(T record)
         {
-            using var reader = new StreamReader(GetFilePath());
-            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            var records = csv.GetRecordsAsync<T>();
-            var list = new List<T>();
-            await foreach (var r in records)
+            await semaphore.WaitAsync();
+            try
             {
-                if (!r.Equals(record))
+                using var reader = new StreamReader(GetFilePath());
+                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+                var records = csv.GetRecordsAsync<T>();
+                var list = new List<T>();
+                await foreach (var r in records)
                 {
-                    list.Add(r);
+                    if (!r.Equals(record))
+                    {
+                        list.Add(r);
+                    }
                 }
+                reader.Close();
+                using var writer = new StreamWriter(GetFilePath());
+                using var csvWriter = new CsvWriter(writer, GetConfig());
+                await csvWriter.WriteRecordsAsync(list);
             }
-            reader.Close();
-            using var writer = new StreamWriter(GetFilePath());
-            using var csvWriter = new CsvWriter(writer, GetConfig());
-            await csvWriter.WriteRecordsAsync(list);
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
         private static CsvConfiguration GetConfig()
@@ -99,12 +124,21 @@ namespace SimpleDB.Services
 
         async public Task ArrangeTestDatabase()
         {
-            using var reader = new StreamReader(GetFilePath("chirp_cli_db_default.csv"));
-            var toWrite = await reader.ReadToEndAsync();
-            reader.Close();
-            using var writer = new StreamWriter(GetFilePath(), false);
-            await writer.WriteAsync(toWrite);
-            writer.Close();
+
+            await semaphore.WaitAsync();
+            try
+            {
+                using var reader = new StreamReader(GetFilePath("chirp_cli_db_default.csv"));
+                var toWrite = await reader.ReadToEndAsync();
+                reader.Close();
+                using var writer = new StreamWriter(GetFilePath(), false);
+                await writer.WriteAsync(toWrite);
+                writer.Close();
+            }
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
     }
