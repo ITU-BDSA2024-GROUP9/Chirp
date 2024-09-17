@@ -104,7 +104,7 @@ namespace SimpleDB.Services
                     }
                 }
                 reader.Close();
-                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Append, FileAccess.Write, FileShare.ReadWrite));
+                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
                 using var csvWriter = new CsvWriter(writer, GetConfig());
                 await csvWriter.WriteRecordsAsync(list);
             }
@@ -131,7 +131,7 @@ namespace SimpleDB.Services
                 using var reader = new StreamReader(new FileStream(GetFilePath("chirp_cli_db_default.csv"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
                 var toWrite = await reader.ReadToEndAsync();
                 reader.Close();
-                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Append, FileAccess.Write, FileShare.ReadWrite));
+                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
                 await writer.WriteAsync(toWrite);
                 writer.Close();
             }
