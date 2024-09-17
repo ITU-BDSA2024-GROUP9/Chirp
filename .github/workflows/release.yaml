@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [win, osx, linux]
+        architecture: [x64, arm64]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 7.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Publish
+      run: dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.architecture }} --self-contained false -o ./publish
+    
+    - name: Create ZIP file
+      run: zip -r Chirp-${{ matrix.os }}-${{ matrix.architecture }}.zip ./publish
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: Chirp-${{ matrix.os }}-${{ matrix.architecture }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # release to github
