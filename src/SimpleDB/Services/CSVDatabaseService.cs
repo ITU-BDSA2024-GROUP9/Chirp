@@ -80,7 +80,7 @@ namespace SimpleDB.Services
                 using var csv = new CsvWriter(writer, GetConfig());
                 await csv.NextRecordAsync(); // Next line in the CSV file
                 csv.WriteRecord(record);
-                await csv.NextRecordAsync(); // to await
+                await csv.NextRecordAsync(); // to await the thing
             }
             finally
             {
