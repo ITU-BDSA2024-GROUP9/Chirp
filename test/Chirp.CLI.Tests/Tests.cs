@@ -35,12 +35,14 @@ public class IntegrationTests
         // Act
         Cheep _cheep = new("a", "b", time);
         await csvDB.Store(_cheep);
+        Thread.Sleep(1000);
 
         // Assert
         Assert.Equal(_cheep, (await csvDB.Read()).Last());
 
         // Act
         await csvDB.Delete(_cheep);
+        Thread.Sleep(1000);
 
         // Assert
         Assert.DoesNotContain(_cheep, await csvDB.Read());
