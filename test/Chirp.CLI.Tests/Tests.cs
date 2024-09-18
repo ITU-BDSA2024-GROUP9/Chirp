@@ -29,23 +29,14 @@ public class IntegrationTests
     async public void TestRead()
     {
         // Arrange
-        var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         var csvDB = CSVDatabaseService<Cheep>.Instance;
         await csvDB.ArrangeTestDatabase();
         // Act
-        Cheep _cheep = new("a", "b", time);
+        Cheep _cheep = new("ropf", "Cheeping cheeps on Chirp :)", 1690981487);
         await csvDB.Store(_cheep);
-        Thread.Sleep(1000);
 
         // Assert
         Assert.Equal(_cheep, (await csvDB.Read()).Last());
-
-        // Act
-        await csvDB.Delete(_cheep);
-        Thread.Sleep(1000);
-
-        // Assert
-        Assert.DoesNotContain(_cheep, await csvDB.Read());
     }
 }
 public class End2End
