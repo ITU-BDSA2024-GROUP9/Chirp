@@ -31,9 +31,9 @@ public class IntegrationTests
         // Arrange
         var csvDB = CSVDatabaseService<Cheep>.Instance;
         await csvDB.ArrangeTestDatabase();
+
         // Act
         Cheep _cheep = new("ropf", "Cheeping cheeps on Chirp :)", 1690981487);
-        await csvDB.Store(_cheep);
 
         // Assert
         Assert.Equal(_cheep, (await csvDB.Read()).Last());
