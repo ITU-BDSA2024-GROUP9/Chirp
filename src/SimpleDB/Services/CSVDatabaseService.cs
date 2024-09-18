@@ -81,6 +81,7 @@ namespace SimpleDB.Services
                 await csv.NextRecordAsync(); // Next line in the CSV file
                 csv.WriteRecord(record);
                 await csv.NextRecordAsync(); // to await the thing
+                await csv.FlushAsync(); // also to await the thing
             }
             finally
             {
