@@ -18,11 +18,7 @@ namespace Chirp.CLI
                 {
                     var csv = DatabaseClientService<Cheep>.Instance;
                     var list = await csv.Read(args.Length < 2 ? null : int.Parse(args[1]));
-                    foreach (Cheep cheep in list)
-                    {
-                        UserInterface.ShowCheep(cheep);
-                    }
-
+                    UserInterface.ShowCheeps(list);
                 }
                 catch (IOException e)
                 {

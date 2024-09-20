@@ -10,4 +10,12 @@ internal class UserInterface
         var convertedTimestamp = DateTimeOffset.FromUnixTimeSeconds(c.Timestamp).ToString("MM/dd/yy HH:mm:ss");
         Console.WriteLine(c.Author + " @ " + convertedTimestamp + ": " + c.Message);
     }
+
+    public static void ShowCheeps(IEnumerable<Cheep> cheeps)
+    {
+        foreach (Cheep cheep in cheeps)
+        {
+            ShowCheep(cheep);
+        }
+    }
 }
