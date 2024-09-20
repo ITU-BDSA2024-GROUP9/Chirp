@@ -16,8 +16,8 @@ namespace Chirp.CLI
             {
                 try
                 {
-                    var csv = CSVDatabaseService<Cheep>.Instance;
-                    var list = await csv.Read(args[1] == "all" ? null : int.Parse(args[1]));
+                    var csv = DatabaseClientService<Cheep>.Instance;
+                    var list = await csv.Read(args.Length < 2 ? null : int.Parse(args[1]));
                     foreach (Cheep cheep in list)
                     {
                         UserInterface.ShowCheep(cheep);
@@ -39,7 +39,7 @@ namespace Chirp.CLI
                     var userName = Environment.UserName;
                     var unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                     var cheep = new Cheep(userName, str, unixTimestamp);
-                    var csv = CSVDatabaseService<Cheep>.Instance;
+                    var csv = DatabaseClientService<Cheep>.Instance;
                     await csv.Store(cheep);
                 }
                 catch (Exception e)
