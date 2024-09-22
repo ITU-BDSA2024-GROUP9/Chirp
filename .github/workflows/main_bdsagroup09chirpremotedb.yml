@@ -65,5 +65,5 @@ jobs:
         with:
           app-name: 'bdsagroup09chirpremotedb'
           slot-name: 'Production'
-          package: ./publish
+          package: ${{ github.workspace }}/publish
           
