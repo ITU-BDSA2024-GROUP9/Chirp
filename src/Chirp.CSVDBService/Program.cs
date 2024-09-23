@@ -18,8 +18,8 @@ List<Cheep> get()
         return csv.Read().Result;
     } catch (Exception e) 
     {
-        Console.WriteLine(e.Message);
-        return [];
+        System.Diagnostics.Trace.TraceInformation(e.Message);
+        return [new Cheep("There was an error!", "sad face", 0)];
     }
 
 }
