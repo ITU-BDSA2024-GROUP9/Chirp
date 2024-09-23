@@ -11,11 +11,10 @@ List<Cheep> get()
     return x;
 }
 
-
 app.MapGet("/cheeps", () => get());
 app.MapPost("/cheep", (Cheep cheep) =>
 {
-    x.Add(cheep);
+    x?.Add(cheep);
     Console.WriteLine("recieved: " + cheep.Message); 
 });
 

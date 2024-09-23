@@ -28,6 +28,8 @@ namespace SimpleDB.Services
 
                     instance = new DatabaseClientService<T>();
                     client.BaseAddress = new Uri(baseURL);
+                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                    client.DefaultRequestHeaders.Add("Content-Type", "application/json");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
