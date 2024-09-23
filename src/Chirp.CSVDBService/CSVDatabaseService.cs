@@ -43,7 +43,7 @@ namespace SimpleDB.Services
             return Path.GetFullPath(filePath);
         }
 
-        async public Task<List<T>> Read(int? count = null)
+        public async Task<List<T>> Read(int? count = null)
         {
             await semaphore.WaitAsync();
             try
@@ -70,7 +70,7 @@ namespace SimpleDB.Services
             }
         }
 
-        async public Task Store(T record)
+        public async Task Store(T record)
         {
             await semaphore.WaitAsync();
             try
@@ -88,7 +88,7 @@ namespace SimpleDB.Services
             }
         }
 
-        async public Task Delete(T record)
+        public async Task Delete(T record)
         {
             await semaphore.WaitAsync();
             try

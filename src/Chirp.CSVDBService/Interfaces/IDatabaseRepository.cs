@@ -1,4 +1,4 @@
-﻿using Chirp.CSVDBService.Interfaces;
+﻿using Chirp.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
