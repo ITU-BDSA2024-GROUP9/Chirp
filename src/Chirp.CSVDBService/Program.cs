@@ -12,8 +12,16 @@ var app = builder.Build();
 
 List<Cheep> get()
 {
-    var csv = CSVDatabaseService<Cheep>.Instance;
-    return csv.Read().Result;
+    try
+    {
+        var csv = CSVDatabaseService<Cheep>.Instance;
+        return csv.Read().Result;
+    } catch (Exception e) 
+    {
+        Console.WriteLine(e.Message);
+        return [];
+    }
+
 }
 
 app.MapGet("/cheeps", () => get());
