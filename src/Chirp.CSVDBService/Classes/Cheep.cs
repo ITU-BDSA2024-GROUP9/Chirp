@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace Chirp.CSVDBService.Classes
 {
-    public record Cheep(string author, string message, long timestamp) : IPost;
+    public record Cheep(string Author, string Message, long Timestamp) : IPost;
 }
