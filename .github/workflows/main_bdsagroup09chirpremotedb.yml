@@ -66,4 +66,6 @@ jobs:
           app-name: 'bdsagroup09chirpremotedb'
           slot-name: 'Production'
           package: .
+          deployment-method: 'zipDeploy'
+          runtime-stack: 'DOTNETCORE|8.0'
           
