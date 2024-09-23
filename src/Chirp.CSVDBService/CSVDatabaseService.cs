@@ -1,5 +1,4 @@
-﻿using Chirp.CSVDBService.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,6 +8,8 @@ using CsvHelper;
 using System.Reflection;
 using CsvHelper.Configuration;
 using Microsoft.CSharp.RuntimeBinder;
+using Chirp.Core.Interfaces;
+using Chirp.CSVDBService.Interfaces;
 
 namespace SimpleDB.Services
 {

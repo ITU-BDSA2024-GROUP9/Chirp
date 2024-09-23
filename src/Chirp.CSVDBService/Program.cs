@@ -1,14 +1,9 @@
 using Chirp.CSVDBService.Interfaces;
-using Chirp.CSVDBService.Classes;
+using Chirp.Core.Classes;
 using SimpleDB.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
-
-// List<Cheep> x = new List<Cheep>();
-// x?.Add(new Cheep("me1", "Hej!", 1684219348));
-// x?.Add(new Cheep("me", "Hej!222", 1684229348));
-// x?.Add(new Cheep("me2", "Hejzs!", 1684223348));
 
 List<Cheep> get()
 {
