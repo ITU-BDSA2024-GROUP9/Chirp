@@ -40,7 +40,7 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                await using Stream json = await client.GetStreamAsync("https://jsonplaceholder.typicode.com/posts");
+                await using Stream json = await client.GetStreamAsync("https://bdsagroup09chirpremotedb.azurewebsites.net/");
                 var list = await JsonSerializer.DeserializeAsync<List<T>>(json);
 
                 return list?.Take(count ?? list?.Count ?? 0).ToList() ?? [];
@@ -58,7 +58,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://jsonplaceholder.typicode.com/posts", content);
+                await client.PostAsync("https://bdsagroup09chirpremotedb.azurewebsites.net/", content);
             }
             finally
             {
@@ -73,7 +73,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://jsonplaceholder.typicode.com/delete", content);
+                await client.PostAsync("https://bdsagroup09chirpremotedb.azurewebsites.net/", content);
             }
             finally
             {
