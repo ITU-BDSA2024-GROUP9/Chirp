@@ -8,8 +8,8 @@ namespace Chirp.Core.Interfaces
 {
     public interface IPost
     {
-        public string Author { get; }
-        public string Message { get; }
-        public long Timestamp { get; }
+        public string author { get; }
+        public string message { get; }
+        public long timestamp { get; }
     }
 }

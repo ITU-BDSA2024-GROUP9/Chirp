@@ -46,10 +46,9 @@ namespace SimpleDB.Services
                 var requestTask = client.GetAsync("/cheeps");
                 var response = await requestTask;
                 Console.WriteLine("response: " + response);
-
+                Console.WriteLine("response content: " + await response.Content.ReadAsStringAsync());
                 
-                await using Stream json = await client.GetStreamAsync("/cheeps");
-                var list = await JsonSerializer.DeserializeAsync<List<T>>(json);
+                var list = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync());
                 Console.WriteLine("json: " + list.First());
                 return list?.Take(count ?? list?.Count ?? 0).ToList() ?? [];
             }
@@ -66,7 +65,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("localhost:5052", content);
+                await client.PostAsync("/cheep", content);
             }
             finally
             {
@@ -74,7 +73,7 @@ namespace SimpleDB.Services
             }
         }
 
-        async public Task Delete(T record)
+        async public Task Delete(T record) // TODO not supported for now
         {
             await semaphore.WaitAsync();
             try
