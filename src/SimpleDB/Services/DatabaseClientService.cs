@@ -8,7 +8,7 @@ namespace SimpleDB.Services
 {
     public sealed class DatabaseClientService<T> : IDatabaseRepository<T> where T : IPost
     {
-        private static string baseURL = "https://jsonplaceholder.typicode.com/posts";
+        private static string baseURL = "https://bdsagroup09chirpremotedb.azurewebsites.net/";
         private static DatabaseClientService<T>? instance = null;
         private static readonly object padlock = new();
         private static readonly SemaphoreSlim semaphore = new(1, 1);
@@ -80,7 +80,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://jsonplaceholder.typicode.com/posts", content);
+                await client.PostAsync("https://bdsagroup09chirpremotedb.azurewebsites.net/", content);
             }
             finally
             {
