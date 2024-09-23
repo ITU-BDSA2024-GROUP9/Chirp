@@ -7,8 +7,8 @@ internal class UserInterface
 {
     public static void ShowCheep(Cheep c)
     {
-        var convertedTimestamp = DateTimeOffset.FromUnixTimeSeconds(c.timestamp).ToString("MM/dd/yy HH:mm:ss");
-        Console.WriteLine(c.author + " @ " + convertedTimestamp + ": " + c.message);
+        var convertedTimestamp = DateTimeOffset.FromUnixTimeSeconds(c.Timestamp).ToString("MM/dd/yy HH:mm:ss");
+        Console.WriteLine(c.Author + " @ " + convertedTimestamp + ": " + c.Message);
     }
 
     public static void ShowCheeps(IEnumerable<Cheep> cheeps)

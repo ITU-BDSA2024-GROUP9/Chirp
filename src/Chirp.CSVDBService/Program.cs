@@ -1,6 +1,7 @@
 using Chirp.CSVDBService.Interfaces;
 using Chirp.Core.Classes;
 using SimpleDB.Services;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -13,8 +14,8 @@ List<Cheep> get()
         return csv.Read().Result;
     } catch (Exception e) 
     {
-        System.Diagnostics.Trace.TraceInformation(e.Message);
-        return [new Cheep("There was an error!", "sad face", 0)];
+        Debug.WriteLine(e.Message);
+        return [new Cheep("There was an error!", e.Message, 0)];
     }
 
 }
@@ -24,7 +25,7 @@ app.MapPost("/cheep", async (Cheep cheep) =>
 {
     var csv = CSVDatabaseService<Cheep>.Instance;
     await csv.Store(cheep);
-    Console.WriteLine("recieved: " + cheep.message); 
+    Console.WriteLine("recieved: " + cheep.Message); 
 });
 
 app.Run();

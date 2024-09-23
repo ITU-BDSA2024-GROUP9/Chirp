@@ -1,14 +1,14 @@
 ﻿using Chirp.Core.Interfaces;
-using SimpleDB.Interfaces;
 using System.Text;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace SimpleDB.Services
 {
-    public sealed class DatabaseClientService<T> : IDatabaseRepository<T> where T : IPost
+    public sealed class DatabaseClientService<T>
     {
-        private static string baseURL = "https://bdsagroup09chirpremotedb.azurewebsites.net";
+      //  private const string baseURL = "https://bdsagroup09chirpremotedb.azurewebsites.net";
+        private const string baseURL = "http://localhost:5000";
         private static DatabaseClientService<T>? instance = null;
         private static readonly object padlock = new();
         private static readonly SemaphoreSlim semaphore = new(1, 1);

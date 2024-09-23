@@ -2,6 +2,7 @@
   "profiles": {
     "Chirp.CLI": {
       "commandName": "Project",
+      "commandLineArgs": "read",
       "nativeDebugging": true
     }
   }

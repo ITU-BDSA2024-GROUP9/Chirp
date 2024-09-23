@@ -1,5 +1,4 @@
 ﻿using Chirp.Core.Classes;
-using CsvHelper;
 using SimpleDB.Services;
 
 namespace Chirp.CLI
