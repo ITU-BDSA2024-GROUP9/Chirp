@@ -42,15 +42,22 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                // first HTTP request
                 var requestTask = client.GetAsync("/cheeps");
                 var response = await requestTask;
-                Console.WriteLine("response: " + response);
-                Console.WriteLine("response content: " + await response.Content.ReadAsStringAsync());
-                
-                var list = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync());
-                Console.WriteLine("json: " + list.First());
-                return list?.Take(count ?? list?.Count ?? 0).ToList() ?? [];
+                var fullList = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync());
+
+                if (fullList == null)
+                {
+                    return [];
+                }
+
+                if (count == null)
+                {
+                    return fullList;
+                }
+
+                List<T> returnList = fullList.Take((int)count).ToList();
+                return returnList;
             }
             finally
             {
