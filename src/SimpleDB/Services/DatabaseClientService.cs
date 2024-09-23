@@ -8,6 +8,7 @@ namespace SimpleDB.Services
 {
     public sealed class DatabaseClientService<T> : IDatabaseRepository<T> where T : IPost
     {
+        private static string baseURL = "https://jsonplaceholder.typicode.com/posts";
         private static DatabaseClientService<T>? instance = null;
         private static readonly object padlock = new();
         private static readonly SemaphoreSlim semaphore = new(1, 1);
@@ -26,6 +27,7 @@ namespace SimpleDB.Services
                     }
 
                     instance = new DatabaseClientService<T>();
+                    client.BaseAddress = new Uri(baseURL);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
@@ -40,9 +42,14 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                await using Stream json = await client.GetStreamAsync("https://bdsagroup09chirpremotedb.azurewebsites.net/");
-                var list = await JsonSerializer.DeserializeAsync<List<T>>(json);
-
+                // first HTTP request
+                var requestTask = client.GetAsync("/cheeps");
+                var response = await requestTask;
+                Console.WriteLine("response: " + response);
+                Console.WriteLine("response content: " + await response.Content.ReadAsStringAsync());
+                
+                var list = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync());
+                Console.WriteLine("json: " + list.First());
                 return list?.Take(count ?? list?.Count ?? 0).ToList() ?? [];
             }
             finally
@@ -58,7 +65,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://bdsagroup09chirpremotedb.azurewebsites.net/", content);
+                await client.PostAsync("/cheep", content);
             }
             finally
             {
@@ -66,14 +73,14 @@ namespace SimpleDB.Services
             }
         }
 
-        async public Task Delete(T record)
+        async public Task Delete(T record) // TODO not supported for now
         {
             await semaphore.WaitAsync();
             try
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://bdsagroup09chirpremotedb.azurewebsites.net/", content);
+                await client.PostAsync("https://jsonplaceholder.typicode.com/posts", content);
             }
             finally
             {

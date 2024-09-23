@@ -68,7 +68,7 @@ public class UnitTests
         var data = await csv.Read(10);
 
         // Assert
-        Assert.StartsWith("ropf", data[0].Author);
-        Assert.EndsWith("Cheeping cheeps on Chirp :)", data[data.Count - 1].Message);
+        Assert.StartsWith("ropf", data[0].author);
+        Assert.EndsWith("Cheeping cheeps on Chirp :)", data[data.Count - 1].message);
     }
 }
