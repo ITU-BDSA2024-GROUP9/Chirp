@@ -50,7 +50,7 @@ namespace SimpleDB.Services
                 
                 await using Stream json = await client.GetStreamAsync("/cheeps");
                 var list = await JsonSerializer.DeserializeAsync<List<T>>(json);
-
+                Console.WriteLine("json: " + list.First());
                 return list?.Take(count ?? list?.Count ?? 0).ToList() ?? [];
             }
             finally
