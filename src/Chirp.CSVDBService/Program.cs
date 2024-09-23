@@ -1,23 +1,28 @@
+using Chirp.CSVDBService.Interfaces;
+using Chirp.CSVDBService.Classes;
+using SimpleDB.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-List<Cheep> x = new List<Cheep>();
-x?.Add(new Cheep("me1", "Hej!", 1684219348));
-x?.Add(new Cheep("me", "Hej!222", 1684229348));
-x?.Add(new Cheep("me2", "Hejzs!", 1684223348));
+// List<Cheep> x = new List<Cheep>();
+// x?.Add(new Cheep("me1", "Hej!", 1684219348));
+// x?.Add(new Cheep("me", "Hej!222", 1684229348));
+// x?.Add(new Cheep("me2", "Hejzs!", 1684223348));
 
 List<Cheep> get()
 {
-    return x;
+    var csv = CSVDatabaseService<Cheep>.Instance;
+    return csv.Read().Result;
 }
 
 app.MapGet("/cheeps", () => get());
-app.MapPost("/cheep", (Cheep cheep) =>
+app.MapPost("/cheep", async (Cheep cheep) =>
 {
-    x?.Add(cheep);
-    Console.WriteLine("recieved: " + cheep.Message); 
+    var csv = CSVDatabaseService<Cheep>.Instance;
+    await csv.Store(cheep);
+    Console.WriteLine("recieved: " + cheep.message); 
 });
 
 app.Run();
 
-public record Cheep(string Author, string Message, long Timestamp);
