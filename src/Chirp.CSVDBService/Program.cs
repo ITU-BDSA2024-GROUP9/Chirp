@@ -4,8 +4,10 @@ var app = builder.Build();
 
 List<Cheep> get()
 {
-    var x = new List<Cheep>();
-    x.Add(new Cheep("me", "Hej!", 1684229348));
+    List<Cheep> x = new List<Cheep>();
+    x?.Add(new Cheep("me1", "Hej!", 1684219348));
+    x?.Add(new Cheep("me", "Hej!222", 1684229348));
+    x?.Add(new Cheep("me2", "Hejzs!", 1684223348));
     return x;
 }
 
