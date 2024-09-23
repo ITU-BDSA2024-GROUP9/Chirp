@@ -8,6 +8,7 @@ namespace SimpleDB.Services
 {
     public sealed class DatabaseClientService<T> : IDatabaseRepository<T> where T : IPost
     {
+        private static string baseURL = "http://localhost:5052";
         private static DatabaseClientService<T>? instance = null;
         private static readonly object padlock = new();
         private static readonly SemaphoreSlim semaphore = new(1, 1);
@@ -26,6 +27,7 @@ namespace SimpleDB.Services
                     }
 
                     instance = new DatabaseClientService<T>();
+                    client.BaseAddress = new Uri(baseURL);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
@@ -40,7 +42,13 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                await using Stream json = await client.GetStreamAsync("https://jsonplaceholder.typicode.com/posts");
+                // first HTTP request
+                var requestTask = client.GetAsync("/cheeps");
+                var response = await requestTask;
+                Console.WriteLine("response: " + response);
+
+                
+                await using Stream json = await client.GetStreamAsync("/cheeps");
                 var list = await JsonSerializer.DeserializeAsync<List<T>>(json);
 
                 return list?.Take(count ?? list?.Count ?? 0).ToList() ?? [];
@@ -58,7 +66,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://jsonplaceholder.typicode.com/posts", content);
+                await client.PostAsync("localhost:5052", content);
             }
             finally
             {
@@ -73,7 +81,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://jsonplaceholder.typicode.com/delete", content);
+                await client.PostAsync("localhost:5052", content);
             }
             finally
             {
