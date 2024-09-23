@@ -1,4 +1,5 @@
 ﻿using Chirp.Core.Classes;
+using CsvHelper;
 using SimpleDB.Services;
 
 namespace Chirp.CLI
@@ -14,7 +15,17 @@ namespace Chirp.CLI
         {
             if (args[0] == "read")
             {
-                try
+                await Read(args);
+            }
+            else if (args[0] == "cheep")
+            {
+                await Cheep(args);
+            }
+        }
+
+        async private static Task Read(string[] args)
+        {
+            try
                 {
                     var csv = DatabaseClientService<Cheep>.Instance;
                     var list = await csv.Read(args.Length < 2 ? null : int.Parse(args[1]));
@@ -25,10 +36,11 @@ namespace Chirp.CLI
                     Console.WriteLine("The file could not be read:");
                     Console.WriteLine(e.Message);
                 }
-            }
-            else if (args[0] == "cheep")
-            {
-                try
+        }
+
+        async private static Task Cheep(string[] args)
+        {
+            try
                 {
                     Console.WriteLine("cheeping");
                     var str = args[1];
@@ -43,7 +55,6 @@ namespace Chirp.CLI
                     Console.WriteLine("The file could not be written to:");
                     Console.WriteLine(e.Message);
                 }
-            }
         }
     }
 }
