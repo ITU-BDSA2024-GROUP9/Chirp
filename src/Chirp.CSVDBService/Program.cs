@@ -24,7 +24,7 @@ app.MapPost("/cheep", async (Cheep cheep) =>
 {
     var csv = CSVDatabaseService<Cheep>.Instance;
     await csv.Store(cheep);
-    Console.WriteLine("recieved: " + cheep.Message); 
+    Console.WriteLine("recieved: " + cheep.message); 
 });
 
 app.Run();
