@@ -7,8 +7,8 @@ namespace SimpleDB.Services
 {
     public sealed class DatabaseClientService<T>
     {
-      //  private const string baseURL = "https://bdsagroup09chirpremotedb.azurewebsites.net";
-        private const string baseURL = "http://localhost:5000";
+        private const string baseURL = "https://bdsagroup09chirpremotedb.azurewebsites.net";
+       // private const string baseURL = "http://localhost:5000";
         private static DatabaseClientService<T>? instance = null;
         private static readonly object padlock = new();
         private static readonly SemaphoreSlim semaphore = new(1, 1);
