@@ -2,6 +2,7 @@
 using Chirp.Core.Interfaces;
 using Chirp.CSVDBService.Interfaces;
 using CsvHelper;
+using CsvHelper.Configuration;
 using System.Globalization;
 using System.Reflection.PortableExecutable;
 
@@ -29,7 +30,7 @@ namespace Chirp.CSVDBService
 
         public async Task StoreAsync(T record)
         {
-            using (var csv = new CsvWriter(new StreamWriter(Path.Combine(env.ContentRootPath, "Data", "chirp_cli_db.csv")), CultureInfo.InvariantCulture))
+            using (var csv = new CsvWriter(new StreamWriter(Path.Combine(env.ContentRootPath, "Data", "chirp_cli_db.csv")), new CsvConfiguration(CultureInfo.InvariantCulture) { ShouldQuote = args => args.Row.Index == 1 }))
             {
                 await csv.NextRecordAsync();
                 csv.WriteRecord(record);

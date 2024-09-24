@@ -46,6 +46,7 @@ namespace SimpleDB.Services
             {
                 var requestTask = client.GetAsync("/cheeps");
                 var response = await requestTask;
+                Console.WriteLine(await response.Content.ReadAsStringAsync());
                 var fullList = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync());
 
                 if (fullList == null)
