@@ -1,18 +1,39 @@
-﻿using Chirp.Core.Interfaces;
+﻿using Chirp.Core.Classes;
+using Chirp.Core.Interfaces;
 using Chirp.CSVDBService.Interfaces;
+using CsvHelper;
+using System.Globalization;
+using System.Reflection.PortableExecutable;
 
 namespace Chirp.CSVDBService
 {
     public class NewCSVDatabaseService<T> : IDatabaseRepository<T> where T : IPost
     {
-        public async Task<List<T>> Read(int? count)
+        private IWebHostEnvironment env;
+
+        public NewCSVDatabaseService(IWebHostEnvironment env)
         {
-            throw new NotImplementedException();
+            this.env = env;  
         }
 
-        public async Task Store(T record)
+        public async Task<IEnumerable<T>> ReadAsync()
         {
-            throw new NotImplementedException();
+            using (var csv = new CsvReader(new StreamReader(Path.Combine(env.ContentRootPath, "Data", "chirp_cli_db.csv")), CultureInfo.InvariantCulture))
+            {
+                var records = new List<T>();
+                await foreach (var record in csv.GetRecordsAsync<T>())
+                    records.Add(record);
+                return records;
+            }
+        }
+
+        public async Task StoreAsync(T record)
+        {
+            using (var csv = new CsvWriter(new StreamWriter(Path.Combine(env.ContentRootPath, "Data", "chirp_cli_db.csv")), CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecord(record);
+                await csv.FlushAsync();
+            }
         }
     }
 }

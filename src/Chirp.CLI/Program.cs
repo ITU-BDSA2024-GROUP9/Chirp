@@ -19,6 +19,8 @@ namespace Chirp.CLI
             else if (args[0] == "cheep")
             {
                 await Cheep(args);
+                await Task.Delay(1000);
+                await Read(args);
             }
         }
 

@@ -13,7 +13,7 @@ using Chirp.CSVDBService.Interfaces;
 
 namespace SimpleDB.Services
 {
-    public sealed class CSVDatabaseService<T> : IDatabaseRepository<T> where T : IPost
+    public sealed class CSVDatabaseService<T> where T : IPost
     {
         private static CSVDatabaseService<T>? instance = null;
         private static readonly object padlock = new();

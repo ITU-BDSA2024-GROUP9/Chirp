@@ -2,31 +2,19 @@ using Chirp.CSVDBService.Interfaces;
 using Chirp.Core.Classes;
 using SimpleDB.Services;
 using System.Diagnostics;
+using Chirp.CSVDBService;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Dependency injection using built-in ASP.NET Core framework
+builder.Services.AddSingleton<NewCSVDatabaseService<Cheep>>();
+
 var app = builder.Build();
 
-List<Cheep> get()
-{
-    try
-    {
-        var csv = CSVDatabaseService<Cheep>.Instance;
-        return csv.Read().Result;
-    } catch (Exception e) 
-    {
-        Debug.WriteLine(e.Message);
-        return [new Cheep("There was an error!", e.Message, 0)];
-    }
+NewCSVDatabaseService<Cheep> Database = app.Services.GetRequiredService<NewCSVDatabaseService<Cheep>>();
 
-}
-
-app.MapGet("/cheeps", () => get());
-app.MapPost("/cheep", async (Cheep cheep) =>
-{
-    var csv = CSVDatabaseService<Cheep>.Instance;
-    await csv.Store(cheep);
-    Console.WriteLine("recieved: " + cheep.Message); 
-});
+app.MapGet("/cheeps", async () => await Database.ReadAsync());
+app.MapPost("/cheep", async (Cheep cheep) => await Database.StoreAsync(cheep));
 
 app.Run();
 

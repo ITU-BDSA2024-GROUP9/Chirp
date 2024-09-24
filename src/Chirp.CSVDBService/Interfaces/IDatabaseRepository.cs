@@ -9,7 +9,7 @@ namespace Chirp.CSVDBService.Interfaces
 {
     interface IDatabaseRepository<T> where T : IPost
     {
-        public Task<List<T>> Read(int? count = null);
-        public Task Store(T record);
+        public Task<IEnumerable<T>> ReadAsync();
+        public Task StoreAsync(T record);
     }
 }
