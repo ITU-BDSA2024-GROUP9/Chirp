@@ -7,8 +7,8 @@ namespace SimpleDB.Services
 {
     public sealed class DatabaseClientService<T>
     {
-      //  private const string baseURL = "https://bdsagroup09chirpremotedb.azurewebsites.net";
-        private const string baseURL = "http://localhost:5000";
+        private const string baseURL = "https://bdsagroup09chirpremotedb.azurewebsites.net";
+        // private const string baseURL = "http://localhost:5000";
         private static DatabaseClientService<T>? instance = null;
         private static readonly object padlock = new();
         private static readonly SemaphoreSlim semaphore = new(1, 1);
@@ -58,7 +58,7 @@ namespace SimpleDB.Services
                     return fullList;
                 }
 
-                List<T> returnList = fullList.Take((int)count).ToList();
+                List<T> returnList = fullList.TakeLast((int)count).ToList();
                 return returnList;
             }
             finally
@@ -74,7 +74,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("/cheep", content);
+                var response = await client.PostAsync("/cheep", content);
             }
             finally
             {
