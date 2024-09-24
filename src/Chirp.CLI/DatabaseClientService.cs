@@ -58,7 +58,7 @@ namespace SimpleDB.Services
                     return fullList;
                 }
 
-                List<T> returnList = fullList.Take((int)count).ToList();
+                List<T> returnList = fullList.TakeLast((int)count).ToList();
                 return returnList;
             }
             finally
@@ -74,7 +74,7 @@ namespace SimpleDB.Services
             {
                 var json = JsonSerializer.Serialize(record);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("/cheep", content);
+                var response = await client.PostAsync("/cheep", content);
             }
             finally
             {

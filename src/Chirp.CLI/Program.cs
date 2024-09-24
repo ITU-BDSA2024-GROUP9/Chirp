@@ -20,7 +20,7 @@ namespace Chirp.CLI
             {
               //  await Cheep(args);
                 await Task.Delay(1000);
-                await Read(args);
+                await Read(["", "1"]); // get the newest cheep
             }
         }
 
