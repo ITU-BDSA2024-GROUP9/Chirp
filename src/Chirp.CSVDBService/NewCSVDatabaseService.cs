@@ -31,7 +31,9 @@ namespace Chirp.CSVDBService
         {
             using (var csv = new CsvWriter(new StreamWriter(Path.Combine(env.ContentRootPath, "Data", "chirp_cli_db.csv")), CultureInfo.InvariantCulture))
             {
+                await csv.NextRecordAsync();
                 csv.WriteRecord(record);
+                await csv.NextRecordAsync();
                 await csv.FlushAsync();
             }
         }
