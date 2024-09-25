@@ -1,2 +1,2 @@
-# Chirp.CLI
+# Chirp
  Kind of like twitter
