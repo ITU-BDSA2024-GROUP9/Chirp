@@ -29,8 +29,7 @@ public class IntegrationTests
     async public void TestRead()
     {
         // Arrange
-        var csvDB = CSVDatabaseService<Cheep>.Instance;
-        await csvDB.ArrangeTestDatabase();
+        var csvDB = DatabaseClientService<Cheep>.Instance;
 
         // Act
         Cheep _cheep = new("ropf", "Cheeping cheeps on Chirp :)", 1690981487);
@@ -77,8 +76,7 @@ public class End2End
     async public void TestStoreCheep()
     {
         // Arrange
-        var csv = CSVDatabaseService<Cheep>.Instance;
-        await csv.ArrangeTestDatabase();
+        var csv = DatabaseClientService<Cheep>.Instance;
         var projectDir = Directory.GetCurrentDirectory();
         var chirpCliBinPath = Path.GetFullPath(Path.Combine(projectDir, "..", "..", "..", "..", "..", "src", "Chirp.CLI", "bin", "Debug", "net8.0", "Chirp.CLI.dll"));
 
@@ -100,6 +98,5 @@ public class End2End
 
         // Assert
         Assert.Contains("cheeping", output);
-        await csv.ArrangeTestDatabase();
     }
 }
