@@ -7,25 +7,31 @@ using System.Threading.Tasks;
 
 namespace Chirp.Core.Helpers
 {
-    public class DBFacade
+    public class DBFacade : IDisposable
     {
-        public void test()
+        private const string sqlDBFilePath = "/tmp/chirp.db";
+        private SqliteConnection SQLite;
+        public DBFacade()
         {
-            var sqlDBFilePath = "/tmp/chirp.db";
-            var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc";
+            SQLite = new SqliteConnection($"Data Source={sqlDBFilePath}");
+            SQLite.Open();
+        }
 
-            using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Run(string Command)
+        {
+            //var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc";
+            var command = SQLite.CreateCommand();
+            command.CommandText = Command;
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                connection.Open();
-
-                var command = connection.CreateCommand();
-                command.CommandText = sqlQuery;
-
-                using var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
                  
-                }
             }
         }
     }
