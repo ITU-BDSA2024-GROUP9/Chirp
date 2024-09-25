@@ -42,4 +42,3 @@ jobs:
         files: Chirp-${{ matrix.os }}-${{ matrix.architecture }}.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # release to github
