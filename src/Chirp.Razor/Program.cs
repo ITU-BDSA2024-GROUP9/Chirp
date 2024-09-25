@@ -1,8 +1,15 @@
+using Chirp.Core.Interfaces;
+using Chirp.Razor.Services;
+using System.ComponentModel.Design;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService, CheepService>();
+
+builder.Services.AddSingleton<ICheepService, MockCheepService>();
+// uncomment for final
+// builder.Services.AddSingleton<ICheepService, REAlCheepService>();
 
 
 var app = builder.Build();
