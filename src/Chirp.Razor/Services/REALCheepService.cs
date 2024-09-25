@@ -1,9 +1,10 @@
 ﻿using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
+using System.ComponentModel.Design;
 
 namespace Chirp.Razor.Services
 {
-    public class REALCheepService<T> : ICheepService<T> where T : IPost
+    public class REALCheepService : ICheepService
     {
         // These would normally be loaded from a database for example
         private static readonly List<CheepViewModel> _cheeps = new()

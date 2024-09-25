@@ -3,7 +3,7 @@ using Chirp.Core.Interfaces;
 
 namespace Chirp.Razor.Services
 {
-    public class MockCheepService<T> : ICheepService<T> where T : IPost
+    public class MockCheepService : ICheepService
     {
         // These would normally be loaded from a database for example
         private static readonly List<CheepViewModel> _cheeps = new()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Chirp.Core.Interfaces
 {
-    public interface ICheepService<T> where T : IPost
+    public interface ICheepService//<T> where T : IPost
     {
         public List<CheepViewModel> GetCheeps();
         public List<CheepViewModel> GetCheepsFromAuthor(string author);
