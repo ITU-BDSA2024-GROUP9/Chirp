@@ -15,32 +15,20 @@ namespace SimpleDB.Services
 {
     public sealed class CSVDatabaseService<T> where T : IPost
     {
-        private static CSVDatabaseService<T>? instance = null;
-        private static readonly object padlock = new();
         private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-
-        public static CSVDatabaseService<T> Instance
+        private IWebHostEnvironment env;
+        public CSVDatabaseService(IWebHostEnvironment env)
         {
-            get
-            {
-                lock (padlock)
-                {
-                    instance ??= new CSVDatabaseService<T>();
-                    return instance;
-                }
-
-            }
+            this.env = env;  
         }
-        private static string GetFilePath()
+        private string GetFilePath()
         {
             return GetFilePath("chirp_cli_db.csv");
         }
 
-        private static string GetFilePath(string filename)
+        private string GetFilePath(string filename)
         {
-            var projectDirectory = Path.Combine("Data");
-            var filePath = Path.Combine(projectDirectory, filename);
-            return Path.GetFullPath(filePath);
+            return Path.Combine(env.ContentRootPath, "Data", filename);
         }
 
         public async Task<List<T>> Read(int? count = null)

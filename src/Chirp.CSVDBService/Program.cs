@@ -7,14 +7,14 @@ using Chirp.CSVDBService;
 var builder = WebApplication.CreateBuilder(args);
 
 // Dependency injection using built-in ASP.NET Core framework
-builder.Services.AddSingleton<NewCSVDatabaseService<Cheep>>();
+builder.Services.AddSingleton<CSVDatabaseService<Cheep>>();
 
 var app = builder.Build();
 
-NewCSVDatabaseService<Cheep> Database = app.Services.GetRequiredService<NewCSVDatabaseService<Cheep>>();
+var Database = app.Services.GetRequiredService<CSVDatabaseService<Cheep>>();
 
-app.MapGet("/cheeps", async () => await Database.ReadAsync());
-app.MapPost("/cheep", async (Cheep cheep) => await Database.StoreAsync(cheep));
+app.MapGet("/cheeps", async () => await Database.Read());
+app.MapPost("/cheep", async (Cheep cheep) => await Database.Store(cheep));
 
-app.Run();
+await app.RunAsync();
 
