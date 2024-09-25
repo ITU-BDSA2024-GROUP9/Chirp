@@ -10,4 +10,10 @@
     <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Database\chirp.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
