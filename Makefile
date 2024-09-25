@@ -5,6 +5,6 @@ clean:
 restore:
 	dotnet restore
 watch:
-	dotnet watch --project .\src\Chirp.CLI\ $(type)
+	dotnet watch --project ./src/Chirp.CLI/ $(type) $(args)
 run:
-	dotnet run --project .\src\Chirp.CLI\ $(type)
+	dotnet run --project ./src/Chirp.CLI/ $(type) $(args)
