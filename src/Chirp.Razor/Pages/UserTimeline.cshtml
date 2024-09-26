@@ -1,4 +1,5 @@
 ﻿@page "/{author}"
+@using Chirp.Core.Classes
 @model Chirp.Razor.Pages.UserTimelineModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -12,8 +13,9 @@
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            @for (int cheepAt = Model.CheepRange.Start.Value; cheepAt < Model.CheepRange.End.Value; cheepAt++)
             {
+                var cheep = Model.Cheeps[cheepAt];
                 <li>
                     <p>
                         <strong>
@@ -30,4 +32,5 @@
     {
         <em>There are no cheeps so far.</em>
     }
+    <small>page @Model.PageNumber</small>
 </div>
