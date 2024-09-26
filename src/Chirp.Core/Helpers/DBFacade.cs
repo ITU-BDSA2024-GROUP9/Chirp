@@ -11,7 +11,7 @@ namespace Chirp.Core.Helpers
     public class DBFacade : IDisposable
     {
         private const string _sqlDBFilePath = "../Chirp.Core/Assets/chirp.db";
-        private SqliteConnection? SQLite;
+        private SqliteConnection? _SQLite;
         public DBFacade()
         {
             var fullPath = Path.GetFullPath(_sqlDBFilePath);
@@ -21,23 +21,23 @@ namespace Chirp.Core.Helpers
             {
                 throw new FileNotFoundException($"Database file not found at {fullPath}");
             }
-            SQLite = new SqliteConnection($"Data Source={_sqlDBFilePath}");
-            SQLite.Open();
+            _SQLite = new SqliteConnection($"Data Source={_sqlDBFilePath}");
+            _SQLite.Open();
         }
 
         public void Dispose()
         {
-            if (SQLite != null)
+            if (_SQLite != null)
             {
-                SQLite.Close();
-                SQLite.Dispose();
-                SQLite = null;
+                _SQLite.Close();
+                _SQLite.Dispose();
+                _SQLite = null;
             }
         }
 
         public void Insert(string commandText, string author, string message, string timestamp)
         {
-            var command = SQLite.CreateCommand();
+            var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
             // Adding with parameters to prevent SQL injection
             command.Parameters.AddWithValue("@author", author);
@@ -54,7 +54,7 @@ namespace Chirp.Core.Helpers
         
         public void Update(string commandText, string author, string message, string timestamp)
         {
-            var command = SQLite.CreateCommand();
+            var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
             command.ExecuteNonQuery();
         }
@@ -62,14 +62,14 @@ namespace Chirp.Core.Helpers
         public List<CheepViewModel> Query(string commandText)
         {
             var cheeps = new List<CheepViewModel>();
-            var command = SQLite.CreateCommand();
+            var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var authorValue = reader["username"].ToString();
-                var messageValue = reader["text"].ToString();
-                double timestampValue = Convert.ToDouble(reader["pub_date"]);
+                var authorValue = reader["username"]?.ToString() ?? "Unknown Author";
+                var messageValue = reader["text"]?.ToString() ?? string.Empty;
+                var timestampValue = Convert.ToDouble(reader["pub_date"]);
                 cheeps.Add(new CheepViewModel(authorValue, messageValue, UnixTimeStampToDateTimeString(timestampValue)));
             }
 
@@ -79,7 +79,7 @@ namespace Chirp.Core.Helpers
         private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
         {
             // Unix timestamp is seconds past epoch
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTime = dateTime.AddSeconds(unixTimeStamp);
             return dateTime.ToString("MM/dd/yy H:mm:ss");
         }
