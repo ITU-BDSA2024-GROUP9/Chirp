@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddSingleton<ICheepService, MockCheepService>();
+// builder.Services.AddSingleton<ICheepService, MockCheepService>();
 // uncomment for final
-// builder.Services.AddSingleton<ICheepService, REAlCheepService>();
+builder.Services.AddSingleton<ICheepService, REALCheepService>();
 
 
 var app = builder.Build();
