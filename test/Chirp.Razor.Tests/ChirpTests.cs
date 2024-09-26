@@ -15,7 +15,7 @@ public class UnitTests
         ICheepService CheepService = new MockCheepService();
 
         // act
-        List<CheepViewModel> cheeps = CheepService.GetCheeps();
+        var cheeps = CheepService.GetCheeps();
 
         // assert
         // 
