@@ -9,8 +9,8 @@ namespace Chirp.Core.Helpers
 {
     public class DBFacade : IDisposable
     {
-        private const string sqlDBFilePath = "/tmp/chirp.db";
-        private SqliteConnection SQLite;
+        private const string sqlDBFilePath = "../Assets/chirp.db";
+        private SqliteConnection? SQLite;
         public DBFacade()
         {
             SQLite = new SqliteConnection($"Data Source={sqlDBFilePath}");
@@ -19,7 +19,12 @@ namespace Chirp.Core.Helpers
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (SQLite != null)
+            {
+                SQLite.Close();
+                SQLite.Dispose();
+                SQLite = null;
+            }
         }
 
         public void Run(string Command)
