@@ -6,14 +6,18 @@ namespace Chirp.Razor.Services
     public class MockCheepService : ICheepService
     {
         // These would normally be loaded from a database for example
-        private static readonly List<CheepViewModel> _cheeps = new()
-        {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
-        };
+        private List<CheepViewModel> _cheeps;
 
         public List<CheepViewModel> GetCheeps()
         {
+            
+            _cheeps = new List<CheepViewModel>();
+
+            for (int i = 0; i < 971; i++)
+            {
+                _cheeps.Add(new CheepViewModel("test", "test", UnixTimeStampToDateTimeString(123131231)));
+            }
+
             return _cheeps;
         }
 
