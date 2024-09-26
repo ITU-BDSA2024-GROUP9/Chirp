@@ -17,7 +17,9 @@ public class PublicModel : PageModel
     public PublicModel(ICheepService service)
     {
         _service = service;
+        _service.setupCheeps();
         Cheeps = _service.GetCheeps();
+
     }
 
     public ActionResult OnGet()
