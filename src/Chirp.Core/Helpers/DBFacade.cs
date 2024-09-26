@@ -69,11 +69,19 @@ namespace Chirp.Core.Helpers
             {
                 var authorValue = reader["username"].ToString();
                 var messageValue = reader["text"].ToString();
-                var timestampValue = reader["pub_date"].ToString();
-                cheeps.Add(new CheepViewModel(authorValue, messageValue, timestampValue));
+                double timestampValue = Convert.ToDouble(reader["pub_date"]);
+                cheeps.Add(new CheepViewModel(authorValue, messageValue, UnixTimeStampToDateTimeString(timestampValue)));
             }
 
             return cheeps;
+        }
+        
+        private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(unixTimeStamp);
+            return dateTime.ToString("MM/dd/yy H:mm:ss");
         }
         
     }
