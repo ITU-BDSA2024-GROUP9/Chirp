@@ -19,7 +19,6 @@ public class UserTimelineModel : PageModel
     public UserTimelineModel(ICheepService service)
     {
         _service = service;
-        _service.setupCheeps();
     }
 
     public ActionResult OnGet(string author)
