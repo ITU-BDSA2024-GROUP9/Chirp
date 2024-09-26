@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="..\..\test\Chirp.Razor.Tests\Chirp.Razor.Tests.csproj" />
+</ItemGroup>
+
 </Project>
