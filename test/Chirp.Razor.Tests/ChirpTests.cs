@@ -42,13 +42,13 @@ public class UnitTests
     }
 }
 
-// This entire class can be found here https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
+// This class was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
+public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _fixture;
     private readonly HttpClient _client;
 
-    public TestAPI(WebApplicationFactory<Program> fixture)
+    public IntegrationTests(WebApplicationFactory<Program> fixture)
     {
         _fixture = fixture;
         _client = _fixture.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true, HandleCookies = true });
@@ -91,12 +91,51 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
     }
 }
 
-public class IntegrationTests
-{
-
-}
-
 public class EndToEndTests
 {
+    private readonly HttpClient _client;
 
+    public EndToEndTests()
+    {
+        _client = new HttpClient();
+        _client.BaseAddress = new Uri("https://bdsagroup09chirpremotedb.azurewebsites.net/");
+    }
+
+    // This test is from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
+    [Theory]
+    [InlineData("/")]
+    public async Task Get_EndpointsReturnSuccessAzure(string url)
+    {
+        // Act
+        var response = await _client.GetAsync(url);
+
+        // Assert
+        response.EnsureSuccessStatusCode(); // Status Code 200-299
+    }
+
+    // This test can be found here https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
+    [Fact]
+    public async void CanSeePublicTimelineAzure()
+    {
+        var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+
+        Assert.Contains("Chirp!", content);
+        Assert.Contains("Public Timeline", content);
+    }
+
+    // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
+    [Theory]
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Quintin Sitts")]
+    public async void CanSeePrivateTimelineAzure(string author)
+    {
+        var response = await _client.GetAsync($"/{author}");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+
+        Assert.Contains("Chirp!", content);
+        Assert.Contains($"{author}'s Timeline", content);
+    }
 }
