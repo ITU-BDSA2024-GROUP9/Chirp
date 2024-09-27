@@ -18,6 +18,13 @@
     <None Update="Database\chirp.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\chirp.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+    <ItemGroup>
+
   </ItemGroup>
 
 </Project>
