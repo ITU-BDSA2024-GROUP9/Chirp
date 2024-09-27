@@ -5,7 +5,7 @@ using Chirp.Core.Helpers;
 
 namespace Chirp.Razor.Services
 {
-    public class REALCheepService : ICheepService
+    public class CheepService : ICheepService
     {
         public List<CheepViewModel> GetCheeps()
         {

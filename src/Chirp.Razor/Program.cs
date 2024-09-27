@@ -9,7 +9,7 @@ builder.Services.AddRazorPages();
 
 // builder.Services.AddSingleton<ICheepService, MockCheepService>();
 // uncomment for final
-builder.Services.AddSingleton<ICheepService, REALCheepService>();
+builder.Services.AddSingleton<ICheepService, CheepService>();
 
 
 var app = builder.Build();
