@@ -15,7 +15,6 @@ namespace Chirp.Core.Helpers
         public DBFacade()
         {
             var fullPath = Path.GetFullPath(_sqlDBFilePath);
-            Console.WriteLine($"Database full path: {fullPath}");
 
             if (!File.Exists(fullPath))
             {
