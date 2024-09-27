@@ -11,11 +11,10 @@ namespace Chirp.Core.Helpers
     public class DBFacade : IDisposable
     {
         // "../Chirp.Core/Assets/chirp.db"
-        private string _sqlDBFilePath;
+        private string _sqlDBFilePath = "../Chirp.Core/Assets/chirp.db";
         private SqliteConnection? _SQLite;
-        public DBFacade(string sqlDBFilePath)
+        public DBFacade()
         {
-            _sqlDBFilePath = sqlDBFilePath;
             InitializeConnection();
         }
 
