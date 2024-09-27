@@ -33,7 +33,7 @@ namespace Chirp.Core.Helpers
             _SQLite = null;
         }
         
-        public void ExecuteNonQuery(string commandText, Dictionary<string, object>? parameters = null)
+        private void ExecuteNonQuery(string commandText, Dictionary<string, object>? parameters = null)
         {
             if (_SQLite == null) return;
 
