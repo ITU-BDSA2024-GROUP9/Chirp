@@ -15,7 +15,6 @@ namespace Chirp.Core.Helpers
         public DBFacade()
         {
             var fullPath = Path.GetFullPath(_sqlDBFilePath);
-            Console.WriteLine($"Database full path: {fullPath}");
 
             if (!File.Exists(fullPath))
             {
@@ -27,33 +26,33 @@ namespace Chirp.Core.Helpers
 
         public void Dispose()
         {
-            if (_SQLite != null)
-            {
-                _SQLite.Close();
-                _SQLite.Dispose();
-                _SQLite = null;
-            }
+            if (_SQLite == null) return;
+            
+            _SQLite.Close();
+            _SQLite.Dispose();
+            _SQLite = null;
         }
 
-        public void Insert(string commandText, string author, string message, string timestamp)
+        public void Insert(string commandText, Dictionary<string, object>? parameters = null)
         {
+            if (_SQLite == null) return;
+            
             var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
-            // Adding with parameters to prevent SQL injection
-            command.Parameters.AddWithValue("@author", author);
-            command.Parameters.AddWithValue("@message", message);
-            command.Parameters.AddWithValue("@timestamp", timestamp);
+            AddParameters(command, parameters);
             command.ExecuteNonQuery();
-            Console.WriteLine("The data was inserted into the database.");
         }
         
         public void Delete(string commandText, string author, string message, string timestamp)
         {
+            if (_SQLite == null) return;
             throw new NotImplementedException();
         }
         
         public void Update(string commandText, string author, string message, string timestamp)
         {
+            if (_SQLite == null) return;
+            
             var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
             command.ExecuteNonQuery();
@@ -61,17 +60,12 @@ namespace Chirp.Core.Helpers
         
         public List<CheepViewModel> Query(string commandText, Dictionary<string, object>? parameters = null)
         {
+            if (_SQLite == null) return new List<CheepViewModel>();
+            
             var cheeps = new List<CheepViewModel>();
             var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
-            
-            if (parameters != null)
-            {
-                foreach (var param in parameters)
-                {
-                    command.Parameters.AddWithValue(param.Key, param.Value);
-                }
-            }
+            AddParameters(command, parameters);
             
             using var reader = command.ExecuteReader();
             while (reader.Read())
@@ -83,6 +77,16 @@ namespace Chirp.Core.Helpers
             }
 
             return cheeps;
+        }
+        
+        private static void AddParameters(SqliteCommand command, Dictionary<string, object>? parameters)
+        {
+            if (parameters == null) return;
+            
+            foreach (var param in parameters)
+            {
+                command.Parameters.AddWithValue(param.Key, param.Value);
+            }
         }
         
         private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
