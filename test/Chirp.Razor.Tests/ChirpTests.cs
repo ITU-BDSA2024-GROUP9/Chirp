@@ -12,7 +12,7 @@ public class UnitTests
     public void TestGetCheeps()
     {
         // arrange
-        ICheepService CheepService = new MockCheepService();
+        ICheepService CheepService = new CheepService();
 
         // act
         var cheeps = CheepService.GetCheeps();
@@ -23,12 +23,12 @@ public class UnitTests
     }
 
     [Theory]
-    [InlineData("Helge")]
-    [InlineData("Adrian")]
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Quintin Sitts")]
     public void TestGetCheepsFromAuthor(string author)
     {
         // arrange
-        ICheepService CheepService = new MockCheepService();
+        ICheepService CheepService = new CheepService();
 
         // act
         // TODO - Add insert cheep into to model
@@ -78,8 +78,8 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Theory]
-    [InlineData("Helge")]
-    [InlineData("Adrian")]
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Quintin Sitts")]
     public async void CanSeePrivateTimeline(string author)
     {
         var response = await _client.GetAsync($"/{author}");
