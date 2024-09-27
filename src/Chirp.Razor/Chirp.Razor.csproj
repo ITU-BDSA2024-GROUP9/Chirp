@@ -12,6 +12,12 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="..\..\test\Chirp.Razor.Tests\Chirp.Razor.Tests.csproj" />
-</ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Database\chirp.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
