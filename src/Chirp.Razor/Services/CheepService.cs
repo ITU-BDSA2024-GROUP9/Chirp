@@ -10,7 +10,9 @@ namespace Chirp.Razor.Services
         public List<CheepViewModel> GetCheeps()
         {
             var database = new DBFacade();
-            return database.Query(@"
+            try
+            {
+                return database.Query(@"
                SELECT
                     user.username,
                     text,
@@ -19,6 +21,11 @@ namespace Chirp.Razor.Services
                     message
                 JOIN user ON message.author_id = user.user_id
             ");
+            }
+            finally
+            {
+                database.Dispose();
+            }
         }
 
         public List<CheepViewModel> GetCheepsFromAuthor(string author)
