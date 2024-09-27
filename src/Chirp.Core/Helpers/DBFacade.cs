@@ -32,30 +32,30 @@ namespace Chirp.Core.Helpers
             _SQLite.Dispose();
             _SQLite = null;
         }
-
-        public void Insert(string commandText, Dictionary<string, object>? parameters = null)
+        
+        public void ExecuteNonQuery(string commandText, Dictionary<string, object>? parameters = null)
         {
             if (_SQLite == null) return;
-            
+
             var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
             AddParameters(command, parameters);
             command.ExecuteNonQuery();
         }
-        
-        public void Delete(string commandText, string author, string message, string timestamp)
+
+        public void Insert(string commandText, Dictionary<string, object>? parameters = null)
         {
-            if (_SQLite == null) return;
-            throw new NotImplementedException();
+            ExecuteNonQuery(commandText, parameters);
         }
         
-        public void Update(string commandText, string author, string message, string timestamp)
+        public void Delete(string commandText, Dictionary<string, object>? parameters = null)
         {
-            if (_SQLite == null) return;
-            
-            var command = _SQLite.CreateCommand();
-            command.CommandText = commandText;
-            command.ExecuteNonQuery();
+            ExecuteNonQuery(commandText, parameters);
+        }
+        
+        public void Update(string commandText, Dictionary<string, object>? parameters = null)
+        {
+            ExecuteNonQuery(commandText, parameters);
         }
         
         public List<CheepViewModel> Query(string commandText, Dictionary<string, object>? parameters = null)
