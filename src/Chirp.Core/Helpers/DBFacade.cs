@@ -23,10 +23,18 @@ namespace Chirp.Core.Helpers
             _SQLite = new SqliteConnection($"Data Source={_sqlDBFilePath}");
             _SQLite.Open();
         }
+        
+        private void EnsureConnectionInitialized()
+        {
+            if (_SQLite == null)
+            {
+                throw new InvalidOperationException("SQLite connection is not initialized.");
+            }
+        }
 
         public void Dispose()
         {
-            if (_SQLite == null) return;
+            EnsureConnectionInitialized();
             
             _SQLite.Close();
             _SQLite.Dispose();
@@ -35,12 +43,20 @@ namespace Chirp.Core.Helpers
         
         private void ExecuteNonQuery(string commandText, Dictionary<string, object>? parameters = null)
         {
-            if (_SQLite == null) return;
+            try
+            {
+                EnsureConnectionInitialized();
 
-            var command = _SQLite.CreateCommand();
-            command.CommandText = commandText;
-            AddParameters(command, parameters);
-            command.ExecuteNonQuery();
+                var command = _SQLite.CreateCommand();
+                command.CommandText = commandText;
+                AddParameters(command, parameters);
+                command.ExecuteNonQuery();
+            }
+            catch (InvalidOperationException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+            }
+            
         }
 
         public void Insert(string commandText, Dictionary<string, object>? parameters = null)
@@ -60,23 +76,32 @@ namespace Chirp.Core.Helpers
         
         public List<CheepViewModel> Query(string commandText, Dictionary<string, object>? parameters = null)
         {
-            if (_SQLite == null) return new List<CheepViewModel>();
-            
-            var cheeps = new List<CheepViewModel>();
-            var command = _SQLite.CreateCommand();
-            command.CommandText = commandText;
-            AddParameters(command, parameters);
-            
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                var authorValue = reader["username"]?.ToString() ?? "Unknown Author";
-                var messageValue = reader["text"]?.ToString() ?? string.Empty;
-                var timestampValue = Convert.ToDouble(reader["pub_date"]);
-                cheeps.Add(new CheepViewModel(authorValue, messageValue, UnixTimeStampToDateTimeString(timestampValue)));
+                EnsureConnectionInitialized();
+            
+                var cheeps = new List<CheepViewModel>();
+                var command = _SQLite.CreateCommand();
+                command.CommandText = commandText;
+                AddParameters(command, parameters);
+            
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var authorValue = reader["username"]?.ToString() ?? "Unknown Author";
+                    var messageValue = reader["text"]?.ToString() ?? string.Empty;
+                    var timestampValue = Convert.ToDouble(reader["pub_date"]);
+                    cheeps.Add(new CheepViewModel(authorValue, messageValue, UnixTimeStampToDateTimeString(timestampValue)));
+                }
+
+                return cheeps;
+            }
+            catch (InvalidOperationException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+                return new List<CheepViewModel>();
             }
 
-            return cheeps;
         }
         
         private static void AddParameters(SqliteCommand command, Dictionary<string, object>? parameters)
