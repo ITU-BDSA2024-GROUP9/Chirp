@@ -10,7 +10,7 @@ namespace Chirp.Core.Helpers
 {
     public class DBFacade : IDisposable
     {
-        private const string _sqlDBFilePath = "../../src/Chirp.Core/Assets/chirp.db";
+        private const string _sqlDBFilePath = "../../src/Chirp.Core/Assets/chirp.db"; // needs to go back twice for the test project
         private SqliteConnection? _SQLite;
         public DBFacade()
         {
