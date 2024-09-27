@@ -10,9 +10,16 @@ namespace Chirp.Core.Helpers
 {
     public class DBFacade : IDisposable
     {
-        private const string _sqlDBFilePath = "../Chirp.Core/Assets/chirp.db";
+        // "../Chirp.Core/Assets/chirp.db"
+        private string _sqlDBFilePath;
         private SqliteConnection? _SQLite;
-        public DBFacade()
+        public DBFacade(string sqlDBFilePath)
+        {
+            _sqlDBFilePath = sqlDBFilePath;
+            InitializeConnection();
+        }
+
+        private void InitializeConnection()
         {
             var fullPath = Path.GetFullPath(_sqlDBFilePath);
 
@@ -23,7 +30,7 @@ namespace Chirp.Core.Helpers
             _SQLite = new SqliteConnection($"Data Source={_sqlDBFilePath}");
             _SQLite.Open();
         }
-        
+
         private void EnsureConnectionInitialized()
         {
             if (_SQLite == null)
