@@ -30,9 +30,24 @@ namespace Chirp.Razor.Services
 
         public List<CheepViewModel> GetCheepsFromAuthor(string author)
         {
-            var temp = new List<CheepViewModel>();
-            // filter by the provided author name
-            return temp;
+            var database = new DBFacade();
+            try
+            { 
+                return database.Query(@"
+               SELECT
+                    user.username,
+                    text,
+                    pub_date
+                FROM
+                    message
+                JOIN user ON message.author_id = user.user_id
+                WHERE user.username = @author
+            ", new Dictionary<string, object> { { "@author", author } });
+            }
+            finally
+            {
+                database.Dispose();
+            }
         }
     }
 }

@@ -59,11 +59,20 @@ namespace Chirp.Core.Helpers
             command.ExecuteNonQuery();
         }
         
-        public List<CheepViewModel> Query(string commandText)
+        public List<CheepViewModel> Query(string commandText, Dictionary<string, object>? parameters = null)
         {
             var cheeps = new List<CheepViewModel>();
             var command = _SQLite.CreateCommand();
             command.CommandText = commandText;
+            
+            if (parameters != null)
+            {
+                foreach (var param in parameters)
+                {
+                    command.Parameters.AddWithValue(param.Key, param.Value);
+                }
+            }
+            
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
