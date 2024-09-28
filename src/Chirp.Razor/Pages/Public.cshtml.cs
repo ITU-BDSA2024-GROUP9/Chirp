@@ -8,14 +8,13 @@ namespace Chirp.Razor.Pages;
 
 public class PublicModel : Model
 {
-    [FromQuery(Name = "page")]
-    public string? QueryPage { get; set; }
-
     public PublicModel(ICheepService service) : base(service) { }
 
-    public ActionResult OnGet()
+    public ActionResult OnGet([FromQuery] int page)
     {
-        base.PaginateCheeps(QueryPage);
+        Console.WriteLine("P " + page);
+        if (page < 1) page = 1;
+        base.PaginateCheeps(page);
         return Page();
     }
 }

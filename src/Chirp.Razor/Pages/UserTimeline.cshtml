@@ -4,8 +4,8 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var nextPage = Model.PageNumber++;
-    var lastPage = Model.PageNumber != 1 ? Model.PageNumber-- : 1;
+    var nextPage = 1;
+    var lastPage = -1;
     var routeName = HttpContext.GetRouteValue("author");
 }
 
@@ -34,7 +34,7 @@
     {
         <em>There are no cheeps so far.</em>
     }
-    <a href="@routeName?page=@nextPage">Last page</a>
+    <a href="@routeName?page=@lastPage">Last page</a>
     <small>page @Model.PageNumber / @Model.TotalPages</small>
-    <a href="@routeName?page=@lastPage">Next page</a>
+    <a href="@routeName?page=@nextPage">Next page</a>
 </div>

@@ -17,21 +17,21 @@ public abstract class Model : PageModel
         _service = service;
     }
     //Ideally querying slices instead of taking the whole thing.
-    public void PaginateCheeps(string? queryPage)
+    public void PaginateCheeps(int queryPage)
     {
         Cheeps = _service.GetCheeps();
         Paginate(queryPage);
     }
 
-    public void PaginateCheeps(string? queryPage, string author)
+    public void PaginateCheeps(int queryPage, string author)
     {
         Cheeps = _service.GetCheepsFromAuthor(author);
         Paginate(queryPage);
     }
 
-    private void Paginate(string? queryPage)
+    private void Paginate(int queryPage)
     {
-        PageNumber = ParsePageNumber(queryPage);
+        PageNumber = queryPage;
         TotalPages = PageAmount();
         var startCheep = (PageNumber-1) * 32; //There is no page 0.
         var endCheep = startCheep + 32 >= Cheeps.Count ? Cheeps.Count : startCheep+32;

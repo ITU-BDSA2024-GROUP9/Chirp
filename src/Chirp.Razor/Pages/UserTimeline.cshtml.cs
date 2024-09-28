@@ -7,16 +7,14 @@ namespace Chirp.Razor.Pages;
 
 public class UserTimelineModel : Model
 {
-    [FromQuery(Name = "page")]
-    public string? QueryPage { get; set; }
-
     public UserTimelineModel(ICheepService service) : base(service) { }
 
 
 
-    public ActionResult OnGet(string author)
+    public ActionResult OnGet([FromQuery] int page, string author)
     {
-        base.PaginateCheeps(QueryPage, author);
+        if (page < 1) page = 1;
+        base.PaginateCheeps(page, author);
         return Page();
     }
 }
