@@ -39,11 +39,16 @@ public abstract class Model : PageModel
     {
         if (int.TryParse(queryPage, out var page))
         {
-            if (0 <= page && page <= MathUtil.PageAmount(Cheeps))
+            if (0 <= page && page <= PageAmount(Cheeps))
             {
                 return page;
             }
         }
         return 1;
+    }
+    
+    private int PageAmount(List<CheepViewModel> cheeps)
+    {
+        return (int) Math.Ceiling(1.0 * cheeps.Count / 32);
     }
 }
