@@ -1,4 +1,6 @@
+using System.Security.Cryptography.X509Certificates;
 using Chirp.Core.Classes;
+using Chirp.Core.Helpers;
 using Chirp.Core.Interfaces;
 using Chirp.Razor.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -8,6 +10,26 @@ namespace Chirp.Razor.Tests;
 
 public class UnitTests
 {
+    [Fact]
+    public static void TestDBFacadeInitalization()
+    {
+        // assert does not throw
+        DBFacade db = new DBFacade();
+    }
+
+    [Fact]
+    public void TestCheepInitialization()
+    {
+        // Arrange
+        var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        // Act
+        IPost _cheep = new Cheep("a", "b", time);
+        // Assert
+        Assert.Equal("a", _cheep.author);
+        Assert.Equal("b", _cheep.message);
+        Assert.Equal(time, _cheep.timestamp);
+    }
+
     [Theory]
     [InlineData("Jacqualine Gilcoine", "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", "08-01-23 13:14:37")]
     public void TestGetCheeps(string author, string message, string timestamp)
@@ -141,3 +163,16 @@ public class EndToEndTests
         Assert.Contains($"{author}'s Timeline", content);
     }
 }
+
+class MockEmptyDB : ICheepService
+    {
+        public List<CheepViewModel> GetCheeps()
+        {
+            return new List<CheepViewModel>();
+        }
+
+        public List<CheepViewModel> GetCheepsFromAuthor(string author)
+        {
+            return new List<CheepViewModel>();
+        }
+    }
