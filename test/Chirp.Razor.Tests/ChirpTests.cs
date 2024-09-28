@@ -8,18 +8,20 @@ namespace Chirp.Razor.Tests;
 
 public class UnitTests
 {
-    [Fact]
-    public void TestGetCheeps()
+    [Theory]
+    [InlineData("Jacqualine Gilcoine", "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", "08-01-23 13:14:37")]
+    public void TestGetCheeps(string author, string message, string timestamp)
     {
         // arrange
         ICheepService CheepService = new CheepService();
+        var cheep = new CheepViewModel(author, message, timestamp);
 
         // act
         var cheeps = CheepService.GetCheeps();
 
         // assert
-        // 
         Assert.NotEmpty(cheeps);
+        Assert.Contains(cheep, cheeps);
     }
 
     [Theory]
