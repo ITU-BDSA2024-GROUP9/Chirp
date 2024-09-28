@@ -3,6 +3,8 @@
 @{
 ViewData["Title"] = "Chirp!";
 Layout = "Shared/_Layout";
+var nextPage = Model.PageNumber++;
+var lastPage = Model.PageNumber != 1 ? Model.PageNumber-- : 1;
 }
 
 <div>
@@ -28,7 +30,10 @@ Layout = "Shared/_Layout";
     }
     else
     {
-    <em>There are no cheeps so far.</em>
+        <em>There are no cheeps so far.</em>
     }
-    <small>page @Model.PageNumber</small>
+    <a href="?page=@nextPage">Last page</a>
+    <small>page @Model.PageNumber / @Model.TotalPages</small>
+    <a href="?page=@lastPage">Next page</a>
+    
 </div>

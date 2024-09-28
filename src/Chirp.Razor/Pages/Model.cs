@@ -7,6 +7,8 @@ public abstract class Model : PageModel
     private readonly ICheepService _service;
 
     public int PageNumber { get; set; }
+
+    public int TotalPages { get; set; }
     public Range CheepRange {get;set;}
     public List<CheepViewModel> Cheeps { get; set; }
 
@@ -30,6 +32,7 @@ public abstract class Model : PageModel
     private void Paginate(string? queryPage)
     {
         PageNumber = ParsePageNumber(queryPage);
+        TotalPages = PageAmount();
         var startCheep = (PageNumber-1) * 32; //There is no page 0.
         var endCheep = startCheep + 32 >= Cheeps.Count ? Cheeps.Count : startCheep+32;
         CheepRange = new Range(startCheep, endCheep);
@@ -39,7 +42,7 @@ public abstract class Model : PageModel
     {
         if (int.TryParse(queryPage, out var page))
         {
-            if (0 <= page && page <= PageAmount(Cheeps))
+            if (0 <= page && page <= TotalPages)
             {
                 return page;
             }
@@ -47,8 +50,8 @@ public abstract class Model : PageModel
         return 1;
     }
     
-    private int PageAmount(List<CheepViewModel> cheeps)
+    private int PageAmount()
     {
-        return (int) Math.Ceiling(1.0 * cheeps.Count / 32);
+        return (int) Math.Ceiling(1.0 * Cheeps.Count / 32);
     }
 }
