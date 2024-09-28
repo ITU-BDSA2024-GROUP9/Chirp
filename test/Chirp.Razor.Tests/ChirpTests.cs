@@ -31,12 +31,12 @@ public class UnitTests
     }
 
     [Theory]
-    [InlineData("Jacqualine Gilcoine", "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", "08-01-23 13:14:37")]
-    public void TestGetCheeps(string author, string message, string timestamp)
+    [InlineData("Jacqualine Gilcoine", "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", 1690895677)]
+    public void TestGetCheeps(string author, string message, double timestamp)
     {
         // arrange
         ICheepService CheepService = new CheepService();
-        var cheep = new CheepViewModel(author, message, timestamp);
+        var cheep = new CheepViewModel(author, message, UnixTimeStampToDateTimeString(timestamp));
 
         // act
         var cheeps = CheepService.GetCheeps();
@@ -44,6 +44,14 @@ public class UnitTests
         // assert
         Assert.NotEmpty(cheeps);
         Assert.Contains(cheep, cheeps);
+    }
+
+    private static string UnixTimeStampToDateTimeString(double unixTimeStamp) // TODO - Make a util class for this method and use it here and in DBFacade
+    {
+        // Unix timestamp is seconds past epoch
+        var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 
     [Theory]
