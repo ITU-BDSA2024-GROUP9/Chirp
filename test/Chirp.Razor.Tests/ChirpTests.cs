@@ -36,7 +36,7 @@ public class UnitTests
     {
         // arrange
         ICheepService CheepService = new CheepService();
-        var cheep = new CheepViewModel(author, message, UnixTimeStampToDateTimeString(timestamp));
+        var cheep = new CheepViewModel(author, message, TestUtils.UnixTimeStampToDateTimeString(timestamp));
 
         // act
         var cheeps = CheepService.GetCheeps();
@@ -44,14 +44,6 @@ public class UnitTests
         // assert
         Assert.NotEmpty(cheeps);
         Assert.Contains(cheep, cheeps);
-    }
-
-    private static string UnixTimeStampToDateTimeString(double unixTimeStamp) // TODO - Make a util class for this method and use it here and in DBFacade
-    {
-        // Unix timestamp is seconds past epoch
-        var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        dateTime = dateTime.AddSeconds(unixTimeStamp);
-        return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 
     [Theory]
@@ -173,14 +165,25 @@ public class EndToEndTests
 }
 
 class MockEmptyDB : ICheepService
+{
+    public List<CheepViewModel> GetCheeps()
     {
-        public List<CheepViewModel> GetCheeps()
-        {
-            return new List<CheepViewModel>();
-        }
-
-        public List<CheepViewModel> GetCheepsFromAuthor(string author)
-        {
-            return new List<CheepViewModel>();
-        }
+        return new List<CheepViewModel>();
     }
+
+    public List<CheepViewModel> GetCheepsFromAuthor(string author)
+    {
+        return new List<CheepViewModel>();
+    }
+}
+
+class TestUtils
+{
+    public static string UnixTimeStampToDateTimeString(double unixTimeStamp) // TODO - Make a util class for this method and use it here and in DBFacade
+    {
+        // Unix timestamp is seconds past epoch
+        var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("MM/dd/yy H:mm:ss");
+    }
+}
