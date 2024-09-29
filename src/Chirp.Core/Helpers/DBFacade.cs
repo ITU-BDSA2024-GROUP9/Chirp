@@ -16,7 +16,6 @@ namespace Chirp.Core.Helpers
         public DBFacade()
         {
             InitializeConnection();
-            
         }
 
         private void InitializeConnection()
