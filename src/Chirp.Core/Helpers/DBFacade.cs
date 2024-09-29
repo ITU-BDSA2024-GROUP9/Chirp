@@ -16,18 +16,27 @@ namespace Chirp.Core.Helpers
         public DBFacade()
         {
             InitializeConnection();
+            
         }
 
         private void InitializeConnection()
         {
-            var fullPath = Path.GetFullPath(_sqlDBFilePath);
-
-            if (!File.Exists(fullPath))
+            try
             {
-                throw new FileNotFoundException($"Database file not found at {fullPath}");
+                var fullPath = Path.GetFullPath(_sqlDBFilePath);
+
+                if (!File.Exists(fullPath))
+                {
+                    throw new FileNotFoundException($"Database file not found at {fullPath}");
+                }
+                _SQLite = new SqliteConnection($"Data Source={_sqlDBFilePath}");
+                _SQLite.Open(); 
             }
-            _SQLite = new SqliteConnection($"Data Source={_sqlDBFilePath}");
-            _SQLite.Open();
+            catch (FileNotFoundException fnfe)
+            {
+                Console.WriteLine(fnfe.Message);
+            }
+
         }
 
         private void EnsureConnectionInitialized()
