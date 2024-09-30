@@ -5,19 +5,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Razor.Pages;
 
-public class UserTimelineModel : PageModel
+public class UserTimelineModel : Model
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
+    public UserTimelineModel(ICheepService service) : base(service) { }
 
-    public UserTimelineModel(ICheepService service)
-    {
-        _service = service;
-    }
 
-    public ActionResult OnGet(string author)
+
+    public ActionResult OnGet([FromQuery] int page, string author)
     {
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        if (page < 1) page = 1;
+        base.PaginateCheeps(page, author);
         return Page();
     }
 }

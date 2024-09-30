@@ -1,18 +1,21 @@
 ﻿@page "/"
 @model Chirp.Razor.Pages.PublicModel
 @{
-    ViewData["Title"] = "Chirp!";
-    Layout = "Shared/_Layout";
+ViewData["Title"] = "Chirp!";
+Layout = "Shared/_Layout";
+var nextPage = 1;
+var lastPage = -1;
 }
 
 <div>
     <h2> Public Timeline </h2>
-
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            
+            @for (int cheepAt = Model.CheepRange.Start.Value; cheepAt < Model.CheepRange.End.Value; cheepAt++)
             {
+                var cheep = Model.Cheeps[cheepAt];
                 <li>
                     <p>
                         <strong>
@@ -29,4 +32,8 @@
     {
         <em>There are no cheeps so far.</em>
     }
+    <a href="?page=@lastPage">Last page</a>
+    <small>page @Model.PageNumber / @Model.TotalPages</small>
+    <a href="?page=@nextPage">Next page</a>
+    
 </div>
