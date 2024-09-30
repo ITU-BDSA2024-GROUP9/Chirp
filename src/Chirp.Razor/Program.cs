@@ -5,8 +5,15 @@ using Chirp.Razor.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages()
-    .AddRazorRuntimeCompilation(); // Enable runtime compilatio
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddRazorPages()
+        .AddRazorRuntimeCompilation();  // Only enable this in development
+}
+else
+{
+    builder.Services.AddRazorPages();
+}
 
 builder.Services.AddSingleton<ICheepService, CheepService>();
 
