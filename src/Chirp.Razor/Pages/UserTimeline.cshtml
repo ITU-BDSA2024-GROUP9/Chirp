@@ -1,9 +1,12 @@
 ﻿@page "/{author}"
+@using Chirp.Core.Classes
 @model Chirp.Razor.Pages.UserTimelineModel
 @using Microsoft.AspNetCore.Routing
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    var nextPage = 1;
+    var lastPage = -1;
     var routeName = HttpContext.GetRouteValue("author");
 }
 
@@ -13,8 +16,9 @@
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            @for (int cheepAt = Model.CheepRange.Start.Value; cheepAt < Model.CheepRange.End.Value; cheepAt++)
             {
+                var cheep = Model.Cheeps[cheepAt];
                 <li>
                     <p>
                         <strong>
@@ -31,4 +35,7 @@
     {
         <em>There are no cheeps so far.</em>
     }
+    <a href="@routeName?page=@lastPage">Last page</a>
+    <small>page @Model.PageNumber / @Model.TotalPages</small>
+    <a href="@routeName?page=@nextPage">Next page</a>
 </div>

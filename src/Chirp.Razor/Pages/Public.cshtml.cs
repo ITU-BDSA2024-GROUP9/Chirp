@@ -1,23 +1,20 @@
-﻿using Chirp.Core.Classes;
+﻿using System.Transactions;
+using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Razor.Pages;
 
-public class PublicModel : PageModel
+public class PublicModel : Model
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
+    public PublicModel(ICheepService service) : base(service) { }
 
-    public PublicModel(ICheepService service)
+    public ActionResult OnGet([FromQuery] int page)
     {
-        _service = service;
-    }
-
-    public ActionResult OnGet()
-    {
-        Cheeps = _service.GetCheeps();
+        Console.WriteLine("P " + page);
+        if (page < 1) page = 1;
+        base.PaginateCheeps(page);
         return Page();
     }
 }
