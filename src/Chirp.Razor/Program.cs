@@ -1,24 +1,22 @@
-using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Chirp.Core.Interfaces;
 using Chirp.Razor.Services;
+using System.ComponentModel.Design;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages()
-    .AddRazorRuntimeCompilation(); // Enable runtime compilatio
+builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<ICheepService, CheepService>();
 
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();  // Ensure detailed error pages in development
-}
-else
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -29,6 +27,6 @@ app.UseRouting();
 
 app.MapRazorPages();
 
-await app.RunAsync();
+app.Run();
 
 public partial class Program { }
