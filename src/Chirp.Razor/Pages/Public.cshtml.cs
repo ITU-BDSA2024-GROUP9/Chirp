@@ -12,7 +12,6 @@ public class PublicModel : Model
 
     public ActionResult OnGet([FromQuery] int page)
     {
-        Console.WriteLine("P " + page);
         if (page < 1) page = 1;
         base.PaginateCheeps(page);
         return Page();
