@@ -15,11 +15,14 @@ namespace Chirp.Core.Helpers
         private SqliteConnection? _SQLite;
         public DBFacade()
         {
-            _sqlDBFilePath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+            Console.WriteLine("Temp path: " + Path.GetFullPath(Path.GetTempPath()));
+            _sqlDBFilePath = Environment.GetEnvironmentVariable("CHIRPDBPATH")
+                             ?? Path.Combine(Path.GetTempPath(), "chirp.db");
+            Console.WriteLine("Path: " + _sqlDBFilePath);
             InitializeConnection();
         }
 
-        private void InitializeConnection()
+        public void InitializeConnection()
         {
             try
             {
