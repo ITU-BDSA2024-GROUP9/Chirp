@@ -10,7 +10,7 @@ namespace Chirp.Core.Helpers
 {
     public class DBFacade : IDisposable
     {
-        // IMPORTANT!! set environment variable: CHIRPDBPATH as: "../Chirp.Core/Assets/chirp.db"
+        // IMPORTANT!! set environment variable: CHIRPDBPATH as: "./Assets/chirp.db"
         // This can be done in the terminal.
         // If this is not set, the database will be created in the temp directory (Which has no test data).
         
