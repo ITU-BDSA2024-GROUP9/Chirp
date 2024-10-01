@@ -7,12 +7,18 @@ namespace Chirp.Razor.Services
 {
     public class CheepService : ICheepService
     {
+        private readonly DBFacade _database;
+
+        public CheepService()
+        {
+            _database = new DBFacade();
+        }
         public List<CheepViewModel> GetCheeps()
         {
-            var database = new DBFacade();
+            _database.EnsureConnectionInitialized();
             try
             {
-                return database.Query(@"
+                return _database.Query(@"
                SELECT
                     user.username,
                     text,
@@ -24,16 +30,16 @@ namespace Chirp.Razor.Services
             }
             finally
             {
-                database.Dispose();
+                _database.Dispose();
             }
         }
 
         public List<CheepViewModel> GetCheepsFromAuthor(string author)
         {
-            var database = new DBFacade();
+            _database.EnsureConnectionInitialized();
             try
             { 
-                return database.Query(@"
+                return _database.Query(@"
                SELECT
                     user.username,
                     text,
@@ -46,7 +52,7 @@ namespace Chirp.Razor.Services
             }
             finally
             {
-                database.Dispose();
+                _database.Dispose();
             }
         }
     }
