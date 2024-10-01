@@ -15,7 +15,7 @@ namespace Chirp.Razor.Services
         }
         public List<CheepViewModel> GetCheeps()
         {
-            _database.InitializeConnection();
+            _database.EnsureConnectionInitialized();
             try
             {
                 return _database.Query(@"
@@ -36,7 +36,7 @@ namespace Chirp.Razor.Services
 
         public List<CheepViewModel> GetCheepsFromAuthor(string author)
         {
-            _database.InitializeConnection();
+            _database.EnsureConnectionInitialized();
             try
             { 
                 return _database.Query(@"

@@ -10,19 +10,20 @@ namespace Chirp.Core.Helpers
 {
     public class DBFacade : IDisposable
     {
-        // "../Chirp.Core/Assets/chirp.db"
+        // IMPORTANT!! set environment variable: CHIRPDBPATH as: "../Chirp.Core/Assets/chirp.db"
+        // This can be done in the terminal.
+        // If this is not set, the database will be created in the temp directory (Which has no test data).
+        
         private string _sqlDBFilePath;
         private SqliteConnection? _SQLite;
         public DBFacade()
         {
-            Console.WriteLine("Temp path: " + Path.GetFullPath(Path.GetTempPath()));
             _sqlDBFilePath = Environment.GetEnvironmentVariable("CHIRPDBPATH")
                              ?? Path.Combine(Path.GetTempPath(), "chirp.db");
-            Console.WriteLine("Path: " + _sqlDBFilePath);
             InitializeConnection();
         }
 
-        public void InitializeConnection()
+        private void InitializeConnection()
         {
             try
             {
@@ -30,7 +31,7 @@ namespace Chirp.Core.Helpers
 
                 if (!File.Exists(fullPath))
                 {
-                    throw new FileNotFoundException($"Database file not found at {fullPath}");
+                    CreateDatabase(fullPath);
                 }
                 _SQLite = new SqliteConnection($"Data Source={_sqlDBFilePath}");
                 _SQLite.Open(); 
@@ -41,21 +42,47 @@ namespace Chirp.Core.Helpers
             }
 
         }
-
-        private void EnsureConnectionInitialized()
+        
+        private void CreateDatabase(string fullPath)
         {
-            if (_SQLite == null)
-            {
-                throw new InvalidOperationException("SQLite connection is not initialized.");
-            }
+            Console.WriteLine($"Creating database at {fullPath}");
+            _SQLite = new SqliteConnection($"Data Source={fullPath}");
+            _SQLite.Open();
+
+            var createTableQuery = @"
+            drop table if exists user;
+            create table user (
+              user_id integer primary key autoincrement,
+              username string not null,
+              email string not null,
+              pw_hash string not null
+            );
+
+            drop table if exists message;
+            create table message (
+              message_id integer primary key autoincrement,
+              author_id integer not null,
+              text string not null,
+              pub_date integer
+            );
+            ";
+
+            using var command = new SqliteCommand(createTableQuery, _SQLite);
+            command.ExecuteNonQuery();
+            _SQLite.Close();
+        }
+
+        public void EnsureConnectionInitialized()
+        {
+            if (_SQLite == null) InitializeConnection();
         }
 
         public void Dispose()
         {
             EnsureConnectionInitialized();
             
-            _SQLite.Close();
-            _SQLite.Dispose();
+            _SQLite?.Close();
+            _SQLite?.Dispose();
             _SQLite = null;
         }
         
