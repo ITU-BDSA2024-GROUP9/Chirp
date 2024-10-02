@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       env:
-        CHIRPDBPATH: ${{ secrets.CHIRPDBPATH }}
+        CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
