@@ -1,2 +1,2 @@
 # Chirp
- Kind of like twitter
+Kind of like twitter
