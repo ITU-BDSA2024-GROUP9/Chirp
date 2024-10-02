@@ -23,6 +23,8 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build ./src/Chirp.Razor/Chirp.Razor.csproj --configuration Release
+        env:
+          CHIRPDBPATH: ${{ secrets.CHIRPDBPATH }}
 
       - name: dotnet publish
         run: dotnet publish ./src/Chirp.Razor/Chirp.Razor.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
