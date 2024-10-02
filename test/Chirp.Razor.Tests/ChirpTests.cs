@@ -4,30 +4,68 @@ using Chirp.Core.Helpers;
 using Chirp.Core.Interfaces;
 using Chirp.Razor.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Chirp.Razor.Tests;
 
-public class UnitTests
+public class TestDatabaseFixture
 {
-    [Fact]
-    public static void TestDBFacadeInitalization()
+    private const string ConnectionString = @"Data Source=./Assets/chirp.db";
+
+    private static readonly object _lock = new();
+    private static bool _databaseInitialized;
+
+    public TestDatabaseFixture()
     {
-        // assert does not throw
-        DBFacade db = new DBFacade();
+        lock (_lock)
+        {
+            if (!_databaseInitialized)
+            {
+                using (var context = CreateContext())
+                {
+                    context.Database.EnsureDeleted();
+                    context.Database.EnsureCreated();
+                    Author _author = new Author() { AuthorId = 1, Name = "John doe", Email = "johndoe@gmail.com", Cheeps = new List<Cheep>()};
+
+                    context.AddRange(
+                        
+                        new Cheep { Name = "Blog1", Url = "http://blog1.com" },
+                        new Blog { Name = "Blog2", Url = "http://blog2.com" });
+                    context.SaveChanges();
+                }
+
+                _databaseInitialized = true;
+            }
+        }
     }
 
+    public static ChirpDBContext CreateContext()
+        => new ChirpDBContext(
+            new DbContextOptionsBuilder<ChirpDBContext>()
+                .UseSqlite(ConnectionString)
+                .Options);
+}
+
+public class UnitTests : IClassFixture<TestDatabaseFixture>
+{
+    public BloggingControllerTest(TestDatabaseFixture fixture)
+        => Fixture = fixture;
+
+    public TestDatabaseFixture Fixture { get; }
+    
     [Fact]
-    public void TestCheepInitialization()
+    public void TestCheepInitialization() 
     {
         // Arrange
-        var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var time = DateTime.UtcNow;
+        Author _author = new Author() { AuthorId = 1, Name = "John doe", Email = "johndoe@gmail.com", Cheeps = new List<Cheep>()};
         // Act
-        IPost _cheep = new Cheep("a", "b", time);
+        Cheep _cheep = new Cheep() {CheepId = 1, Author = _author, AuthorId = _author.AuthorId,  TimeStamp = time, Text = "Chorp"};
         // Assert
-        Assert.Equal("a", _cheep.author);
-        Assert.Equal("b", _cheep.message);
-        Assert.Equal(time, _cheep.timestamp);
+        Assert.Equal(_author, _cheep.Author);
+        Assert.Equal("Chorp", _cheep.Text);
+        Assert.Equal(time, _cheep.TimeStamp);
     }
 
     [Theory]
@@ -35,7 +73,8 @@ public class UnitTests
     public void TestGetCheeps(string author, string message, double timestamp)
     {
         // arrange
-        ICheepService CheepService = new CheepService();
+        using var context = Fixture.CreateContext();
+        ICheepService CheepService = new CheepService(new CheepRepository(new ChirpDBContext()));
         var cheep = new CheepViewModel(author, message, TestUtils.UnixTimeStampToDateTimeString(timestamp));
 
         // act

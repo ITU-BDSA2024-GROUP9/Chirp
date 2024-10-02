@@ -1,59 +1,42 @@
 ﻿using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
 using System.ComponentModel.Design;
-using Chirp.Core.Helpers;
 
 namespace Chirp.Razor.Services
 {
     public class CheepService : ICheepService
     {
-        private readonly DBFacade _database;
+        private readonly ICheepRepository _repository;
 
-        public CheepService()
+
+        public CheepService(ICheepRepository repository)
         {
-            _database = new DBFacade();
+            _repository = repository;
         }
-        public List<CheepViewModel> GetCheeps()
+        public List<CheepDTO> GetCheeps()
         {
-            _database.EnsureConnectionInitialized();
-            try
-            {
-                return _database.Query(@"
-               SELECT
-                    user.username,
-                    text,
-                    pub_date
-                FROM
-                    message
-                JOIN user ON message.author_id = user.user_id
-            ");
-            }
-            finally
-            {
-                _database.Dispose();
-            }
+            return _repository.ReadCheeps();
+
         }
 
-        public List<CheepViewModel> GetCheepsFromAuthor(string author)
+        public List<CheepDTO> GetCheepsFromAuthor(int authorId)
         {
-            _database.EnsureConnectionInitialized();
-            try
-            { 
-                return _database.Query(@"
-               SELECT
-                    user.username,
-                    text,
-                    pub_date
-                FROM
-                    message
-                JOIN user ON message.author_id = user.user_id
-                WHERE user.username = @author
-            ", new Dictionary<string, object> { { "@author", author } });
-            }
-            finally
-            {
-                _database.Dispose();
-            }
+            return _repository.ReadCheeps(authorId);
+        }
+
+        public void CreateCheep(CheepDTO newCheep)
+        {
+            _repository.CreateCheep(newCheep);
+        }
+
+        public void UpdateCheep(CheepDTO newCheep)
+        {
+            _repository.UpdateCheep(newCheep);
+        }
+
+        public Author GetAuthor(int authorId)
+        {
+            return _repository.GetAuthor(authorId);
         }
     }
 }

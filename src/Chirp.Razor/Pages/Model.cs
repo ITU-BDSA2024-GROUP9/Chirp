@@ -10,7 +10,8 @@ public abstract class Model : PageModel
 
     public int TotalPages { get; set; }
     public Range CheepRange {get;set;}
-    public List<CheepViewModel> Cheeps { get; set; }
+    public List<CheepDTO> Cheeps { get; set; }
+    public Author? Author { get; set; }
 
     public Model(ICheepService service)
     {
@@ -23,10 +24,11 @@ public abstract class Model : PageModel
         Paginate(queryPage);
     }
 
-    public void PaginateCheeps(int queryPage, string author)
+    public void PaginateCheeps(int queryPage, int author)
     {
         Cheeps = _service.GetCheepsFromAuthor(author);
         Paginate(queryPage);
+        Author = _service.GetAuthor(author);
     }
 
     private void Paginate(int queryPage)

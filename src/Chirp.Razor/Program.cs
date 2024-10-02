@@ -1,14 +1,18 @@
 using Chirp.Core.Interfaces;
 using Chirp.Razor.Services;
-using System.ComponentModel.Design;
+using Microsoft.EntityFrameworkCore;
+using Chirp.Core.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddSingleton<ICheepService, CheepService>();
+builder.Services.AddScoped<ICheepService, CheepService>();
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString, b => b.MigrationsAssembly("Chirp.Razor")));
 
 var app = builder.Build();
 

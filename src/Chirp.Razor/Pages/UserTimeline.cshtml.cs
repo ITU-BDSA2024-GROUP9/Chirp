@@ -11,7 +11,7 @@ public class UserTimelineModel : Model
 
 
 
-    public ActionResult OnGet([FromQuery] int page, string author)
+    public ActionResult OnGet([FromQuery] int page, int author)
     {
         if (page < 1) page = 1;
         base.PaginateCheeps(page, author);
