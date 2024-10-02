@@ -45,4 +45,4 @@ jobs:
       with:
         files: Chirp-${{ matrix.os }}-${{ matrix.architecture }}.zip
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
