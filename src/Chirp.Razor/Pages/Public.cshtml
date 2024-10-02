@@ -19,10 +19,10 @@ var lastPage = Model.PageNumber > 1 ? Model.PageNumber - 1 : 1;
                 <li>
                     <p>
                         <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
+                            <a href="/@cheep.Author.AuthorId">@cheep.Author.Name</a>
                         </strong>
-                        @cheep.Message
-                        <small>&mdash; @cheep.Timestamp</small>
+                        @cheep.Text
+                        <small>&mdash; @cheep.TimeStamp</small>
                     </p>
                 </li>
             }

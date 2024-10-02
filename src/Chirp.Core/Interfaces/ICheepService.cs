@@ -9,7 +9,8 @@ namespace Chirp.Core.Interfaces
 {
     public interface ICheepService//<T> where T : IPost
     {
-        public List<CheepViewModel> GetCheeps();
-        public List<CheepViewModel> GetCheepsFromAuthor(string author);
+        public List<CheepDTO> GetCheeps();
+        public List<CheepDTO> GetCheepsFromAuthor(int authorId);
+        public Author GetAuthor(int authorId);
     }
 }
