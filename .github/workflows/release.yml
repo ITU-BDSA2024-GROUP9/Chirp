@@ -31,6 +31,8 @@ jobs:
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      env:
+        CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
 
     - name: Publish
       run: dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.architecture }} --self-contained false -o ./publish
