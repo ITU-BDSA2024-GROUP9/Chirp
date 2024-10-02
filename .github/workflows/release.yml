@@ -38,7 +38,7 @@ jobs:
       run: dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.architecture }} --self-contained false -o ./publish
     
     - name: Create ZIP file
-      run: zip -r Chirp-${{ matrix.os }}-${{ matrix.architecture }}.zip ./publish
+      run: 7z a Chirp-${{ matrix.os }}-${{ matrix.architecture }}.zip ./publish
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
