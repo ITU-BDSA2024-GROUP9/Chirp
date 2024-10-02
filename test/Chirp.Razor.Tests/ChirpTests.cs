@@ -11,7 +11,7 @@ namespace Chirp.Razor.Tests;
 
 public class TestDatabaseFixture
 {
-    private const string ConnectionString = @"Data Source=./Assets/chirp.db";
+    private const string ConnectionString = @"Data Source=./Assets/chirpunittests.db";
 
     private static readonly object _lock = new();
     private static bool _databaseInitialized;
@@ -26,12 +26,19 @@ public class TestDatabaseFixture
                 {
                     context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
-                    Author _author = new Author() { AuthorId = 1, Name = "John doe", Email = "johndoe@gmail.com", Cheeps = new List<Cheep>()};
+                    Author _author1 = new Author() { AuthorId = 1, Name = "John doe", Email = "johndoe@gmail.com", Cheeps = new List<Cheep>()};
+                    Author _author2 = new Author() { AuthorId = 2, Name = "Jill doe", Email = "jilldoe@gmail.com", Cheeps = new List<Cheep>()};
+                    var time = DateTime.UtcNow;
+                    Cheep _c1 = new Cheep() {CheepId = 1, Author = _author1, AuthorId = _author1.AuthorId,  TimeStamp = time, Text = "Chorp"};
+                    Cheep _c2 = new Cheep() {CheepId = 2, Author = _author2, AuthorId = _author2.AuthorId,  TimeStamp = time, Text = "Chorpasd"};
+                    _author1.Cheeps.Add(_c1);
+                    _author2.Cheeps.Add(_c2);
 
                     context.AddRange(
-                        
-                        new Cheep { Name = "Blog1", Url = "http://blog1.com" },
-                        new Blog { Name = "Blog2", Url = "http://blog2.com" });
+                        _author1,
+                        _author2,
+                        _c1,
+                        _c2);
                     context.SaveChanges();
                 }
 
@@ -40,7 +47,7 @@ public class TestDatabaseFixture
         }
     }
 
-    public static ChirpDBContext CreateContext()
+    public ChirpDBContext CreateContext()
         => new ChirpDBContext(
             new DbContextOptionsBuilder<ChirpDBContext>()
                 .UseSqlite(ConnectionString)
@@ -49,7 +56,7 @@ public class TestDatabaseFixture
 
 public class UnitTests : IClassFixture<TestDatabaseFixture>
 {
-    public BloggingControllerTest(TestDatabaseFixture fixture)
+    public UnitTests(TestDatabaseFixture fixture)
         => Fixture = fixture;
 
     public TestDatabaseFixture Fixture { get; }
@@ -69,37 +76,47 @@ public class UnitTests : IClassFixture<TestDatabaseFixture>
     }
 
     [Theory]
-    [InlineData("Jacqualine Gilcoine", "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", 1690895677)]
-    public void TestGetCheeps(string author, string message, double timestamp)
+    [InlineData("John doe", "Chorp")]
+    [InlineData("Jill doe", "Chorpasd")]
+    public void TestGetCheeps(string authorName, string text)
     {
         // arrange
         using var context = Fixture.CreateContext();
-        ICheepService CheepService = new CheepService(new CheepRepository(new ChirpDBContext()));
-        var cheep = new CheepViewModel(author, message, TestUtils.UnixTimeStampToDateTimeString(timestamp));
+        ICheepService CheepService = new CheepService(new CheepRepository(context));
 
         // act
         var cheeps = CheepService.GetCheeps();
 
         // assert
         Assert.NotEmpty(cheeps);
-        Assert.Contains(cheep, cheeps);
+        foreach (var cheep in cheeps) {
+            if (cheep.Author.Name.Equals(authorName)) {
+                if (cheep.Text.Equals(text)){
+                    return;
+                }
+            }
+        }
+
+        Assert.Fail("There were no cheeps returned with BOTH the specified author name: " + authorName + " and the text: " + text);
     }
 
     [Theory]
-    [InlineData("Jacqualine Gilcoine")]
-    [InlineData("Quintin Sitts")]
-    public void TestGetCheepsFromAuthor(string author)
+    [InlineData(1)]
+    [InlineData(2)]
+    public void TestGetCheepsFromAuthor(int authorId)
     {
         // arrange
-        ICheepService CheepService = new CheepService();
+        using var context = Fixture.CreateContext();
+        ICheepService CheepService = new CheepService(new CheepRepository(context));
 
         // act
         // TODO - Add insert cheep into to model
-        List<CheepViewModel> cheeps = CheepService.GetCheepsFromAuthor(author);
+        List<CheepDTO> cheeps = CheepService.GetCheepsFromAuthor(authorId);
 
         // assert
-        foreach (CheepViewModel cheep in cheeps)
-            Assert.Equal(cheep.Author, author);
+        Assert.NotEmpty(cheeps);
+        foreach (CheepDTO cheep in cheeps)
+            Assert.Equal(cheep.Author.AuthorId, authorId);
 
         // TODO - Rollback changes
     }
@@ -141,14 +158,14 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Theory]
-    [InlineData("Jacqualine Gilcoine")]
-    [InlineData("Quintin Sitts")]
-    public async void CanSeePrivateTimeline(string author)
+    [InlineData("Jacqualine Gilcoine", 10)]
+    [InlineData("Quintin Sitts", 5)]
+    public async void CanSeePrivateTimeline(string author, int authorId)
     {
-        var response = await _client.GetAsync($"/{author}");
+        var response = await _client.GetAsync($"/{authorId}");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-
+        //Assert.Fail(content);
         Assert.Contains("Chirp!", content);
         Assert.Contains($"{author}'s Timeline", content);
     }
@@ -190,29 +207,16 @@ public class EndToEndTests
 
     // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
     [Theory]
-    [InlineData("Jacqualine Gilcoine")]
-    [InlineData("Quintin Sitts")]
-    public async void CanSeePrivateTimelineAzure(string author)
+    [InlineData("Jacqualine Gilcoine", 10)]
+    [InlineData("Quintin Sitts", 5)]
+    public async void CanSeePrivateTimelineAzure(string author, int authorId)
     {
-        var response = await _client.GetAsync($"/{author}");
+        var response = await _client.GetAsync($"/{authorId}");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-
+        //Assert.Fail(content);
         Assert.Contains("Chirp!", content);
         Assert.Contains($"{author}'s Timeline", content);
-    }
-}
-
-class MockEmptyDB : ICheepService
-{
-    public List<CheepViewModel> GetCheeps()
-    {
-        return new List<CheepViewModel>();
-    }
-
-    public List<CheepViewModel> GetCheepsFromAuthor(string author)
-    {
-        return new List<CheepViewModel>();
     }
 }
 

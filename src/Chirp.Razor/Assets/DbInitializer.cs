@@ -1,6 +1,6 @@
 using System;
 using Chirp.Core.Classes;
-using Chirp.Razor.Services;
+using Chirp.Core.Helpers;
 
 public static class DbInitializer
 {

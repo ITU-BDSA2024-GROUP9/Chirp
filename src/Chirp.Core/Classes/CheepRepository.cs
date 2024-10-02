@@ -1,7 +1,7 @@
 namespace Chirp.Core.Classes;
 
 using System.Threading.Tasks;
-using Chirp.Razor.Services;
+using Chirp.Core.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 public class CheepRepository : ICheepRepository
