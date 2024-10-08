@@ -52,6 +52,21 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public List<CheepDTO> ReadCheeps(string authorId)
+    {
+        var cheeps = _dbContext.Cheeps
+            .Include(c => c.Author)
+            .Where(c => c.Author.Name == authorId)
+            .Select(c => new CheepDTO
+            {
+                Text = c.Text,
+                TimeStamp = c.TimeStamp,
+                Author = c.Author
+            })
+            .ToList();
+        return cheeps;
+    }
+
     public List<CheepDTO> ReadCheeps()
     {
         var cheeps = _dbContext.Cheeps
@@ -69,6 +84,11 @@ public class CheepRepository : ICheepRepository
     public Author GetAuthor(int authorId)
     {
         return _dbContext.Authors.FirstOrDefault(a => a.AuthorId == authorId);
+    }
+
+    public Author GetAuthor(string authorName)
+    {
+        return _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
     }
 
     public void UpdateCheep(CheepDTO newCheep)

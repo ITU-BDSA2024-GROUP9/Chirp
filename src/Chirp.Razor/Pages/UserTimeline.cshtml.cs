@@ -11,10 +11,17 @@ public class UserTimelineModel : Model
 
 
 
-    public ActionResult OnGet([FromQuery] int page, int author)
+    public ActionResult OnGet([FromQuery] int page, string author)
     {
         if (page < 1) page = 1;
-        base.PaginateCheeps(page, author);
+        try {
+            var authid = int.Parse(author);
+            base.PaginateCheeps(page, authid);
+        } catch (FormatException e) {
+            base.PaginateCheeps(page, author);
+        }
+        
+        
         return Page();
     }
 }

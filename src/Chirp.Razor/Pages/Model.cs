@@ -31,6 +31,13 @@ public abstract class Model : PageModel
         Author = _service.GetAuthor(author);
     }
 
+    public void PaginateCheeps(int queryPage, string author)
+    {
+        Cheeps = _service.GetCheepsFromAuthor(author);
+        Paginate(queryPage);
+        Author = _service.GetAuthor(author);
+    }
+
     private void Paginate(int queryPage)
     {
         PageNumber = queryPage;
