@@ -1,18 +1,26 @@
 ﻿@page "/"
 @model Chirp.Razor.Pages.PublicModel
 @{
-ViewData["Title"] = "Chirp!";
-Layout = "Shared/_Layout";
-var nextPage = Model.PageNumber < Model.TotalPages ? Model.PageNumber + 1 : Model.TotalPages;
-var lastPage = Model.PageNumber > 1 ? Model.PageNumber - 1 : 1;
-}
+    ViewData["Title"] = "Chirp!";
+    Layout = "Shared/_Layout";
+    var nextPage = Model.PageNumber < Model.TotalPages ? Model.PageNumber + 1 : Model.TotalPages;
+    var lastPage = Model.PageNumber > 1 ? Model.PageNumber - 1 : 1;
 
-<div>
+    var isFirstPage = Model.PageNumber == 1;
+    var isLastPage = Model.PageNumber == Model.TotalPages;
+}
+<style>
+    .holder {
+        --is-first-page: @isFirstPage;
+        --is-last-page: @isLastPage;
+    }
+</style>
+<div class="holder">
     <h2> Public Timeline </h2>
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
-            
+
             @for (int cheepAt = Model.CheepRange.Start.Value; cheepAt < Model.CheepRange.End.Value; cheepAt++)
             {
                 var cheep = Model.Cheeps[cheepAt];
@@ -32,8 +40,10 @@ var lastPage = Model.PageNumber > 1 ? Model.PageNumber - 1 : 1;
     {
         <em>There are no cheeps so far.</em>
     }
-    <a href="?page=@lastPage">Last page</a>
-    <small>page @Model.PageNumber / @Model.TotalPages</small>
-    <a href="?page=@nextPage">Next page</a>
-    
+    <div class="pager">
+        <button onclick="window.location.href='?page=@lastPage'" disabled="@isFirstPage" class="prev">←</button>
+        <span>Page @Model.PageNumber / @Model.TotalPages</span>
+        <button onclick="window.location.href='?page=@nextPage'" disabled="@isLastPage" class="next">→</button>
+    </div>
+
 </div>

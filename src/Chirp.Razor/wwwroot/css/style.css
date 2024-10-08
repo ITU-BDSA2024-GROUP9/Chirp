@@ -312,3 +312,46 @@ ul.nav li a {
 ul.nav li a:hover {
   background-color: #22303c;
 }
+
+.holder {
+  container-type: normal;
+  container-name: holder;
+}
+
+.prev, .next {
+  background-color: #1DA1F2;
+  border: none;
+  color: #ffffff;
+  padding: 12px 24px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 25px;
+  text-decoration: none;
+}
+@container holder style(--is-first-page: True) {
+  .prev {
+    background-color: #38444d !important;
+    cursor: not-allowed;
+  }
+}
+@container holder style(--is-last-page: True) {
+  .next {
+    background-color: #38444d !important;
+    cursor: not-allowed;
+  }
+}
+.prev:hover, .next:hover {
+  background-color: #0d95e8;
+  text-decoration: none;
+}
+
+.pager {
+  text-align: center;
+  margin: 20px 0;
+  padding-top: 10px;
+}
+
+.pager > span {
+  margin: 0 10px;
+  text-transform: capitalize;
+}
