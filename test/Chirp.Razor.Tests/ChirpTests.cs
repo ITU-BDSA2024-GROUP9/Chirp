@@ -174,12 +174,11 @@ public class UnitTests
         // act
         repository.CreateAuthor(author);
         CheepDTO cheep = new CheepDTO() { Author = author, TimeStamp = DateTime.UtcNow, Text = text };
-        repository.CreateCheep(cheep);
+        
         
         // assert
-        foreach (var item in repository.ReadCheeps(author.AuthorId))
-            Assert.True(item.Text.Length < 160, "Expected < 160, Actual: " + item.Text.Length);
-        
+        Assert.Throws<ArgumentException>(() => repository.CreateCheep(cheep));
+
     }
 }
 

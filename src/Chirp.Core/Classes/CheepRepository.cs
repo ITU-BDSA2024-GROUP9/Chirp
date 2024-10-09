@@ -14,6 +14,10 @@ public class CheepRepository : ICheepRepository
 
     public void CreateCheep(CheepDTO newCheep)
     {
+        if (newCheep.Text.Length > 160)
+        {
+            throw new ArgumentException("Cheep text cannot be longer than 160 characters.");
+        }
         var foundAuthor = _dbContext.Authors.FirstOrDefault(a => a.Name == newCheep.Author.Name);
         if (foundAuthor == null)
         {
