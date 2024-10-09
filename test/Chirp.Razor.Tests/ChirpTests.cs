@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
 using Chirp.Core.Classes;
 using Chirp.Core.Helpers;
@@ -157,6 +158,27 @@ public class UnitTests
         // assert
         Assert.NotNull(result);
         Assert.Equal(newAuthor, result.Name);
+    }
+
+    [Theory]
+    [InlineData(
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")]
+    public void TestCheepCannotBeLongerThan160Characters(string text)
+    {
+        // arrange
+        using var context = _fixture.CreateContext();
+        ICheepRepository repository = new CheepRepository(context);
+        Author author = new Author()
+            { AuthorId = 14, Name = "test", Email = "test@gmail.com", Cheeps = new List<Cheep>() };
+        
+        // act
+        repository.CreateAuthor(author);
+        CheepDTO cheep = new CheepDTO() { Author = author, TimeStamp = DateTime.UtcNow, Text = text };
+        
+        
+        // assert
+        Assert.Throws<ArgumentException>(() => repository.CreateCheep(cheep));
+
     }
 }
 
