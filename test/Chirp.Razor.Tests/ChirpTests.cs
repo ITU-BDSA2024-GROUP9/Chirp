@@ -72,7 +72,7 @@ public class UnitTests
     [Theory]
     [InlineData("Helge", "Hello, BDSA students!")]
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
-    public async Task TestGetCheepsAsync(string authorName, string text)
+    public void TestGetCheepsAsync(string authorName, string text)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -97,7 +97,7 @@ public class UnitTests
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
-    public async Task TestGetCheepsFromAuthorAsync(int authorId)
+    public void TestGetCheepsFromAuthorAsync(int authorId)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -114,7 +114,7 @@ public class UnitTests
 
     [Theory]
     [InlineData("Helge")]
-    public async Task TestGetCheepsFromAuthorWithName(string name)
+    public void TestGetCheepsFromAuthorWithName(string name)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -131,7 +131,7 @@ public class UnitTests
 
     [Theory]
     [InlineData("ropf@itu.dk")]
-    public async Task TestGetAuthorWithEmail(string email)
+    public void TestGetAuthorWithEmail(string email)
     {
         // Arrange
         using var context = _fixture.CreateContext();
@@ -146,7 +146,7 @@ public class UnitTests
 
     [Theory]
     [InlineData("Phillip's Mom")]
-    public async Task TestCreateAuthor(string newAuthor){
+    public void TestCreateAuthor(string newAuthor){
         // arrange
         using var context = _fixture.CreateContext();
         ICheepRepository repository = new CheepRepository(context);
@@ -163,7 +163,7 @@ public class UnitTests
     [Theory]
     [InlineData(
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")]
-    public async Task TestCheepCannotBeLongerThan160Characters(string text)
+    public void TestCheepCannotBeLongerThan160Characters(string text)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -177,6 +177,8 @@ public class UnitTests
         repository.CreateCheep(cheep);
         
         // assert
+        foreach (var item in repository.ReadCheeps(author.AuthorId))
+            Assert.True(item.Text.Length < 160, "Expected < 160, Actual: " + item.Text.Length);
         
     }
 }

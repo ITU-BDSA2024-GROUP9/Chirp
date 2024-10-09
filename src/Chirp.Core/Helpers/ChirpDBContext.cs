@@ -25,7 +25,8 @@ public class ChirpDBContext : DbContext
 		// Enforce string length constraint on the Text property
 		modelBuilder.Entity<Cheep>()
 			.Property(c => c.Text)
-			.HasMaxLength(160);
+			.HasMaxLength(160)
+			.IsRequired();
 
 		// Additional configurations can be added here
 	}
