@@ -48,5 +48,10 @@ namespace Chirp.Razor.Services
         {
             return _repository.GetAuthor(authorName);
         }
+
+        public Author GetAuthorByEmail(string email)
+        {
+            return _repository.GetAuthorByEmail(email);
+        }
     }
 }

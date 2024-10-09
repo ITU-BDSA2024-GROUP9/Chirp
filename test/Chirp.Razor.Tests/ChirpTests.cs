@@ -4,62 +4,55 @@ using Chirp.Core.Helpers;
 using Chirp.Core.Interfaces;
 using Chirp.Razor.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Chirp.Razor.Tests;
 
-public class TestDatabaseFixture
+// ref: https://learn.microsoft.com/en-us/ef/core/testing/testing-with-the-database 
+public class TestDatabaseFixture : IDisposable
 {
-    private const string ConnectionString = @"Data Source=./Assets/chirpunittests.db";
-
-    private static readonly object _lock = new();
-    private static bool _databaseInitialized;
+    private readonly SqliteConnection _connection;
 
     public TestDatabaseFixture()
     {
-        lock (_lock)
-        {
-            if (!_databaseInitialized)
-            {
-                using (var context = CreateContext())
-                {
-                    context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
-                    Author _author1 = new Author() { AuthorId = 1, Name = "John doe", Email = "johndoe@gmail.com", Cheeps = new List<Cheep>()};
-                    Author _author2 = new Author() { AuthorId = 2, Name = "Jill doe", Email = "jilldoe@gmail.com", Cheeps = new List<Cheep>()};
-                    var time = DateTime.UtcNow;
-                    Cheep _c1 = new Cheep() {CheepId = 1, Author = _author1, AuthorId = _author1.AuthorId,  TimeStamp = time, Text = "Chorp"};
-                    Cheep _c2 = new Cheep() {CheepId = 2, Author = _author2, AuthorId = _author2.AuthorId,  TimeStamp = time, Text = "Chorpasd"};
-                    _author1.Cheeps.Add(_c1);
-                    _author2.Cheeps.Add(_c2);
+        _connection = new SqliteConnection("Filename=:memory:");
+        _connection.Open();
 
-                    context.AddRange(
-                        _author1,
-                        _author2,
-                        _c1,
-                        _c2);
-                    context.SaveChanges();
-                }
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(_connection)
+            .Options;
 
-                _databaseInitialized = true;
-            }
-        }
+        var context = new ChirpDBContext(options);
+        context.Database.EnsureCreated();
+        DbInitializer.SeedDatabase(context);
     }
 
     public ChirpDBContext CreateContext()
-        => new ChirpDBContext(
-            new DbContextOptionsBuilder<ChirpDBContext>()
-                .UseSqlite(ConnectionString)
-                .Options);
+    {
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(_connection)
+            .Options;
+
+        return new ChirpDBContext(options);
+    }
+
+    public void Dispose()
+    {
+        _connection.Dispose();
+    }
 }
 
-public class UnitTests : IClassFixture<TestDatabaseFixture>
-{
-    public UnitTests(TestDatabaseFixture fixture)
-        => Fixture = fixture;
 
-    public TestDatabaseFixture Fixture { get; }
+public class UnitTests
+{   
+    private readonly TestDatabaseFixture _fixture;
+
+    public UnitTests()
+    {
+        _fixture = new TestDatabaseFixture();
+    }
     
     [Fact]
     public void TestCheepInitialization() 
@@ -76,12 +69,12 @@ public class UnitTests : IClassFixture<TestDatabaseFixture>
     }
 
     [Theory]
-    [InlineData("John doe", "Chorp")]
-    [InlineData("Jill doe", "Chorpasd")]
-    public void TestGetCheeps(string authorName, string text)
+    [InlineData("Helge", "Hello, BDSA students!")]
+    [InlineData("Adrian", "Hej, velkommen til kurset.")]
+    public async Task TestGetCheepsAsync(string authorName, string text)
     {
         // arrange
-        using var context = Fixture.CreateContext();
+        using var context = _fixture.CreateContext();
         ICheepService CheepService = new CheepService(new CheepRepository(context));
 
         // act
@@ -103,22 +96,67 @@ public class UnitTests : IClassFixture<TestDatabaseFixture>
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
-    public void TestGetCheepsFromAuthor(int authorId)
+    public async Task TestGetCheepsFromAuthorAsync(int authorId)
     {
         // arrange
-        using var context = Fixture.CreateContext();
+        using var context = _fixture.CreateContext();
         ICheepService CheepService = new CheepService(new CheepRepository(context));
 
         // act
-        // TODO - Add insert cheep into to model
         List<CheepDTO> cheeps = CheepService.GetCheepsFromAuthor(authorId);
 
         // assert
         Assert.NotEmpty(cheeps);
         foreach (CheepDTO cheep in cheeps)
             Assert.Equal(cheep.Author.AuthorId, authorId);
+    }
 
-        // TODO - Rollback changes
+    [Theory]
+    [InlineData("Helge")]
+    public async Task TestGetCheepsFromAuthorWithName(string name)
+    {
+        // arrange
+        using var context = _fixture.CreateContext();
+
+        ICheepRepository repository = new CheepRepository(context);
+
+        // act 
+        var result = repository.GetAuthor(name);
+
+        // assert
+        Assert.NotNull(result);
+        Assert.Equal(name, result.Name);
+    }
+
+    [Theory]
+    [InlineData("ropf@itu.dk")]
+    public async Task TestGetAuthorWithEmail(string email)
+    {
+        // Arrange
+        using var context = _fixture.CreateContext();
+        ICheepService cheepService = new CheepService(new CheepRepository(context));
+        
+        // Act
+        Author author = cheepService.GetAuthorByEmail(email);
+        
+        // Assert
+        Assert.Equal(11, author.AuthorId);
+    }
+
+    [Theory]
+    [InlineData("Phillip's Mom")]
+    public async Task TestCreateAuthor(string newAuthor){
+        // arrange
+        using var context = _fixture.CreateContext();
+        ICheepRepository repository = new CheepRepository(context);
+        
+        // act)
+        repository.CreateAuthor(new Author(){AuthorId = 13, Name = newAuthor, Email = newAuthor + "@gmail.com", Cheeps = new List<Cheep>()});
+        var result = repository.GetAuthor(newAuthor);
+
+        // assert
+        Assert.NotNull(result);
+        Assert.Equal(newAuthor, result.Name);
     }
 }
 
@@ -157,6 +195,30 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.Contains("Public Timeline", content);
     }
 
+        
+    static Int32 SubstringCount(string orig, string find)
+    {
+        var s2 = orig.Replace(find,"");
+        return (orig.Length - s2.Length) / find.Length;
+    }
+
+    [Fact]
+    public async void PagesLimitedTo32()
+    {
+        // arrange
+        var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
+
+        // act
+        var content = await response.Content.ReadAsStringAsync();
+        // var Substri
+
+        // assert
+        Assert.Contains("Chirp!", content);
+        Assert.Equal(32, SubstringCount(content, "<p>"));
+        
+    }
+
     [Theory]
     [InlineData("Jacqualine Gilcoine", 10)]
     [InlineData("Quintin Sitts", 5)]
@@ -165,7 +227,18 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         var response = await _client.GetAsync($"/{authorId}");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        //Assert.Fail(content);
+        Assert.Contains("Chirp!", content);
+        Assert.Contains($"{author}'s Timeline", content);
+    }
+
+    [Theory]
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Quintin Sitts")]
+    public async void CanSeePrivateTimelineFromName(string author)
+    {
+        var response = await _client.GetAsync($"/{author}");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
         Assert.Contains("Chirp!", content);
         Assert.Contains($"{author}'s Timeline", content);
     }

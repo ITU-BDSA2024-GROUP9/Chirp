@@ -13,6 +13,7 @@ namespace Chirp.Core.Interfaces
         public List<CheepDTO> GetCheepsFromAuthor(int authorId);
         public List<CheepDTO> GetCheepsFromAuthor(string authorName);
         public Author GetAuthor(int authorId);
-        public Author GetAuthor(string authorId);
+        public Author GetAuthor(string name);
+        public Author GetAuthorByEmail(string email);
     }
 }
