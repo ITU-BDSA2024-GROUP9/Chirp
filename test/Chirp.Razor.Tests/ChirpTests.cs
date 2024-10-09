@@ -71,7 +71,7 @@ public class UnitTests
     [Theory]
     [InlineData("Helge", "Hello, BDSA students!")]
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
-    public async Task TestGetCheepsAsync(string authorName, string text)
+    public void TestGetCheeps(string authorName, string text)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -96,7 +96,7 @@ public class UnitTests
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
-    public async Task TestGetCheepsFromAuthorAsync(int authorId)
+    public void TestGetCheepsFromAuthor(int authorId)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -113,7 +113,7 @@ public class UnitTests
 
     [Theory]
     [InlineData("Helge")]
-    public async Task TestGetCheepsFromAuthorWithName(string name)
+    public void TestGetCheepsFromAuthorWithName(string name)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -130,7 +130,7 @@ public class UnitTests
 
     [Theory]
     [InlineData("ropf@itu.dk")]
-    public async Task TestGetAuthorWithEmail(string email)
+    public void TestGetAuthorWithEmail(string email)
     {
         // Arrange
         using var context = _fixture.CreateContext();
@@ -145,7 +145,7 @@ public class UnitTests
 
     [Theory]
     [InlineData("Phillip's Mom")]
-    public async Task TestCreateAuthor(string newAuthor){
+    public void TestCreateAuthor(string newAuthor){
         // arrange
         using var context = _fixture.CreateContext();
         ICheepRepository repository = new CheepRepository(context);
