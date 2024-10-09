@@ -72,7 +72,7 @@ public class UnitTests
     [Theory]
     [InlineData("Helge", "Hello, BDSA students!")]
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
-    public void TestGetCheepsAsync(string authorName, string text)
+    public void TestGetCheeps(string authorName, string text)
     {
         // arrange
         using var context = _fixture.CreateContext();
@@ -97,7 +97,7 @@ public class UnitTests
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
-    public void TestGetCheepsFromAuthorAsync(int authorId)
+    public void TestGetCheepsFromAuthor(int authorId)
     {
         // arrange
         using var context = _fixture.CreateContext();
