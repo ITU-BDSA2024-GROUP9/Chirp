@@ -190,7 +190,10 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 
     public IntegrationTests(WebApplicationFactory<Program> fixture)
     {
-        _fixture = fixture;
+        _fixture = fixture.WithWebHostBuilder(Builder =>
+        {
+            Builder.UseUrls("http://localhost:5273");
+        });
         _client = _fixture.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true, HandleCookies = true });
     }
 
