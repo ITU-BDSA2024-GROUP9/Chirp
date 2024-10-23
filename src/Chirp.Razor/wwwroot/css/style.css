@@ -135,10 +135,11 @@ div.page ul.cheeps li p small {
 div.page div.navigation {
   background: #192734;
   padding: 10px 0;
-  border-bottom: 1px solid #38444d;
   color: #8899a6;
   font-size: 14px;
   text-align: center;
+  border-radius: 10px;
+  border: 1px solid #38444d;
 }
 
 div.page div.navigation a {

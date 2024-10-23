@@ -18,7 +18,7 @@
     }
 </style>
 <div class="holder">
-    <h2> @Model.Author?.Name's Timeline </h2>
+    <h2> @Model.Author?.UserName's Timeline </h2>
 
     @if (Model.Cheeps.Any())
     {
@@ -29,7 +29,7 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/@cheep.Author.AuthorId">@cheep.Author.Name</a>
+                            <a href="/@cheep.Author.Id">@cheep.Author.UserName</a>
                         </strong>
                         @cheep.Text
                         <small>&mdash; @cheep.TimeStamp</small>

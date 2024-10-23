@@ -14,12 +14,7 @@ public class UserTimelineModel : Model
     public ActionResult OnGet([FromQuery] int page, string author)
     {
         if (page < 1) page = 1;
-        try {
-            var authid = int.Parse(author);
-            base.PaginateCheeps(page, authid);
-        } catch (FormatException e) {
-            base.PaginateCheeps(page, author);
-        }
+        base.PaginateCheepsByName(page, author);
         
         
         return Page();

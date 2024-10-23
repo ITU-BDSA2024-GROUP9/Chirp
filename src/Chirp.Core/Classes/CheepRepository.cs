@@ -18,12 +18,12 @@ public class CheepRepository : ICheepRepository
         {
             throw new ArgumentException("Cheep text cannot be longer than 160 characters.");
         }
-        var foundAuthor = _dbContext.Authors.FirstOrDefault(a => a.Name == newCheep.Author.Name);
+        var foundAuthor = _dbContext.Authors.FirstOrDefault(a => a.UserName == newCheep.Author.UserName);
         if (foundAuthor == null)
         {
             _dbContext.Authors.Add(new Author
             {
-                Name = newCheep.Author.Name,
+                UserName = newCheep.Author.UserName,
                 Email = newCheep.Author.Email,
                 Cheeps = []
             });
@@ -33,7 +33,7 @@ public class CheepRepository : ICheepRepository
             foundAuthor.Cheeps.Add(new Cheep
             {
                 Author = foundAuthor,
-                AuthorId = foundAuthor.AuthorId,
+                AuthorId = foundAuthor.Id,
                 Text = newCheep.Text,
                 TimeStamp = DateTime.Now
             });
@@ -41,11 +41,11 @@ public class CheepRepository : ICheepRepository
         _dbContext.SaveChanges();
     }
 
-    public List<CheepDTO> ReadCheeps(int authorId)
+    public List<CheepDTO> ReadCheeps(string authorId)
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Author.AuthorId == authorId)
+            .Where(c => c.Author.Id == authorId)
             .Select(c => new CheepDTO
             {
                 Text = c.Text,
@@ -56,11 +56,11 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public List<CheepDTO> ReadCheeps(string authorName)
+    public List<CheepDTO> ReadCheepsByName(string authorName)
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Author.Name == authorName)
+            .Where(c => c.Author.UserName == authorName)
             .Select(c => new CheepDTO
             {
                 Text = c.Text,
@@ -85,14 +85,14 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public Author GetAuthor(int authorId)
+    public Author GetAuthor(string authorId)
     {
-        return _dbContext.Authors.FirstOrDefault(a => a.AuthorId == authorId);
+        return _dbContext.Authors.FirstOrDefault(a => a.Id == authorId);
     }
 
-    public Author GetAuthor(string authorName)
+    public Author GetAuthorByName(string authorName)
     {
-        return _dbContext.Authors.FirstOrDefault(a => a.Name == authorName);
+        return _dbContext.Authors.FirstOrDefault(a => a.UserName == authorName);
     }
 
     public Author GetAuthorByEmail(string email)
@@ -110,7 +110,7 @@ public class CheepRepository : ICheepRepository
     {
         var cheep = _dbContext.Cheeps
             .Include(c => c.Author)
-            .FirstOrDefault(c => c.Author.Name == newCheep.Author.Name && c.TimeStamp == newCheep.TimeStamp);
+            .FirstOrDefault(c => c.Author.UserName == newCheep.Author.UserName && c.TimeStamp == newCheep.TimeStamp);
         if (cheep != null)
         {
             cheep.Text = newCheep.Text;

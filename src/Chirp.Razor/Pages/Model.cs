@@ -24,18 +24,18 @@ public abstract class Model : PageModel
         Paginate(queryPage);
     }
 
-    public void PaginateCheeps(int queryPage, int author)
+    public void PaginateCheeps(int queryPage, string author)
     {
         Cheeps = _service.GetCheepsFromAuthor(author);
         Paginate(queryPage);
         Author = _service.GetAuthor(author);
     }
 
-    public void PaginateCheeps(int queryPage, string author)
+    public void PaginateCheepsByName(int queryPage, string authorName)
     {
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        Cheeps = _service.GetCheepsFromAuthorByName(authorName);
         Paginate(queryPage);
-        Author = _service.GetAuthor(author);
+        Author = _service.GetAuthorByName(authorName);
     }
 
     private void Paginate(int queryPage)

@@ -1,0 +1,22 @@
+@using Microsoft.AspNetCore.Identity
+@using Chirp.Core.Classes;
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
+<div class=navigation>
+	@if (User.Identity.IsAuthenticated)
+	{
+		<div>
+			<a href="/@(User.Identity?.Name!)">My Timeline</a> |
+			<a href="/">Public Timeline</a> |
+			<a asp-area="Identity" asp-page="/Account/Logout" >Logout [@(User.Identity?.Name!)]</a>
+		</div>
+	}
+	else
+	{
+		<div>
+			<a href="/">Home</a> |
+			<a asp-area="Identity" asp-page="/Account/Register" >Register</a>
+			<a asp-area="Identity" asp-page="/Account/Login" >Login</a>
+		</div>
+	}
+</div>
