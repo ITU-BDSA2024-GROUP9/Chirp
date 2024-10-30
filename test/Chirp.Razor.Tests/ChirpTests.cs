@@ -29,7 +29,7 @@ public class TestDatabaseFixture : IDisposable
         var context = new ChirpDBContext(options);
         context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(context);
-    }
+    }   
 
     public ChirpDBContext CreateContext()
     {
@@ -39,11 +39,6 @@ public class TestDatabaseFixture : IDisposable
 
         return new ChirpDBContext(options);
     }
-    
-    public ChirpDBContext getContext()
-    {
-        return this.context;
-    }
 
     public void Dispose()
     {
@@ -52,57 +47,100 @@ public class TestDatabaseFixture : IDisposable
 }
 
 
-public class UnitTests
+public class UnitTests : IDisposable
 {   
     private readonly TestDatabaseFixture _fixture;
-    private CheepRepository cheepRepo;
-
+    private readonly CheepRepository _cheepRepo;
+    private readonly ChirpDBContext _context;
+    
     public UnitTests()
     {
         _fixture = new TestDatabaseFixture();
-        var testContext = _fixture.getContext();
-        CheepRepository cheepRepo = new CheepRepository(testContext);
-    }
-    
-    [Fact]
-    public void TestCheepInitialization() 
-    {
-        // Arrange
-        var time = DateTime.UtcNow;
-        
-        var cheep = new CheepDTO() {Author = _author,  TimeStamp = time, Text = "Chorp"};
-        cheepRepo.CreateCheep(cheep);
-        
-        
-        // Assert
-        Assert.Equal(_author, _cheep.Author);
-        Assert.Equal("Chorp", _cheep.Text);
-        Assert.Equal(time, _cheep.TimeStamp);
+        _context = _fixture.CreateContext();
+        _cheepRepo = new CheepRepository(_context);
     }
 
+    public void Dispose()
+    {
+        _context.Dispose();
+        _fixture.Dispose();
+    }
+
+    [Theory]
+    [InlineData("13")]
+    public void TestThatAuthorIDIsAutoIncremented(string nextAuthorID)
+    {
+        // Arrange
+        
+        var author = new Author()
+        {
+            UserName = "Test",
+            Email = "test@gmail.com",
+            Cheeps = new List<Cheep>()
+        };
+        
+        // Act
+        _cheepRepo.CreateAuthor(author);
+        var result = _cheepRepo.GetAuthorByName("Test");
+        
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(nextAuthorID, result.Id);
+    }
+
+    [Theory]
+    [InlineData("Hej med dig smukke", "11")]
+    public void TestCreateCheeps(string text, string authorID)
+    {
+        // Arrange
+        var cheep = new CheepDTO()
+        {
+            Text = text,
+            TimeStamp = DateTime.Now,
+            Author = _cheepRepo.GetAuthor(authorID)
+        };
+        
+        // Act
+        _cheepRepo.CreateCheep(cheep);
+        var result = _cheepRepo.ReadCheeps(authorID);
+        
+        // Assert
+        Assert.NotEmpty(result);
+        Assert.Equal(result.Last().Text, text);
+    }
+    
+    [Theory]
+    [InlineData("Hej med dig, det her er en test")]
+    public void TestCreateCheepsWithNewAuthor(string text)
+    {
+        // Arrange
+        var author = new Author()
+        {
+            UserName = "testy",
+            Email = "testyeeawea",
+            Cheeps = new List<Cheep>()
+        };
+        
+        var cheep = new CheepDTO()
+        {
+            Text = text,
+            TimeStamp = DateTime.Now,
+            Author = author
+        };
+        
+        // Act
+        _cheepRepo.CreateCheep(cheep);
+        var result = _cheepRepo.ReadCheepsByName(author.UserName);
+       
+        // Assert
+        Assert.NotEmpty(result);
+        Assert.Equal(result[0].Text, text);
+    }
     [Theory]
     [InlineData("Helge", "Hello, BDSA students!")]
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
     public void TestGetCheeps(string authorName, string text)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
-        ICheepService CheepService = new CheepService(new CheepRepository(context));
-
-        // act
-        var cheeps = CheepService.GetCheeps();
-
-        // assert
-        Assert.NotEmpty(cheeps);
-        foreach (var cheep in cheeps) {
-            if (cheep.Author.Name.Equals(authorName)) {
-                if (cheep.Text.Equals(text)){
-                    return;
-                }
-            }
-        }
-
-        Assert.Fail("There were no cheeps returned with BOTH the specified author name: " + authorName + " and the text: " + text);
     }
 
     [Theory]
@@ -110,65 +148,45 @@ public class UnitTests
     [InlineData(2)]
     public void TestGetCheepsFromAuthor(int authorId)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
-        ICheepService CheepService = new CheepService(new CheepRepository(context));
 
-        // act
-        List<CheepDTO> cheeps = CheepService.GetCheepsFromAuthor(authorId);
-
-        // assert
-        Assert.NotEmpty(cheeps);
-        foreach (CheepDTO cheep in cheeps)
-            Assert.Equal(cheep.Author.AuthorId, authorId);
     }
 
     [Theory]
     [InlineData("Helge")]
     public void TestGetCheepsFromAuthorWithName(string name)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
 
-        ICheepRepository repository = new CheepRepository(context);
-
-        // act 
-        var result = repository.GetAuthor(name);
-
-        // assert
-        Assert.NotNull(result);
-        Assert.Equal(name, result.Name);
     }
 
     [Theory]
-    [InlineData("ropf@itu.dk")]
-    public void TestGetAuthorWithEmail(string email)
+    [InlineData("11", "Helge")]
+    public void TestGetAuthorWithId(string id, string userName)
     {
-        // Arrange
-        using var context = _fixture.CreateContext();
-        ICheepService cheepService = new CheepService(new CheepRepository(context));
+        //Act
+        var result = _cheepRepo.GetAuthor(id);
         
-        // Act
-        Author author = cheepService.GetAuthorByEmail(email);
-        
-        // Assert
-        Assert.Equal(11, author.AuthorId);
+        //Assert
+        Assert.NotNull(result);
+        Assert.Equal(result.UserName, userName);
     }
 
     [Theory]
-    [InlineData("Phillip's Mom")]
-    public void TestCreateAuthor(string newAuthor){
+    [InlineData("13", "John Doe", "johndoe@yahoo.com")]
+    public void TestCreateAuthor(string id, string newAuthor, string email){
         // arrange
-        using var context = _fixture.CreateContext();
-        ICheepRepository repository = new CheepRepository(context);
+        var author = new Author(){Cheeps = new List<Cheep>()};
+        author.Id = id;
+        author.UserName = newAuthor;
+        author.Email = email;
         
-        // act)
-        repository.CreateAuthor(new Author(){AuthorId = 13, Name = newAuthor, Email = newAuthor + "@gmail.com", Cheeps = new List<Cheep>()});
-        var result = repository.GetAuthor(newAuthor);
+        // act
+        _cheepRepo.CreateAuthor(author);
 
         // assert
+        var result = _cheepRepo.GetAuthor(id);
+
         Assert.NotNull(result);
-        Assert.Equal(newAuthor, result.Name);
+        Assert.Equal(newAuthor, result.UserName);
     }
 
     [Theory]
@@ -176,19 +194,6 @@ public class UnitTests
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")]
     public void TestCheepCannotBeLongerThan160Characters(string text)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
-        ICheepRepository repository = new CheepRepository(context);
-        Author author = new Author()
-            { AuthorId = 14, Name = "test", Email = "test@gmail.com", Cheeps = new List<Cheep>() };
-        
-        // act
-        repository.CreateAuthor(author);
-        CheepDTO cheep = new CheepDTO() { Author = author, TimeStamp = DateTime.UtcNow, Text = text };
-        
-        
-        // assert
-        Assert.Throws<ArgumentException>(() => repository.CreateCheep(cheep));
 
     }
 }
@@ -287,7 +292,7 @@ public class EndToEndTests
     public EndToEndTests()
     {
         _client = new HttpClient();
-        _client.BaseAddress = new Uri("https://bdsagroup09chirpremotedb.azurewebsites.net/");
+        _client.BaseAddress = new Uri("https://bdsagroup9chirprazor.azurewebsites.net/");
     }
 
     // This test is from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0

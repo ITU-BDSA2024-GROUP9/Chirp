@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+
 namespace Chirp.Core.Classes;
 
 using System.Threading.Tasks;
@@ -18,26 +20,32 @@ public class CheepRepository : ICheepRepository
         {
             throw new ArgumentException("Cheep text cannot be longer than 160 characters.");
         }
-        var foundAuthor = _dbContext.Authors.FirstOrDefault(a => a.UserName == newCheep.Author.UserName);
+        var foundAuthor = _dbContext.Authors
+            .Include(a => a.Cheeps) // Eager loading
+            .FirstOrDefault(a => a.UserName == newCheep.Author.UserName);
         if (foundAuthor == null)
         {
-            _dbContext.Authors.Add(new Author
+            foundAuthor = new Author
             {
                 UserName = newCheep.Author.UserName,
                 Email = newCheep.Author.Email,
-                Cheeps = []
-            });
+                Cheeps = new List<Cheep>()
+            };
+            _dbContext.Authors.Add(foundAuthor);
         }
-        else
+        else if (foundAuthor.Cheeps == null)
         {
-            foundAuthor.Cheeps.Add(new Cheep
-            {
-                Author = foundAuthor,
-                AuthorId = foundAuthor.Id,
-                Text = newCheep.Text,
-                TimeStamp = DateTime.Now
-            });
+            foundAuthor.Cheeps = new List<Cheep>();
         }
+        
+        foundAuthor.Cheeps.Add(new Cheep
+        {
+            Author = foundAuthor,
+            AuthorId = foundAuthor.Id,
+            Text = newCheep.Text,
+            TimeStamp = DateTime.Now
+        });
+    
         _dbContext.SaveChanges();
     }
 
@@ -53,6 +61,7 @@ public class CheepRepository : ICheepRepository
                 Author = c.Author
             })
             .ToList();
+        
         return cheeps;
     }
 
