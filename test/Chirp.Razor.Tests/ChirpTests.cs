@@ -89,7 +89,7 @@ public class UnitTests : IDisposable
         
         // Assert
         Assert.NotEmpty(result);
-        Assert.True(result.Contains(cheep));
+        Assert.Equal(result.Last().Text, text);
     }
     [Theory]
     [InlineData("Hej med dig smukke", "11")]
