@@ -67,6 +67,28 @@ public class UnitTests : IDisposable
     }
 
     [Theory]
+    [InlineData("13")]
+    public void TestThatAuthorIDIsAutoIncremented(string nextAuthorID)
+    {
+        // Arrange
+        
+        var author = new Author()
+        {
+            UserName = "Test",
+            Email = "test@gmail.com",
+            Cheeps = new List<Cheep>()
+        };
+        
+        // Act
+        _cheepRepo.CreateAuthor(author);
+        var result = _cheepRepo.GetAuthorByName("Test");
+        
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(nextAuthorID, result.Id);
+    }
+
+    [Theory]
     [InlineData("Hej med dig smukke", "11")]
     public void TestCreateCheeps(string text, string authorID)
     {
@@ -86,9 +108,10 @@ public class UnitTests : IDisposable
         Assert.NotEmpty(result);
         Assert.Equal(result.Last().Text, text);
     }
+    
     [Theory]
-    [InlineData("Hej med dig smukke", "11")]
-    public void TestCreateCheeps2(string text, string authorID)
+    [InlineData("Hej med dig, det her er en test")]
+    public void TestCreateCheepsWithNewAuthor(string text)
     {
         // Arrange
         var author = new Author()
