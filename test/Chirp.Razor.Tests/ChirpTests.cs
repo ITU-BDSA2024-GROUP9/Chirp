@@ -39,11 +39,6 @@ public class TestDatabaseFixture : IDisposable
 
         return new ChirpDBContext(options);
     }
-    
-    public ChirpDBContext getContext()
-    {
-        return this.context;
-    }
 
     public void Dispose()
     {
@@ -52,16 +47,23 @@ public class TestDatabaseFixture : IDisposable
 }
 
 
-public class UnitTests
+public class UnitTests : IDisposable
 {   
     private readonly TestDatabaseFixture _fixture;
-    private CheepRepository cheepRepo;
-
+    private readonly CheepRepository _cheepRepo;
+    private readonly ChirpDBContext _context;
+    
     public UnitTests()
     {
         _fixture = new TestDatabaseFixture();
-        var testContext = _fixture.getContext();
-        CheepRepository cheepRepo = new CheepRepository(testContext);
+        _context = _fixture.CreateContext();
+        _cheepRepo = new CheepRepository(_context);
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
+        _fixture.Dispose();
     }
     
     [Fact]
