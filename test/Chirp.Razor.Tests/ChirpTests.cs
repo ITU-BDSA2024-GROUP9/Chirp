@@ -72,6 +72,27 @@ public class UnitTests : IDisposable
     }
 
     [Theory]
+    [InlineData("Hej med dig smukke", "11")]
+    public void TestCreateCheeps(string text, string authorID)
+    {
+        // Arrange
+        var cheep = new CheepDTO()
+        {
+            Text = text,
+            TimeStamp = DateTime.Now,
+            Author = _cheepRepo.GetAuthor(authorID)
+        };
+        
+        // Act
+        _cheepRepo.CreateCheep(cheep);
+        var result = _cheepRepo.ReadCheeps(authorID);
+        
+        // Assert
+        Assert.NotEmpty(result);
+        Assert.True(result.Contains(cheep));
+    }
+
+    [Theory]
     [InlineData("Helge", "Hello, BDSA students!")]
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
     public void TestGetCheeps(string authorName, string text)
@@ -95,7 +116,7 @@ public class UnitTests : IDisposable
 
     [Theory]
     [InlineData("ropf@itu.dk")]
-    public void TestGetAuthorWithEmail(string email)
+    public void TestGetAuthorWithId(string id)
     {
 
     }
@@ -113,7 +134,7 @@ public class UnitTests : IDisposable
         _cheepRepo.CreateAuthor(author);
 
         // assert
-        var result = _cheepRepo.GetAuthor(newAuthor);
+        var result = _cheepRepo.GetAuthor(id);
 
         Assert.NotNull(result);
         Assert.Equal(newAuthor, result.UserName);
