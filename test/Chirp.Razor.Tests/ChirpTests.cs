@@ -29,7 +29,7 @@ public class TestDatabaseFixture : IDisposable
         var context = new ChirpDBContext(options);
         context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(context);
-    }
+    }   
 
     public ChirpDBContext CreateContext()
     {
@@ -91,7 +91,33 @@ public class UnitTests : IDisposable
         Assert.NotEmpty(result);
         Assert.True(result.Contains(cheep));
     }
-
+    [Theory]
+    [InlineData("Hej med dig smukke", "11")]
+    public void TestCreateCheeps2(string text, string authorID)
+    {
+        // Arrange
+        var author = new Author()
+        {
+            UserName = "testy",
+            Email = "testyeeawea",
+            Cheeps = new List<Cheep>()
+        };
+        
+        var cheep = new CheepDTO()
+        {
+            Text = text,
+            TimeStamp = DateTime.Now,
+            Author = author
+        };
+        
+        // Act
+        _cheepRepo.CreateCheep(cheep);
+        var result = _cheepRepo.ReadCheepsByName(author.UserName);
+       
+        // Assert
+        Assert.NotEmpty(result);
+        Assert.Equal(result[0].Text, text);
+    }
     [Theory]
     [InlineData("Helge", "Hello, BDSA students!")]
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
@@ -120,6 +146,7 @@ public class UnitTests : IDisposable
     {
         //Act
         var result = _cheepRepo.GetAuthor(id);
+        
         //Assert
         Assert.NotNull(result);
         Assert.Equal(result.UserName, userName);
