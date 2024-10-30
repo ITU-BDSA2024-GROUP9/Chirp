@@ -115,10 +115,14 @@ public class UnitTests : IDisposable
     }
 
     [Theory]
-    [InlineData("ropf@itu.dk")]
-    public void TestGetAuthorWithId(string id)
+    [InlineData("11", "Helge")]
+    public void TestGetAuthorWithId(string id, string userName)
     {
-
+        //Act
+        var result = _cheepRepo.GetAuthor(id);
+        //Assert
+        Assert.NotNull(result);
+        Assert.Equal(result.UserName, userName);
     }
 
     [Theory]
