@@ -292,7 +292,7 @@ public class EndToEndTests
     public EndToEndTests()
     {
         _client = new HttpClient();
-        _client.BaseAddress = new Uri("https://bdsagroup09chirpremotedb.azurewebsites.net/");
+        _client.BaseAddress = new Uri("https://bdsagroup9chirprazor.azurewebsites.net/");
     }
 
     // This test is from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
