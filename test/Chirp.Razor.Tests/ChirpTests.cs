@@ -113,7 +113,7 @@ public class UnitTests : IDisposable
         _cheepRepo.CreateAuthor(author);
 
         // assert
-        var result = _cheepRepo.GetAuthor(newAuthor);
+        var result = _cheepRepo.GetAuthor(id);
 
         Assert.NotNull(result);
         Assert.Equal(newAuthor, result.UserName);
