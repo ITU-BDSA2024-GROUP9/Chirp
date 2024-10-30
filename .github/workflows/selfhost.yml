@@ -28,4 +28,4 @@ jobs:
           docker run -d --name chirp-temp \
             --restart unless-stopped \
             -p 16018:443 \
-            chrip-temp-image-image:latest
+            chrip-temp-image:latest
