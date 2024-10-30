@@ -65,11 +65,6 @@ public class UnitTests : IDisposable
         _context.Dispose();
         _fixture.Dispose();
     }
-    
-    [Fact]
-    public void TestCheepInitialization() 
-    {
-    }
 
     [Theory]
     [InlineData("Hej med dig smukke", "11")]
