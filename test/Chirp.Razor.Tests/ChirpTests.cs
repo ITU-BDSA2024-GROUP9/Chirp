@@ -15,6 +15,7 @@ namespace Chirp.Razor.Tests;
 public class TestDatabaseFixture : IDisposable
 {
     private readonly SqliteConnection _connection;
+    private ChirpDBContext context;
 
     public TestDatabaseFixture()
     {
@@ -38,6 +39,11 @@ public class TestDatabaseFixture : IDisposable
 
         return new ChirpDBContext(options);
     }
+    
+    public ChirpDBContext getContext()
+    {
+        return this.context;
+    }
 
     public void Dispose()
     {
@@ -49,10 +55,13 @@ public class TestDatabaseFixture : IDisposable
 public class UnitTests
 {   
     private readonly TestDatabaseFixture _fixture;
+    private CheepRepository cheepRepo;
 
     public UnitTests()
     {
         _fixture = new TestDatabaseFixture();
+        var testContext = _fixture.getContext();
+        CheepRepository cheepRepo = new CheepRepository(testContext);
     }
     
     [Fact]
@@ -60,9 +69,11 @@ public class UnitTests
     {
         // Arrange
         var time = DateTime.UtcNow;
-        Author _author = new Author() { AuthorId = 1, Name = "John doe", Email = "johndoe@gmail.com", Cheeps = new List<Cheep>()};
-        // Act
-        Cheep _cheep = new Cheep() {CheepId = 1, Author = _author, AuthorId = _author.AuthorId,  TimeStamp = time, Text = "Chorp"};
+        
+        var cheep = new CheepDTO() {Author = _author,  TimeStamp = time, Text = "Chorp"};
+        cheepRepo.CreateCheep(cheep);
+        
+        
         // Assert
         Assert.Equal(_author, _cheep.Author);
         Assert.Equal("Chorp", _cheep.Text);
