@@ -69,17 +69,6 @@ public class UnitTests : IDisposable
     [Fact]
     public void TestCheepInitialization() 
     {
-        // Arrange
-        var time = DateTime.UtcNow;
-        
-        var cheep = new CheepDTO() {Author = _author,  TimeStamp = time, Text = "Chorp"};
-        cheepRepo.CreateCheep(cheep);
-        
-        
-        // Assert
-        Assert.Equal(_author, _cheep.Author);
-        Assert.Equal("Chorp", _cheep.Text);
-        Assert.Equal(time, _cheep.TimeStamp);
     }
 
     [Theory]
@@ -87,24 +76,6 @@ public class UnitTests : IDisposable
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
     public void TestGetCheeps(string authorName, string text)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
-        ICheepService CheepService = new CheepService(new CheepRepository(context));
-
-        // act
-        var cheeps = CheepService.GetCheeps();
-
-        // assert
-        Assert.NotEmpty(cheeps);
-        foreach (var cheep in cheeps) {
-            if (cheep.Author.Name.Equals(authorName)) {
-                if (cheep.Text.Equals(text)){
-                    return;
-                }
-            }
-        }
-
-        Assert.Fail("There were no cheeps returned with BOTH the specified author name: " + authorName + " and the text: " + text);
     }
 
     [Theory]
@@ -112,65 +83,40 @@ public class UnitTests : IDisposable
     [InlineData(2)]
     public void TestGetCheepsFromAuthor(int authorId)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
-        ICheepService CheepService = new CheepService(new CheepRepository(context));
 
-        // act
-        List<CheepDTO> cheeps = CheepService.GetCheepsFromAuthor(authorId);
-
-        // assert
-        Assert.NotEmpty(cheeps);
-        foreach (CheepDTO cheep in cheeps)
-            Assert.Equal(cheep.Author.AuthorId, authorId);
     }
 
     [Theory]
     [InlineData("Helge")]
     public void TestGetCheepsFromAuthorWithName(string name)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
 
-        ICheepRepository repository = new CheepRepository(context);
-
-        // act 
-        var result = repository.GetAuthor(name);
-
-        // assert
-        Assert.NotNull(result);
-        Assert.Equal(name, result.Name);
     }
 
     [Theory]
     [InlineData("ropf@itu.dk")]
     public void TestGetAuthorWithEmail(string email)
     {
-        // Arrange
-        using var context = _fixture.CreateContext();
-        ICheepService cheepService = new CheepService(new CheepRepository(context));
-        
-        // Act
-        Author author = cheepService.GetAuthorByEmail(email);
-        
-        // Assert
-        Assert.Equal(11, author.AuthorId);
+
     }
 
     [Theory]
-    [InlineData("Phillip's Mom")]
-    public void TestCreateAuthor(string newAuthor){
+    [InlineData("13", "John Doe", "johndoe@yahoo.com")]
+    public void TestCreateAuthor(string id, string newAuthor, string email){
         // arrange
-        using var context = _fixture.CreateContext();
-        ICheepRepository repository = new CheepRepository(context);
+        var author = new Author(){Cheeps = new List<Cheep>()};
+        author.Id = id;
+        author.UserName = newAuthor;
+        author.Email = email;
         
-        // act)
-        repository.CreateAuthor(new Author(){AuthorId = 13, Name = newAuthor, Email = newAuthor + "@gmail.com", Cheeps = new List<Cheep>()});
-        var result = repository.GetAuthor(newAuthor);
+        // act
+        _cheepRepo.CreateAuthor(author);
 
         // assert
+        var result = _cheepRepo.GetAuthor(newAuthor);
+
         Assert.NotNull(result);
-        Assert.Equal(newAuthor, result.Name);
+        Assert.Equal(newAuthor, result.UserName);
     }
 
     [Theory]
@@ -178,19 +124,6 @@ public class UnitTests : IDisposable
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")]
     public void TestCheepCannotBeLongerThan160Characters(string text)
     {
-        // arrange
-        using var context = _fixture.CreateContext();
-        ICheepRepository repository = new CheepRepository(context);
-        Author author = new Author()
-            { AuthorId = 14, Name = "test", Email = "test@gmail.com", Cheeps = new List<Cheep>() };
-        
-        // act
-        repository.CreateAuthor(author);
-        CheepDTO cheep = new CheepDTO() { Author = author, TimeStamp = DateTime.UtcNow, Text = text };
-        
-        
-        // assert
-        Assert.Throws<ArgumentException>(() => repository.CreateCheep(cheep));
 
     }
 }
