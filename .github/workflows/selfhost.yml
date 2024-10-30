@@ -1,0 +1,31 @@
+name: Deploy website to Raspberry Pi 5 with Docker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: self-hosting # Use self-hosting branch for now
+          
+      - name: Build Docker image
+        run: |
+          docker build -t chrip-temp-image:latest .
+
+      - name: Stop old Docker container
+        run: |
+          docker stop chirp-temp || true
+          docker rm chirp-temp || true
+
+      # Use the Raspberry Pi port 16018 to listen from the container port 443
+      # The port 16018 is used by cloudflare tunnel to display website on my subdomain
+      - name: Run new Docker container. 
+        run: |
+          docker run -d --name chirp-temp \
+            --restart unless-stopped \
+            -p 16018:443 \
+            chrip-temp-image-image:latest
