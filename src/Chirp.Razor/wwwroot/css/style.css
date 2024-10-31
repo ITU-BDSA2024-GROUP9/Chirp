@@ -202,7 +202,7 @@ div.page div.cheepbox p {
 }
 
 div.page div.cheepbox input[type="text"] {
-  width: calc(100% - 90px);
+  width: calc(100% - 100px);
   display: inline-block;
   background: #15202b;
   border: 1px solid #38444d;
@@ -210,9 +210,18 @@ div.page div.cheepbox input[type="text"] {
 }
 
 div.page div.cheepbox input[type="submit"] {
-  width: 80px;
+  width: 90px;
   margin-left: 10px;
   display: inline-block;
+  text-align: center;
+}
+
+div.page div.cheepbox input[type="submit"]:hover {
+  background: #0d95e8;
+}
+
+hr {
+  border: 1px solid #38444d;
 }
 
 div.message {

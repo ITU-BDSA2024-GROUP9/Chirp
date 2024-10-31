@@ -65,6 +65,20 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public List<CheepDTO> ReadCheeps()
+    {
+        var cheeps = _dbContext.Cheeps
+            .Include(c => c.Author)
+            .Select(c => new CheepDTO
+            {
+                Text = c.Text,
+                TimeStamp = c.TimeStamp,
+                Author = c.Author
+            })
+            .ToList();
+        return cheeps;
+    }
+
     public List<CheepDTO> ReadCheepsByName(string authorName)
     {
         var cheeps = _dbContext.Cheeps
@@ -80,31 +94,19 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public List<CheepDTO> ReadCheeps()
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Select(c => new CheepDTO
-            {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .ToList();
-        return cheeps;
-    }
 
-    public Author GetAuthor(string authorId)
+
+    public Author? GetAuthor(string authorId)
     {
         return _dbContext.Authors.FirstOrDefault(a => a.Id == authorId);
     }
 
-    public Author GetAuthorByName(string authorName)
+    public Author? GetAuthorByName(string authorName)
     {
         return _dbContext.Authors.FirstOrDefault(a => a.UserName == authorName);
     }
 
-    public Author GetAuthorByEmail(string email)
+    public Author? GetAuthorByEmail(string email)
     {
         return _dbContext.Authors.FirstOrDefault(a => a.Email == email);
     }
