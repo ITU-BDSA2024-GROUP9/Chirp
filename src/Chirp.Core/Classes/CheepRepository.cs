@@ -20,23 +20,12 @@ public class CheepRepository : ICheepRepository
         {
             throw new ArgumentException("Cheep text cannot be longer than 160 characters.");
         }
-        var foundAuthor = _dbContext.Authors
-            .Include(a => a.Cheeps) // Eager loading
-            .FirstOrDefault(a => a.UserName == newCheep.Author.UserName);
+        var foundAuthor = GetAuthor(newCheep.Author.Id);
         if (foundAuthor == null)
         {
-            foundAuthor = new Author
-            {
-                UserName = newCheep.Author.UserName,
-                Email = newCheep.Author.Email,
-                Cheeps = new List<Cheep>()
-            };
-            _dbContext.Authors.Add(foundAuthor);
+            throw new ArgumentException("Author not found.");
         }
-        else if (foundAuthor.Cheeps == null)
-        {
-            foundAuthor.Cheeps = new List<Cheep>();
-        }
+        else foundAuthor.Cheeps ??= new List<Cheep>();
         
         foundAuthor.Cheeps.Add(new Cheep
         {

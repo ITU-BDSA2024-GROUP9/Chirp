@@ -1,9 +1,17 @@
+using System.ComponentModel.DataAnnotations;
 using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Chirp.Razor.Pages;
-public abstract class Model : PageModel
+public class Model : PageModel
 {
+	[BindProperty]
+	[Required]
+	[StringLength(250, ErrorMessage = "Maximum length is {1}")]
+	[Display(Name = "Message Text")]
+	public string Message { get; set; }
+
     private readonly ICheepService _service;
 
     public int PageNumber { get; set; }
@@ -62,5 +70,37 @@ public abstract class Model : PageModel
     private int PageAmount()
     {
         return (int) Math.Ceiling(1.0 * Cheeps.Count / 32);
+    }
+
+    public IActionResult OnPost()
+    {
+        if (!ModelState.IsValid)
+        {
+            // Repopulate the page data before returning
+            PaginateCheeps(1);
+            return Page();
+        }
+
+        if (User.Identity?.Name == null)
+        {
+            return RedirectToPage("/Error");
+        }
+
+        var author = _service.GetAuthorByName(User.Identity.Name);
+        if (author == null)
+        {
+            Console.WriteLine(User.Identity.Name);
+            return RedirectToPage("/Error");
+        }
+        var cheep = new CheepDTO
+        {
+            Text = Message,
+            Author = author,
+            TimeStamp = DateTimeOffset.Now.DateTime
+        };
+
+        _service.CreateCheep(cheep);
+
+        return RedirectToPage();
     }
 }

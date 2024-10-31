@@ -3,7 +3,7 @@
 @inject SignInManager<Author> SignInManager
 @inject UserManager<Author> UserManager
 <div class=navigation>
-	@if (User.Identity.IsAuthenticated)
+	@if (User.Identity?.IsAuthenticated ?? false)
 	{
 		<div>
 			<a href="/@(User.Identity?.Name!)">My Timeline</a> |
