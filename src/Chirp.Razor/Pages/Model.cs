@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Security.Claims;
 using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +10,7 @@ public class Model : PageModel
 {
 	[BindProperty]
 	[Required]
-	[StringLength(250, ErrorMessage = "Maximum length is {1}")]
+	[StringLength(160, ErrorMessage = "Maximum length is {1}")]
 	[Display(Name = "Message Text")]
 	public string Message { get; set; }
 
@@ -76,6 +78,7 @@ public class Model : PageModel
     {
         if (!ModelState.IsValid)
         {
+            Console.WriteLine("Died at ModelState");
             // Repopulate the page data before returning
             PaginateCheeps(1);
             return Page();
@@ -83,13 +86,14 @@ public class Model : PageModel
 
         if (User.Identity?.Name == null)
         {
+            Console.WriteLine("Died at Name: " + User.Identity);
             return RedirectToPage("/Error");
         }
 
-        var author = _service.GetAuthorByName(User.Identity.Name);
+        var author = _service.GetAuthor(User.FindFirstValue(ClaimTypes.NameIdentifier));
         if (author == null)
         {
-            Console.WriteLine(User.Identity.Name);
+            Console.WriteLine("Died at Author: " + User.Identity.Name);
             return RedirectToPage("/Error");
         }
         var cheep = new CheepDTO

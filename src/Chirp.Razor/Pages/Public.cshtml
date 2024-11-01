@@ -1,23 +1,18 @@
 ﻿
 @page "/"
 @model Chirp.Razor.Pages.PublicModel
+@using Chirp.Core.Classes;
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
 }
 <div class="holder">
     <h2> Public Timeline </h2>
-    @if(User.Identity?.IsAuthenticated ?? false)
+    @if (SignInManager.IsSignedIn(User))
     {
-        <div class="cheepbox">
-            <h3>What's on your mind @(User.Identity.Name)?</h3>
-            <form method="post" asp-page="/">
-                <input style="float: left" name="Message" type="text" placeholder="Type here!" required asp-for="Message">
-                <input type="submit" value="Share">
-                <span asp-validation-for="Message"></span>
-            </form>
-        </div>
-        <hr>
+        <partial name="_CheepBoxPartial" />
     }
     <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages)" />
 </div>
