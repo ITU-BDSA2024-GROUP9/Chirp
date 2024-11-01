@@ -248,6 +248,18 @@ public class UnitTests : IDisposable
         Assert.NotNull(result);
         Assert.Equal(id, result.Id);
     }
+    
+    [Theory]
+    [InlineData("11", "ropf@itu.dk")]
+    public void TestGetAuthorWithEmail(string id, string email)
+    {
+        //Act
+        var result = _cheepRepo.GetAuthorByEmail(email);
+        
+        //Assert
+        Assert.NotNull(result);
+        Assert.Equal(id, result.Id);
+    }
 
     [Theory]
     [InlineData("13", "John Doe", "johndoe@yahoo.com")]
