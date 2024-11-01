@@ -234,7 +234,7 @@ public class UnitTests : IDisposable
         
         //Assert
         Assert.NotNull(result);
-        Assert.Equal(result.UserName, userName);
+        Assert.Equal(userName,result.UserName);
     }
     
     [Theory]
@@ -242,11 +242,11 @@ public class UnitTests : IDisposable
     public void TestGetAuthorWithName(string id, string userName)
     {
         //Act
-        var result = _cheepRepo.GetAuthor(id);
+        var result = _cheepRepo.GetAuthorByName(userName);
         
         //Assert
         Assert.NotNull(result);
-        Assert.Equal(result.UserName, userName);
+        Assert.Equal(id, result.Id);
     }
 
     [Theory]
