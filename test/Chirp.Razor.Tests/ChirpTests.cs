@@ -52,12 +52,14 @@ public class UnitTests : IDisposable
     private readonly TestDatabaseFixture _fixture;
     private readonly CheepRepository _cheepRepo;
     private readonly ChirpDBContext _context;
+    private readonly CheepService _cheepService;
     
     public UnitTests()
     {
         _fixture = new TestDatabaseFixture();
         _context = _fixture.CreateContext();
         _cheepRepo = new CheepRepository(_context);
+        _cheepService = new CheepService(_cheepRepo);
     }
 
     public void Dispose()
@@ -254,7 +256,9 @@ public class UnitTests : IDisposable
     public void TestGetAuthorWithEmail(string id, string email)
     {
         //Act
-        var result = _cheepRepo.GetAuthorByEmail(email);
+        var result = _cheepService.GetAuthorByEmail(email);
+        
+        
         
         //Assert
         Assert.NotNull(result);
