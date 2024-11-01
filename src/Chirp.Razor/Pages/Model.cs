@@ -34,11 +34,11 @@ public class Model : PageModel
         Paginate(queryPage);
     }
 
-    public void PaginateCheeps(int queryPage, string author)
+    public void PaginateCheeps(int queryPage, string authorID)
     {
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        Cheeps = _service.GetCheepsFromAuthorByID(authorID);
         Paginate(queryPage);
-        Author = _service.GetAuthor(author);
+        Author = _service.GetAuthorByID(authorID);
     }
 
     public void PaginateCheepsByName(int queryPage, string authorName)
@@ -90,7 +90,7 @@ public class Model : PageModel
             return RedirectToPage("/Error");
         }
 
-        var author = _service.GetAuthor(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var author = _service.GetAuthorByID(User.FindFirstValue(ClaimTypes.NameIdentifier));
         if (author == null)
         {
             Console.WriteLine("Died at Author: " + User.Identity.Name);

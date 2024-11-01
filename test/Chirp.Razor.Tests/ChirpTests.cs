@@ -67,27 +67,7 @@ public class UnitTests : IDisposable
         _context.Dispose();
         _fixture.Dispose();
     }
-/*
-    [Theory]
-    [InlineData("13")]
-    public void TestThatAuthorIDIsAutoIncremented(string nextAuthorID)
-    {
-        // Arrange
-        var author = new Author()
-        {
-            UserName = "Test",
-            Email = "test@gmail.com",
-            Cheeps = new List<Cheep>()
-        };
-        // Act
-        _cheepRepo.CreateAuthor(author);
-        var result = _cheepRepo.GetAuthorByName("Test");
-        
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(nextAuthorID, result.Id);
-    }
-*/
+
     [Theory]
     [InlineData("Hej med dig smukke", "11")]
     public void TestCreateCheeps(string text, string authorID)
@@ -97,12 +77,12 @@ public class UnitTests : IDisposable
         {
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = _cheepRepo.GetAuthor(authorID)
+            Author = _cheepService.GetAuthorByID(authorID)
         };
         
         // Act
-        _cheepRepo.CreateCheep(cheep);
-        var result = _cheepRepo.ReadCheeps(authorID);
+        _cheepService.CreateCheep(cheep);
+        var result = _cheepService.GetCheepsFromAuthorByID(authorID);
         
         // Assert
         Assert.NotEmpty(result);
@@ -116,7 +96,7 @@ public class UnitTests : IDisposable
         // Arrange
         
         // Act
-        var result = _cheepRepo.GetAuthor(ID);
+        var result = _cheepService.GetAuthorByID(ID);
         // Assert
         Assert.Equal("11", result.Id);
         Assert.Equal("ropf@itu.dk", result.Email);
@@ -145,8 +125,8 @@ public class UnitTests : IDisposable
         
         // Act
         _cheepRepo.CreateAuthor(author);
-        _cheepRepo.CreateCheep(cheep);
-        var result = _cheepRepo.ReadCheepsByName(author.UserName);
+        _cheepService.CreateCheep(cheep);
+        var result = _cheepService.GetCheepsFromAuthorByName(author.UserName);
        
         // Assert
         Assert.NotEmpty(result);
@@ -193,10 +173,10 @@ public class UnitTests : IDisposable
         };
         // Act
         _cheepRepo.CreateAuthor(author);
-        var cheepID = _cheepRepo.CreateCheep(originalCheep);
-        var originalResult = _cheepRepo.ReadCheeps(author.Id)[0].Text;
-        _cheepRepo.UpdateCheep(updatedCheep, cheepID);
-        var updatedResult = _cheepRepo.ReadCheeps(author.Id)[0].Text;
+        var cheepID = _cheepService.CreateCheep(originalCheep);
+        var originalResult = _cheepService.GetCheepsFromAuthorByID(author.Id)[0].Text;
+        _cheepService.UpdateCheep(updatedCheep, cheepID);
+        var updatedResult = _cheepService.GetCheepsFromAuthorByID(author.Id)[0].Text;
         // Assert
         Assert.Equal(originalText, originalResult);
         Assert.Equal(updatedText, updatedResult);
@@ -210,7 +190,7 @@ public class UnitTests : IDisposable
         // Arrange
         
         // Act
-        var result = _cheepRepo.ReadCheepsByID(authorId);
+        var result = _cheepService.GetCheepsFromAuthorByID(authorId);
         // Assert
         Assert.NotEmpty(result);
     }
@@ -222,7 +202,7 @@ public class UnitTests : IDisposable
         // Arrange
         
         // Act
-        var result = _cheepRepo.ReadCheepsByName(name);
+        var result = _cheepService.GetCheepsFromAuthorByName(name);
         // Assert
         Assert.NotEmpty(result);
     }
@@ -232,7 +212,7 @@ public class UnitTests : IDisposable
     public void TestGetAuthorWithId(string id, string userName)
     {
         //Act
-        var result = _cheepRepo.GetAuthor(id);
+        var result = _cheepService.GetAuthorByID(id);
         
         //Assert
         Assert.NotNull(result);
@@ -244,7 +224,7 @@ public class UnitTests : IDisposable
     public void TestGetAuthorWithName(string id, string userName)
     {
         //Act
-        var result = _cheepRepo.GetAuthorByName(userName);
+        var result = _cheepService.GetAuthorByName(userName);
         
         //Assert
         Assert.NotNull(result);
@@ -278,7 +258,7 @@ public class UnitTests : IDisposable
         _cheepRepo.CreateAuthor(author);
 
         // assert
-        var result = _cheepRepo.GetAuthor(id);
+        var result = _cheepService.GetAuthorByID(id);
 
         Assert.NotNull(result);
         Assert.Equal(newAuthor, result.UserName);
@@ -303,7 +283,7 @@ public class UnitTests : IDisposable
         // Act
         
         // Assert
-        Assert.Throws<ArgumentException>(()=>_cheepRepo.CreateCheep(cheep));
+        Assert.Throws<ArgumentException>(()=>_cheepService.CreateCheep(cheep));
     }
 
     [Theory]
@@ -327,7 +307,7 @@ public class UnitTests : IDisposable
         // Act
 
         // Assert
-        Assert.Throws<ArgumentException>(()=>_cheepRepo.CreateCheep(cheep));
+        Assert.Throws<ArgumentException>(()=>_cheepService.CreateCheep(cheep));
     }
 }
 

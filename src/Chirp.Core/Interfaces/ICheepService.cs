@@ -10,11 +10,11 @@ namespace Chirp.Core.Interfaces
     public interface ICheepService//<T> where T : IPost
     {
         public List<CheepDTO> GetCheeps();
-        public List<CheepDTO> GetCheepsFromAuthor(string authorId);
+        public List<CheepDTO> GetCheepsFromAuthorByID(string authorId);
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName);
-        public Author? GetAuthor(string authorId);
+        public Author? GetAuthorByID(string authorId);
         public Author? GetAuthorByName(string name);
         public Author? GetAuthorByEmail(string email);
-        public void CreateCheep(CheepDTO cheep);
+        public int CreateCheep(CheepDTO cheep);
     }
 }

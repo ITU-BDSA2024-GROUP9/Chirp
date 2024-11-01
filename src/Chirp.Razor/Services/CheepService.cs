@@ -19,19 +19,19 @@ namespace Chirp.Razor.Services
 
         }
 
-        public List<CheepDTO> GetCheepsFromAuthor(string authorId)
+        public List<CheepDTO> GetCheepsFromAuthorByID(string authorId)
         {
-            return _repository.ReadCheeps(authorId);
+            return _repository.ReadCheepsByID(authorId);
         }
 
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName)
         {
-            return _repository.ReadCheeps(authorName);
+            return _repository.ReadCheepsByName(authorName);
         }
 
-        public void CreateCheep(CheepDTO newCheep)
+        public int CreateCheep(CheepDTO newCheep)
         {
-            _repository.CreateCheep(newCheep);
+            return _repository.CreateCheep(newCheep);
         }
 
         public void UpdateCheep(CheepDTO newCheep, int cheepID)
@@ -39,14 +39,14 @@ namespace Chirp.Razor.Services
             _repository.UpdateCheep(newCheep, cheepID);
         }
 
-        public Author GetAuthor(string authorId)
+        public Author GetAuthorByID(string authorId)
         {
-            return _repository.GetAuthor(authorId);
+            return _repository.GetAuthorByID(authorId);
         }
 
         public Author GetAuthorByName(string authorName)
         {
-            return _repository.GetAuthor(authorName);
+            return _repository.GetAuthorByName(authorName);
         }
 
         public Author GetAuthorByEmail(string email)

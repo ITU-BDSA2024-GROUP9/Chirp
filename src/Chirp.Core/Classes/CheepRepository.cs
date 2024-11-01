@@ -21,7 +21,7 @@ public class CheepRepository : ICheepRepository
             throw new ArgumentException("Cheep text cannot be longer than 160 characters.");
         }
 
-        var foundAuthor = GetAuthor(newCheep.Author.Id);
+        var foundAuthor = GetAuthorByID(newCheep.Author.Id);
         if (foundAuthor == null)
         {
             throw new ArgumentException("Author not found.");
@@ -40,22 +40,6 @@ public class CheepRepository : ICheepRepository
     
         _dbContext.SaveChanges();
         return cheep.CheepId;
-    }
-
-    public List<CheepDTO> ReadCheeps(string authorId)
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Where(c => c.Author.Id == authorId)
-            .Select(c => new CheepDTO
-            {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .ToList();
-        
-        return cheeps;
     }
 
     public List<CheepDTO> ReadCheeps()
@@ -104,7 +88,7 @@ public class CheepRepository : ICheepRepository
 
 
 
-    public Author? GetAuthor(string authorId)
+    public Author? GetAuthorByID(string authorId)
     {
         return _dbContext.Authors
             .Include(a => a.Cheeps) // Eager loading
