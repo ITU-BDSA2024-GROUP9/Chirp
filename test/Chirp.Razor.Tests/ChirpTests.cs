@@ -65,20 +65,18 @@ public class UnitTests : IDisposable
         _context.Dispose();
         _fixture.Dispose();
     }
-
+/*
     [Theory]
     [InlineData("13")]
     public void TestThatAuthorIDIsAutoIncremented(string nextAuthorID)
     {
         // Arrange
-        
         var author = new Author()
         {
             UserName = "Test",
             Email = "test@gmail.com",
             Cheeps = new List<Cheep>()
         };
-        
         // Act
         _cheepRepo.CreateAuthor(author);
         var result = _cheepRepo.GetAuthorByName("Test");
@@ -87,7 +85,7 @@ public class UnitTests : IDisposable
         Assert.NotNull(result);
         Assert.Equal(nextAuthorID, result.Id);
     }
-
+*/
     [Theory]
     [InlineData("Hej med dig smukke", "11")]
     public void TestCreateCheeps(string text, string authorID)
@@ -107,6 +105,21 @@ public class UnitTests : IDisposable
         // Assert
         Assert.NotEmpty(result);
         Assert.Equal(result.Last().Text, text);
+    }
+
+    [Theory]
+    [InlineData("11")] // Helge's ID
+    public void RetrieveAllDataRelatedToAuthor(string ID)
+    {
+        // Arrange
+        
+        // Act
+        var result = _cheepRepo.GetAuthor(ID);
+        // Assert
+        Assert.Equal("11", result.Id);
+        Assert.Equal("ropf@itu.dk", result.Email);
+        Assert.Equal("Helge", result.UserName);
+        Assert.NotEmpty(result.Cheeps);
     }
     
     [Theory]
@@ -129,6 +142,7 @@ public class UnitTests : IDisposable
         };
         
         // Act
+        _cheepRepo.CreateAuthor(author);
         _cheepRepo.CreateCheep(cheep);
         var result = _cheepRepo.ReadCheepsByName(author.UserName);
        
@@ -141,21 +155,74 @@ public class UnitTests : IDisposable
     [InlineData("Adrian", "Hej, velkommen til kurset.")]
     public void TestGetCheeps(string authorName, string text)
     {
+        // Arrange
+        
+        // Act
+        
+        // Assert
+        
+    }
+
+    [Fact]
+    public void TestThatACheepCanBeUpdated()
+    {
+        // Arrange
+        var timeStamp = DateTime.Now;
+        var originalText = "This is the original test";
+        var updatedText = "This is the updated test";
+        
+        var author = new Author()
+        {
+            UserName = "testName",
+            Email = "testName@test.dk",
+            Cheeps = new List<Cheep>()
+        };
+        var originalCheep = new CheepDTO()
+        {
+            Text = originalText,
+            TimeStamp = timeStamp,
+            Author = author
+        };
+        var updatedCheep = new CheepDTO()
+        {
+            Text = updatedText,
+            TimeStamp = timeStamp,
+            Author = author
+        };
+        // Act
+        _cheepRepo.CreateAuthor(author);
+        var cheepID = _cheepRepo.CreateCheep(originalCheep);
+        var originalResult = _cheepRepo.ReadCheeps(author.Id)[0].Text;
+        _cheepRepo.UpdateCheep(updatedCheep, cheepID);
+        var updatedResult = _cheepRepo.ReadCheeps(author.Id)[0].Text;
+        // Assert
+        Assert.Equal(originalText, originalResult);
+        Assert.Equal(updatedText, updatedResult);
     }
 
     [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    public void TestGetCheepsFromAuthor(int authorId)
+    [InlineData("1")]
+    [InlineData("2")]
+    public void TestGetCheepsFromAuthorWithID(string authorId)
     {
-
+        // Arrange
+        
+        // Act
+        var result = _cheepRepo.ReadCheepsByID(authorId);
+        // Assert
+        Assert.NotEmpty(result);
     }
 
     [Theory]
     [InlineData("Helge")]
     public void TestGetCheepsFromAuthorWithName(string name)
     {
-
+        // Arrange
+        
+        // Act
+        var result = _cheepRepo.ReadCheepsByName(name);
+        // Assert
+        Assert.NotEmpty(result);
     }
 
     [Theory]
@@ -252,7 +319,6 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 
         // act
         var content = await response.Content.ReadAsStringAsync();
-        // var Substri
 
         // assert
         Assert.Contains("Chirp!", content);

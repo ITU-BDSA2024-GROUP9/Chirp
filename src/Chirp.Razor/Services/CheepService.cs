@@ -34,9 +34,9 @@ namespace Chirp.Razor.Services
             _repository.CreateCheep(newCheep);
         }
 
-        public void UpdateCheep(CheepDTO newCheep)
+        public void UpdateCheep(CheepDTO newCheep, int cheepID)
         {
-            _repository.UpdateCheep(newCheep);
+            _repository.UpdateCheep(newCheep, cheepID);
         }
 
         public Author GetAuthor(string authorId)
