@@ -236,6 +236,18 @@ public class UnitTests : IDisposable
         Assert.NotNull(result);
         Assert.Equal(result.UserName, userName);
     }
+    
+    [Theory]
+    [InlineData("11", "Helge")]
+    public void TestGetAuthorWithName(string id, string userName)
+    {
+        //Act
+        var result = _cheepRepo.GetAuthor(id);
+        
+        //Assert
+        Assert.NotNull(result);
+        Assert.Equal(result.UserName, userName);
+    }
 
     [Theory]
     [InlineData("13", "John Doe", "johndoe@yahoo.com")]
@@ -255,13 +267,51 @@ public class UnitTests : IDisposable
         Assert.NotNull(result);
         Assert.Equal(newAuthor, result.UserName);
     }
+    [Theory]
+    [InlineData("Test", "Test@test.dk")]
+    public void TestYouCannotCreateACheepWithAnInvalidAuthor(string userName, string email)
+    {
+        // Arrange
+        var author = new Author()
+        {
+            UserName = userName,
+            Email = email,
+            Cheeps = new List<Cheep>()
+        };
+        var cheep = new CheepDTO()
+        {
+            Text = "test text",
+            Author = author,
+            TimeStamp = DateTime.Now
+        };
+        // Act
+        
+        // Assert
+        Assert.Throws<ArgumentException>(()=>_cheepRepo.CreateCheep(cheep));
+    }
 
     [Theory]
     [InlineData(
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")]
     public void TestCheepCannotBeLongerThan160Characters(string text)
     {
+        // Arrange
+        var author = new Author()
+        {
+            UserName = "testname",
+            Email = "userName@test.dk",
+            Cheeps = new List<Cheep>()
+        };
+        var cheep = new CheepDTO()
+        {
+            Text = text,
+            Author = author,
+            TimeStamp = DateTime.Now
+        };
+        // Act
 
+        // Assert
+        Assert.Throws<ArgumentException>(()=>_cheepRepo.CreateCheep(cheep));
     }
 }
 
