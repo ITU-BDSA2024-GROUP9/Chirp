@@ -19,10 +19,12 @@ builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(conne
 
 builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ChirpDBContext>()
+    .AddDefaultUI()
     .AddDefaultTokenProviders();
 
 
 builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -42,7 +44,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     // User settings.
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = false;
+    options.User.RequireUniqueEmail = true;
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -57,18 +59,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = "GitHub";
-    })
+builder.Services.AddAuthentication()
     .AddCookie()
     .AddGitHub(o =>
     {
         o.ClientId = builder.Configuration["GITHUBCLIENTID"]; // Need to default to something ??
         o.ClientSecret = builder.Configuration["GITHUBCLIENTSECRET"];
-        o.CallbackPath = "/signin-github";
+        // o.CallbackPath = "/signin-github";
     });
 
 
@@ -82,7 +79,7 @@ using (var scope = app.Services.CreateScope())
 
     // Execute the migration from code.
     context.Database.Migrate();
-    // DbInitializer.SeedDatabase(context);
+    DbInitializer.SeedDatabase(context);
 }
 
 // Configure the HTTP request pipeline.
@@ -91,6 +88,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+else {
+    app.UseMigrationsEndPoint();
 }
 
 app.UseHttpsRedirection();
@@ -103,6 +103,7 @@ app.UseAuthorization();
 // app.UseSession();
 
 app.MapRazorPages();
+app.MapDefaultControllerRoute();
 
 app.Run();
 

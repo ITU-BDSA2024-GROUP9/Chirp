@@ -1,13 +1,16 @@
 @using Microsoft.AspNetCore.Identity
 @using Chirp.Core.Classes;
+@using System.Security.Claims
 @inject SignInManager<Author> SignInManager
 @inject UserManager<Author> UserManager
+
 <div class=navigation>
-	@if (User.Identity.IsAuthenticated)
+	@if (SignInManager.IsSignedIn(User))
 	{
 		<div>
-			<a href="/@(User.Identity?.Name!)">My Timeline</a> |
+			<a href="/@(User.FindFirstValue(ClaimTypes.NameIdentifier))">My Timeline</a> |
 			<a href="/">Public Timeline</a> |
+			<a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a>
 			<a asp-area="Identity" asp-page="/Account/Logout" >Logout [@(User.Identity?.Name!)]</a>
 		</div>
 	}

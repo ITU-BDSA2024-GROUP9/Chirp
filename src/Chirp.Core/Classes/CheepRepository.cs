@@ -20,23 +20,12 @@ public class CheepRepository : ICheepRepository
         {
             throw new ArgumentException("Cheep text cannot be longer than 160 characters.");
         }
-        var foundAuthor = _dbContext.Authors
-            .Include(a => a.Cheeps) // Eager loading
-            .FirstOrDefault(a => a.UserName == newCheep.Author.UserName);
+        var foundAuthor = GetAuthor(newCheep.Author.Id);
         if (foundAuthor == null)
         {
-            foundAuthor = new Author
-            {
-                UserName = newCheep.Author.UserName,
-                Email = newCheep.Author.Email,
-                Cheeps = new List<Cheep>()
-            };
-            _dbContext.Authors.Add(foundAuthor);
+            throw new ArgumentException("Author not found.");
         }
-        else if (foundAuthor.Cheeps == null)
-        {
-            foundAuthor.Cheeps = new List<Cheep>();
-        }
+        else foundAuthor.Cheeps ??= new List<Cheep>();
         
         foundAuthor.Cheeps.Add(new Cheep
         {
@@ -65,6 +54,20 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public List<CheepDTO> ReadCheeps()
+    {
+        var cheeps = _dbContext.Cheeps
+            .Include(c => c.Author)
+            .Select(c => new CheepDTO
+            {
+                Text = c.Text,
+                TimeStamp = c.TimeStamp,
+                Author = c.Author
+            })
+            .ToList();
+        return cheeps;
+    }
+
     public List<CheepDTO> ReadCheepsByName(string authorName)
     {
         var cheeps = _dbContext.Cheeps
@@ -80,31 +83,19 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public List<CheepDTO> ReadCheeps()
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Select(c => new CheepDTO
-            {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .ToList();
-        return cheeps;
-    }
 
-    public Author GetAuthor(string authorId)
+
+    public Author? GetAuthor(string authorId)
     {
         return _dbContext.Authors.FirstOrDefault(a => a.Id == authorId);
     }
 
-    public Author GetAuthorByName(string authorName)
+    public Author? GetAuthorByName(string authorName)
     {
         return _dbContext.Authors.FirstOrDefault(a => a.UserName == authorName);
     }
 
-    public Author GetAuthorByEmail(string email)
+    public Author? GetAuthorByEmail(string email)
     {
         return _dbContext.Authors.FirstOrDefault(a => a.Email == email);
     }
