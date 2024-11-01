@@ -365,3 +365,8 @@ FodyWeavers.xsd
 .DS_Store
 
 **/*.env
+
+# Database files
+.db
+.db-shm
+.db-wal
