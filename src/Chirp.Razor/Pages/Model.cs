@@ -20,7 +20,7 @@ public class Model : PageModel
 
     public int TotalPages { get; set; }
     public Range CheepRange {get;set;}
-    public List<CheepDTO>? Cheeps { get; set; }
+    public required List<CheepDTO> Cheeps { get; set; }
     public Author? Author { get; set; }
 
     public Model(ICheepService service)
@@ -90,7 +90,13 @@ public class Model : PageModel
             return RedirectToPage("/Error");
         }
 
-        var author = _service.GetAuthorByID(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            Console.WriteLine("User ID not found.");
+            return RedirectToPage("/Error");
+        }
+        var author = _service.GetAuthorByID(userId);
         if (author == null)
         {
             Console.WriteLine("Died at Author: " + User.Identity.Name);
