@@ -39,17 +39,17 @@ namespace Chirp.Razor.Services
             _repository.UpdateCheep(newCheep, cheepID);
         }
 
-        public Author GetAuthorByID(string authorId)
+        public Author? GetAuthorByID(string authorId)
         {
             return _repository.GetAuthorByID(authorId);
         }
 
-        public Author GetAuthorByName(string authorName)
+        public Author? GetAuthorByName(string authorName)
         {
             return _repository.GetAuthorByName(authorName);
         }
 
-        public Author GetAuthorByEmail(string email)
+        public Author? GetAuthorByEmail(string email)
         {
             return _repository.GetAuthorByEmail(email);
         }
