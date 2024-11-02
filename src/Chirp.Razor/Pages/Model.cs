@@ -20,7 +20,7 @@ public class Model : PageModel
 
     public int TotalPages { get; set; }
     public Range CheepRange {get;set;}
-    public List<CheepDTO> Cheeps { get; set; }
+    public List<CheepDTO>? Cheeps { get; set; }
     public Author? Author { get; set; }
 
     public Model(ICheepService service)
