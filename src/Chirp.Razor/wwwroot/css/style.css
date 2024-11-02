@@ -18,6 +18,11 @@ a:hover {
   text-decoration: underline;
 }
 
+div:has(> input + label) {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 input[type="email"],
 input[type="text"],
 input[type="tel"],
@@ -30,6 +35,13 @@ input[type="password"] {
   color: #ffffff;
   width: 100%;
   box-sizing: border-box;
+}
+
+input + label {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #8899a6;
 }
 
 input[type="email"]:focus,
