@@ -15,6 +15,7 @@ builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString, b => b.MigrationsAssembly("Chirp.Razor")));
 
 builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -63,8 +64,8 @@ builder.Services.AddAuthentication()
     .AddCookie()
     .AddGitHub(o =>
     {
-        o.ClientId = builder.Configuration["GITHUBCLIENTID"]; // Need to default to something ??
-        o.ClientSecret = builder.Configuration["GITHUBCLIENTSECRET"];
+        o.ClientId = builder.Configuration["GITHUBCLIENTID"] ?? throw new InvalidOperationException("GITHUBCLIENTID not found in configuration."); // Need to default to something ??
+        o.ClientSecret = builder.Configuration["GITHUBCLIENTSECRET"] ?? throw new InvalidOperationException("GITHUBCLIENTSECRET not found in configuration.");
         // o.CallbackPath = "/signin-github";
     });
 
@@ -78,8 +79,16 @@ using (var scope = app.Services.CreateScope())
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
 
     // Execute the migration from code.
-    context.Database.Migrate();
-    DbInitializer.SeedDatabase(context);
+    if (context is not null)
+    {
+        context.Database.Migrate();
+        DbInitializer.SeedDatabase(context); 
+    }
+    else
+    {
+        throw new InvalidOperationException("ChirpDBContext not found.");
+    }
+    
 }
 
 // Configure the HTTP request pipeline.
