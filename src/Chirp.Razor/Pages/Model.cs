@@ -12,7 +12,7 @@ public class Model : PageModel
 	[Required]
 	[StringLength(160, ErrorMessage = "Maximum length is {1}")]
 	[Display(Name = "Message Text")]
-	public required string Message { get; set; }
+	public string? Message { get; set; }
 
     private readonly ICheepService _service;
 
