@@ -370,3 +370,7 @@ FodyWeavers.xsd
 .db
 .db-shm
 .db-wal
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

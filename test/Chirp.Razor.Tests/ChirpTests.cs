@@ -255,8 +255,6 @@ public class UnitTests : IDisposable
         //Act
         var result = _cheepService.GetAuthorByEmail(email);
         
-        
-        
         //Assert
         Assert.NotNull(result);
         Assert.Equal(id, result.Id);
