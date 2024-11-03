@@ -519,18 +519,88 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.Contains($"{author}'s Timeline", content);
     }
 }
-
-public class EndToEndTests
+[Parallelizable(ParallelScope.Self)]
+[TestFixture]
+public class EndToEndTests : PageTest
 {
-    private readonly HttpClient _client;
-
-    public EndToEndTests()
+    private TestDatabaseFixture _fixture;
+    private CheepRepository _cheepRepo;
+    private ChirpDBContext _context;
+    private CheepService _cheepService;
+    
+    [SetUp]
+    public async Task Init()
     {
-        _client = new HttpClient();
-        _client.BaseAddress = new Uri("https://bdsagroup9chirprazor.azurewebsites.net/");
+        _fixture = new TestDatabaseFixture();
+        _context = _fixture.CreateContext();
+        _cheepRepo = new CheepRepository(_context);
+        _cheepService = new CheepService(_cheepRepo);
+        await MyEndToEndUtil.StartServer(); // Starts the server before each test
     }
-    
-    
+
+    [Test]
+    public async Task E2ETest()
+    {
+        //User registers for the first time and accesses the homepage.
+        await Page.GotoAsync("http://localhost:5273/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
+        await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("Test1!");
+        await Page.GetByLabel("Password", new() { Exact = true }).PressAsync("Tab");
+        await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
+        
+        //User logs in.
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
+        await Page.GetByPlaceholder("password").FillAsync("Test1!");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        //User posts a cheep.
+        await Page.GetByPlaceholder("Type here!").ClickAsync();
+        await Page.GetByPlaceholder("Type here!").FillAsync("Hello, everyone!");
+        await Page.GetByPlaceholder("Type here!").ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
+        
+        //User goes to their timeline and confirms their cheep is there.
+        await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
+        await Page.GetByText("test@mail.com Hello, everyone").ClickAsync();
+        
+        //The database has registered the user as well as the cheep.
+        var result = _cheepService.GetAuthorByEmail("test@mail.com");
+        Assert.NotNull(result);
+        
+        //Get cheeps from the author.
+        var cheeps = _cheepService.GetCheepsFromAuthorByID(result.Id);
+        
+        //Assert that the cheep exists in the database
+        bool cheepExists = false;
+        foreach (CheepDTO cheep in cheeps)
+        {
+            if (cheep.Text.Equals("Hello, everyone!"))
+            {
+                cheepExists = true;
+            }
+        }
+        
+        Assert.True(cheepExists);
+
+    }
+
+
+    [TearDown]
+    public async Task Cleanup()
+    {
+        MyEndToEndUtil.StopServer(); // Stops the server after each test
+        _context.Dispose();
+        _fixture.Dispose();
+    }
+
 }
 
 class TestUtils
