@@ -14,7 +14,7 @@ public static class MyEndToEndUtil
             StartInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "run --project path/to/your/project",
+                Arguments = "run --project D:/Coding Projects/Chirp/src/Chirp.Razor/Program.cs --urls http://localhost:5273/",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -23,8 +23,35 @@ public static class MyEndToEndUtil
         };
         
         _serverProcess.Start();
-        await Task.Delay(5000); // Wait for server to be fully operational, adjust time as necessary
-    }
+        bool isServerReady = false;
+        int maxAttempts = 10;
+        int attempt = 0;
+
+        while (!isServerReady && attempt < maxAttempts)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync("http://localhost:5273/");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        isServerReady = true;
+                    }
+                }
+            }
+            catch
+            {
+                // Server not ready yet
+                await Task.Delay(1000); // Wait for 1 second before trying again
+            }
+            attempt++;
+        }
+
+        if (!isServerReady)
+        {
+            throw new Exception("Server did not start within the expected time.");
+        }    }
 
     public static void StopServer()
     {
