@@ -193,6 +193,7 @@ public class UnitTests : IDisposable
         var result = _cheepService.GetCheepsFromAuthorByID(authorId);
         // Assert
         Assert.NotEmpty(result);
+        Assert.Equal(result[0].Author.Id, authorId);
     }
 
     [Theory]
@@ -205,6 +206,7 @@ public class UnitTests : IDisposable
         var result = _cheepService.GetCheepsFromAuthorByName(name);
         // Assert
         Assert.NotEmpty(result);
+        Assert.Equal(result[0].Author.UserName, name);
     }
 
     [Theory]
@@ -216,7 +218,8 @@ public class UnitTests : IDisposable
         
         //Assert
         Assert.NotNull(result);
-        Assert.Equal(userName,result.UserName);
+        Assert.Equal(userName, result.UserName);
+        Assert.Equal(id, result.Id);
     }
     
     [Theory]
