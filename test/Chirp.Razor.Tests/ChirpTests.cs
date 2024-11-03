@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Playwright.NUnit;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using NUnit.Framework;
+using Assert = Xunit.Assert;
 
 namespace Chirp.Razor.Tests;
 
@@ -48,29 +51,23 @@ public class TestDatabaseFixture : IDisposable
     }
 }
 
-[Parallelizable(ParallelScrope.Self)]
+[Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class Tests : PageTest
 {
-    [Test]
-    public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingToTheIntroPage()
+    [SetUp]
+    public async Task Init()
     {
-        await Page.GotoAsync("http://localhost:5273");
-        // Expect a title "to contain" a substring
-        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
-        
-        // Create a locator
-        var getStarted = Page.GetByRole(AriaRole.Link, new() { Name = "Get Started" });
-        
-        // Expect an attribute "to be strictly equal" to the value.
-        await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
-        
-        // Click the get started link
-        await getStarted.ClickAsync();
-        // Expects the url to contain intro
-        await Expect(Page).ToHaveURLAsync(new Regex((".*intro")));
-
+        await MyEndToEndUtil.StartServer(); // Starts the server before each test
     }
+
+    [TearDown]
+    public async Task Cleanup()
+    {
+        MyEndToEndUtil.StopServer(); // Stops the server after each test
+    }
+
+    // Your test cases go here...
 }
 
 public class UnitTests : IDisposable
@@ -94,7 +91,7 @@ public class UnitTests : IDisposable
         _fixture.Dispose();
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("Hej med dig smukke", "11")]
     public void TestCreateCheeps(string text, string authorID)
     {
@@ -115,7 +112,7 @@ public class UnitTests : IDisposable
         Assert.Equal(result.Last().Text, text);
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("11")] // Helge's ID
     public void RetrieveAllDataRelatedToAuthor(string ID)
     {
@@ -130,7 +127,7 @@ public class UnitTests : IDisposable
         Assert.NotEmpty(result.Cheeps);
     }
     
-    [Theory]
+    [Xunit.Theory]
     [InlineData("Hej med dig, det her er en test")]
     public void TestCreateCheepsWithNewAuthor(string text)
     {
@@ -159,7 +156,7 @@ public class UnitTests : IDisposable
         Assert.Equal(result[0].Text, text);
     }
     
-    [Theory]
+    [Xunit.Theory]
     [InlineData("11")]
     [InlineData("12")]
     public void TestGetCheeps(string id)
@@ -222,7 +219,7 @@ public class UnitTests : IDisposable
         Assert.Equal(updatedText, updatedResult);
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("1")]
     [InlineData("2")]
     public void TestGetCheepsFromAuthorWithID(string authorId)
@@ -236,7 +233,7 @@ public class UnitTests : IDisposable
         Assert.Equal(result[0].Author.Id, authorId);
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("Helge")]
     public void TestGetCheepsFromAuthorWithName(string name)
     {
@@ -249,7 +246,7 @@ public class UnitTests : IDisposable
         Assert.Equal(result[0].Author.UserName, name);
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("11", "Helge")]
     public void TestGetAuthorWithId(string id, string userName)
     {
@@ -262,7 +259,7 @@ public class UnitTests : IDisposable
         Assert.Equal(id, result.Id);
     }
     
-    [Theory]
+    [Xunit.Theory]
     [InlineData("11", "Helge")]
     public void TestGetAuthorWithName(string id, string userName)
     {
@@ -274,7 +271,7 @@ public class UnitTests : IDisposable
         Assert.Equal(id, result.Id);
     }
     
-    [Theory]
+    [Xunit.Theory]
     [InlineData("11", "ropf@itu.dk")]
     public void TestGetAuthorWithEmail(string id, string email)
     {
@@ -286,7 +283,7 @@ public class UnitTests : IDisposable
         Assert.Equal(id, result.Id);
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("13", "John Doe", "johndoe@yahoo.com")]
     public void TestCreateAuthor(string id, string newAuthor, string email){
         // arrange
@@ -304,7 +301,7 @@ public class UnitTests : IDisposable
         Assert.NotNull(result);
         Assert.Equal(newAuthor, result.UserName);
     }
-    [Theory]
+    [Xunit.Theory]
     [InlineData("Test", "Test@test.dk")]
     public void TestYouCannotCreateACheepWithAnInvalidAuthor(string userName, string email)
     {
@@ -327,7 +324,7 @@ public class UnitTests : IDisposable
         Assert.Throws<ArgumentException>(()=>_cheepService.CreateCheep(cheep));
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData(
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")]
     public void TestCheepCannotBeLongerThan160Characters(string text)
@@ -368,7 +365,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     }
 
     // This test is from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
-    [Theory]
+    [Xunit.Theory]
     [InlineData("/")]
     public async Task Get_EndpointsReturnSuccess(string url)
     {
@@ -413,7 +410,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("Jacqualine Gilcoine", 10)]
     [InlineData("Quintin Sitts", 5)]
     public async void CanSeePrivateTimeline(string author, int authorId)
@@ -425,7 +422,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.Contains($"{author}'s Timeline", content);
     }
 
-    [Theory]
+    [Xunit.Theory]
     [InlineData("Jacqualine Gilcoine")]
     [InlineData("Quintin Sitts")]
     public async void CanSeePrivateTimelineFromName(string author)
@@ -449,7 +446,7 @@ public class EndToEndTests
     }
 
     // This test is from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
-    [Theory]
+    [Xunit.Theory]
     [InlineData("/")]
     public async Task Get_EndpointsReturnSuccessAzure(string url)
     {
@@ -473,7 +470,7 @@ public class EndToEndTests
     }
 
     // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-    [Theory]
+    [Xunit.Theory]
     [InlineData("Jacqualine Gilcoine", 10)]
     [InlineData("Quintin Sitts", 5)]
     public async void CanSeePrivateTimelineAzure(string author, int authorId)
