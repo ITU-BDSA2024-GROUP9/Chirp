@@ -92,8 +92,37 @@ public class Tests : PageTest
         await Page.GetByRole(AriaRole.Button, new() { Name = "→" }).ClickAsync();
         await Page.GetByText("Wendell Ballan No great and").ClickAsync();
     }
-    
-    
+
+    [Test]
+    public async Task UserRegistersAndPostsCheepAndAccessesPrivateTimeline()
+    {
+        await Page.GotoAsync("http://localhost:5273/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
+        await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("Test1!");
+        await Page.GetByLabel("Password", new() { Exact = true }).PressAsync("Tab");
+        await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("test");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("ArrowLeft");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("ArrowRight");
+        await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
+        await Page.GetByPlaceholder("password").FillAsync("Test1!");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        await Page.GetByPlaceholder("Type here!").ClickAsync();
+        await Page.GetByPlaceholder("Type here!").FillAsync("Hi everyone!");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
+        await Page.GetByText("test@mail.com Hi everyone! —").ClickAsync();
+    }
+
+
 
     [TearDown]
     public async Task Cleanup()
