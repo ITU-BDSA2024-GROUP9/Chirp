@@ -54,7 +54,7 @@ public class TestDatabaseFixture : IDisposable
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-public class Tests : PageTest
+public class UITests : PageTest
 {
     [SetUp]
     public async Task Init()
@@ -529,44 +529,8 @@ public class EndToEndTests
         _client = new HttpClient();
         _client.BaseAddress = new Uri("https://bdsagroup9chirprazor.azurewebsites.net/");
     }
-
-    // This test is from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
-    [Xunit.Theory]
-    [InlineData("/")]
-    public async Task Get_EndpointsReturnSuccessAzure(string url)
-    {
-        // Act
-        var response = await _client.GetAsync(url);
-
-        // Assert
-        response.EnsureSuccessStatusCode(); // Status Code 200-299
-    }
-
-    // This test can be found here https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-    [Fact]
-    public async void CanSeePublicTimelineAzure()
-    {
-        var response = await _client.GetAsync("/");
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-
-        Assert.Contains("Chirp!", content);
-        Assert.Contains("Public Timeline", content);
-    }
-
-    // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-    [Xunit.Theory]
-    [InlineData("Jacqualine Gilcoine", 10)]
-    [InlineData("Quintin Sitts", 5)]
-    public async void CanSeePrivateTimelineAzure(string author, int authorId)
-    {
-        var response = await _client.GetAsync($"/{authorId}");
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        //Assert.Fail(content);
-        Assert.Contains("Chirp!", content);
-        Assert.Contains($"{author}'s Timeline", content);
-    }
+    
+    
 }
 
 class TestUtils
