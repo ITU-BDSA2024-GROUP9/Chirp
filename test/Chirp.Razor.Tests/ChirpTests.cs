@@ -132,17 +132,31 @@ public class UnitTests : IDisposable
         Assert.NotEmpty(result);
         Assert.Equal(result[0].Text, text);
     }
+    
     [Theory]
-    [InlineData("Helge", "Hello, BDSA students!")]
-    [InlineData("Adrian", "Hej, velkommen til kurset.")]
-    public void TestGetCheeps(string authorName, string text)
+    [InlineData("11")]
+    [InlineData("12")]
+    public void TestGetCheeps(string id)
     {
         // Arrange
         
+        
         // Act
-        
+        Author author = _cheepRepo.GetAuthorByID(id);
+        List<CheepDTO> authorCheeps = _cheepRepo.ReadCheepsByID(author.Id);
         // Assert
-        
+        bool success = true;
+
+        foreach (CheepDTO cheep in authorCheeps)
+        {
+            if (cheep.Author.Id != author.Id)
+            {
+                success = false;
+            }
+        }
+
+        Assert.True(success);
+
     }
 
     [Fact]
