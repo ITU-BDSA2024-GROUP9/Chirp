@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using Chirp.Core.Classes;
 using Chirp.Core.Helpers;
 using Chirp.Core.Interfaces;
 using Chirp.Razor.Services;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,30 @@ public class TestDatabaseFixture : IDisposable
     }
 }
 
+[Parallelizable(ParallelScrope.Self)]
+[TestFixture]
+public class Tests : PageTest
+{
+    [Test]
+    public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingToTheIntroPage()
+    {
+        await Page.GotoAsync("http://localhost:5273");
+        // Expect a title "to contain" a substring
+        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+        
+        // Create a locator
+        var getStarted = Page.GetByRole(AriaRole.Link, new() { Name = "Get Started" });
+        
+        // Expect an attribute "to be strictly equal" to the value.
+        await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
+        
+        // Click the get started link
+        await getStarted.ClickAsync();
+        // Expects the url to contain intro
+        await Expect(Page).ToHaveURLAsync(new Regex((".*intro")));
+
+    }
+}
 
 public class UnitTests : IDisposable
 {   
