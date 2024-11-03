@@ -700,4 +700,10 @@ public static class DbInitializer
             chirpContext.SaveChanges();
         }
     }
+
+    public static void WipeDatabase(ChirpDBContext context)
+    {
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
+    }
 }
