@@ -14,7 +14,8 @@ public static class MyEndToEndUtil
             StartInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "run --project D:/Coding Projects/Chirp/src/Chirp.Razor/Program.cs --urls http://localhost:5273/",
+                Arguments = "run",
+                WorkingDirectory = Path.GetFullPath("../../../../../src/Chirp.Razor", AppContext.BaseDirectory),
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
