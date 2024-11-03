@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using NUnit.Framework;
@@ -61,13 +62,33 @@ public class Tests : PageTest
         await MyEndToEndUtil.StartServer(); // Starts the server before each test
     }
 
+    [Test]
+    public async Task TestRegisterAndLogin()
+    {
+        await Page.GotoAsync("http://localhost:5273/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
+        await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("Test1!");
+        await Page.GetByLabel("Password", new() { Exact = true }).PressAsync("Tab");
+        await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
+        await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
+        await Page.GetByPlaceholder("password").FillAsync("Test1!");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+    }
+
     [TearDown]
     public async Task Cleanup()
     {
         MyEndToEndUtil.StopServer(); // Stops the server after each test
     }
 
-    // Your test cases go here...
 }
 
 public class UnitTests : IDisposable
