@@ -82,6 +82,18 @@ public class Tests : PageTest
         await Page.GetByPlaceholder("password").FillAsync("Test1!");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
     }
+    
+    [Test]
+    public async Task TestAccessUserTimelineAsAnonymousUser()
+    {
+        await Page.GotoAsync("http://localhost:5273/");
+        await Page.Locator("body").ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Wendell Ballan At first he" }).GetByRole(AriaRole.Link).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new() { Name = "→" }).ClickAsync();
+        await Page.GetByText("Wendell Ballan No great and").ClickAsync();
+    }
+    
+    
 
     [TearDown]
     public async Task Cleanup()
