@@ -52,6 +52,7 @@ public class CheepRepository : ICheepRepository
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
             })
+            .OrderByDescending(c => c.TimeStamp)
             .ToList();
         return cheeps;
     }
@@ -67,6 +68,7 @@ public class CheepRepository : ICheepRepository
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
             })
+            .OrderByDescending(c => c.TimeStamp)
             .ToList();
         return cheeps;
     }
@@ -82,6 +84,7 @@ public class CheepRepository : ICheepRepository
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
             })
+            .OrderByDescending(c => c.TimeStamp)
             .ToList();
         return cheeps;
     }

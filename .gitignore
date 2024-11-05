@@ -367,6 +367,6 @@ FodyWeavers.xsd
 **/*.env
 
 # Database files
-.db
-.db-shm
-.db-wal
+# **/*.db
+# **/*.db-shm
+# **/*.db-wal
