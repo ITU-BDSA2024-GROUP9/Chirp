@@ -58,7 +58,7 @@ public class CheepRepository : ICheepRepository
     {
         return _dbContext.Cheeps
             .Include(c => c.Author)
-            .Count(c => c.Author.UserName == authorName);
+            .Count(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName);
     }
 
     public List<CheepDTO> ReadCheeps()
@@ -97,7 +97,7 @@ public class CheepRepository : ICheepRepository
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Author.UserName == authorName)
+            .Where(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName)
             .Select(c => new CheepDTO
             {
                 Text = c.Text,
@@ -113,7 +113,7 @@ public class CheepRepository : ICheepRepository
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Author.UserName == authorName)
+            .Where(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName)
             .Select(c => new CheepDTO
             {
                 Text = c.Text,
@@ -174,7 +174,7 @@ public class CheepRepository : ICheepRepository
     {
         return _dbContext.Authors
             .Include(a => a.Cheeps) // Eager loading
-            .FirstOrDefault(a => a.UserName == authorName);
+            .FirstOrDefault(a => EF.Functions.Collate(a.UserName, "NOCASE") == authorName);
     }
 
     public Author? GetAuthorByEmail(string email)
