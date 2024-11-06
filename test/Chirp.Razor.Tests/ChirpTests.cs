@@ -228,6 +228,18 @@ public class UnitTests : IDisposable
         Assert.Contains(result, c => c.Text == text);
     }
 
+    [Xunit.Theory]
+    [InlineData("They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", "10")]
+    public void GetCheepsFromAuthorByID(string text, string id)
+    {
+        // Arrange
+        // Act
+        var result = _cheepService.GetCheepsFromAuthorByID(id);
+        // Assert
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Contains(result, c => c.Text == text);
+    }
     
     [Xunit.Theory]
     [InlineData("Hej med dig, det her er en test")]
