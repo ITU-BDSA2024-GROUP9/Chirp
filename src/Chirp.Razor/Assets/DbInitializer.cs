@@ -704,6 +704,6 @@ public static class DbInitializer
     public static void WipeDatabase(ChirpDBContext context)
     {
         context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
+        //    context.Database.EnsureCreated();
     }
 }
