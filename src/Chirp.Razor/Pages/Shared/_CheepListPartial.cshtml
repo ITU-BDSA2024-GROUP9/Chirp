@@ -8,12 +8,8 @@
 }
 <style>
     .holder {
-        --is-first-page:
-            @isFirstPage
-        ;
-        --is-last-page:
-            @isLastPage
-        ;
+        --is-first-page: @isFirstPage;
+        --is-last-page: @isLastPage;
     }
 </style>
 
@@ -21,16 +17,17 @@
 {
 
     <ul id="messagelist" class="cheeps">
-        @foreach (var cheep in Model.Cheeps)
+        @for (int cheepAt = Model.CheepRange.Start.Value; cheepAt < Model.CheepRange.End.Value; cheepAt++)
         {
+            var cheep = Model.Cheeps[cheepAt];
             <li>
-                <strong>
-                    <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                </strong>
                 <p>
+                    <strong>
+                        <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
+                    </strong>
                     @cheep.Text
+                    <small>&mdash; @cheep.TimeStamp</small>
                 </p>
-                <small>@cheep.TimeStamp</small>
             </li>
         }
     </ul>

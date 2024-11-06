@@ -16,11 +16,7 @@ namespace Chirp.Razor.Services
         public List<CheepDTO> GetCheeps()
         {
             return _repository.ReadCheeps();
-        }
 
-        public List<CheepDTO> GetCheeps(int page)
-        {
-            return _repository.ReadCheeps(page);
         }
 
         public List<CheepDTO> GetCheepsFromAuthorByID(string authorId)
@@ -28,19 +24,9 @@ namespace Chirp.Razor.Services
             return _repository.ReadCheepsByID(authorId);
         }
 
-        public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page)
-        {
-            return _repository.ReadCheepsByID(authorId, page);
-        }
-
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName)
         {
             return _repository.ReadCheepsByName(authorName);
-        }
-
-        public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
-        {
-            return _repository.ReadCheepsByName(authorName, page);
         }
 
         public int CreateCheep(CheepDTO newCheep)
@@ -66,21 +52,6 @@ namespace Chirp.Razor.Services
         public Author GetAuthorByEmail(string email)
         {
             return _repository.GetAuthorByEmail(email);
-        }
-
-        public int GetCheepCount()
-        {
-            return _repository.GetCheepCount();
-        }
-
-        public int GetCheepCountByID(string authorId)
-        {
-            return _repository.GetCheepCountByID(authorId);
-        }
-
-        public int GetCheepByName(string authorName)
-        {
-            return _repository.GetCheepCountByName(authorName);
         }
     }
 }

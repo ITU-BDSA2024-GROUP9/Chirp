@@ -194,7 +194,7 @@ public class UnitTests : IDisposable
         
         // Assert
         Assert.NotEmpty(result);
-        Assert.Equal(result[0].Text, text);
+        Assert.Equal(result.Last().Text, text);
     }
 
     [Xunit.Theory]
@@ -599,20 +599,6 @@ public class EndToEndTests : PageTest
         MyEndToEndUtil.StopServer(); // Stops the server after each test
         _context.Dispose();
         _fixture.Dispose();
-
-    // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-    [Theory]
-    [InlineData("Jacqualine Gilcoine")]
-    [InlineData("Quintin Sitts")]
-    public async void CanSeePrivateTimelineAzure(string author)
-    {
-        var response = await _client.GetAsync($"/{author}");
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        //Assert.Fail(content);
-        Assert.Contains("Chirp!", content);
-        Assert.Contains($"{author}'s Timeline", content);
-
     }
 
 }

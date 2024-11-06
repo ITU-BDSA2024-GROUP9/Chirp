@@ -42,25 +42,6 @@ public class CheepRepository : ICheepRepository
         return cheep.CheepId;
     }
 
-    public int GetCheepCount()
-    {
-        return _dbContext.Cheeps.Count();
-    }
-
-    public int GetCheepCountByID(string authorId)
-    {
-        return _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Count(c => c.Author.Id == authorId);
-    }
-
-    public int GetCheepCountByName(string authorName)
-    {
-        return _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Count(c => c.Author.UserName == authorName);
-    }
-
     public List<CheepDTO> ReadCheeps()
     {
         var cheeps = _dbContext.Cheeps
@@ -71,24 +52,6 @@ public class CheepRepository : ICheepRepository
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
             })
-            .OrderByDescending(c => c.TimeStamp)
-            .ToList();
-        return cheeps;
-    }
-
-    public List<CheepDTO> ReadCheeps(int page)
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Select(c => new CheepDTO
-            {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .OrderByDescending(c => c.TimeStamp)
-            .Skip((page - 1) * 32)
-            .Take(32)
             .ToList();
         return cheeps;
     }
@@ -104,25 +67,6 @@ public class CheepRepository : ICheepRepository
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
             })
-            .OrderByDescending(c => c.TimeStamp)
-            .ToList();
-        return cheeps;
-    }
-
-    public List<CheepDTO> ReadCheepsByName(string authorName, int page)
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Where(c => c.Author.UserName == authorName)
-            .Select(c => new CheepDTO
-            {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .OrderByDescending(c => c.TimeStamp)
-            .Skip((page - 1) * 32)
-            .Take(32)
             .ToList();
         return cheeps;
     }
@@ -138,25 +82,6 @@ public class CheepRepository : ICheepRepository
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
             })
-            .OrderByDescending(c => c.TimeStamp)
-            .ToList();
-        return cheeps;
-    }
-
-        public List<CheepDTO> ReadCheepsByID(string authorID, int page)
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Where(c => c.Author.Id == authorID)
-            .Select(c => new CheepDTO
-            {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .OrderByDescending(c => c.TimeStamp)
-            .Skip((page - 1) * 32)
-            .Take(32)
             .ToList();
         return cheeps;
     }
