@@ -7,6 +7,6 @@
     Layout = "Shared/_Layout";
 }
 <div class="holder">
-    <h2> @Model.Author?.UserName's Timeline </h2>
+    <h2> @User.Identity.Name's Timeline </h2>
     <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages)" />
 </div>
