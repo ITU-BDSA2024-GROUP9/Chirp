@@ -43,7 +43,7 @@ using (var scope = app.Services.CreateScope())
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
     
     // Wiping the database
-    DbInitializer.WipeDatabase(context);
+    // DbInitializer.WipeDatabase(context);
     
     // Execute the migration from code.
     try {
