@@ -460,6 +460,21 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
     }
+    
+    // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
+    [Xunit.Theory]
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Quintin Sitts")]
+    public async void CanSeePrivateTimelineAzure(string author)
+    {
+        var response = await _client.GetAsync($"/{author}");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        //Assert.Fail(content);
+        Assert.Contains("Chirp!", content);
+        Assert.Contains($"{author}'s Timeline", content);
+
+    }
 
     [Fact]
     public async void CanSeePublicTimeline()
@@ -519,6 +534,7 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.Contains($"{author}'s Timeline", content);
     }
 }
+
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class EndToEndTests : PageTest
@@ -527,7 +543,7 @@ public class EndToEndTests : PageTest
     private CheepRepository _cheepRepo;
     private ChirpDBContext _context;
     private CheepService _cheepService;
-    
+
     [SetUp]
     public async Task Init()
     {
@@ -552,7 +568,7 @@ public class EndToEndTests : PageTest
         await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
         await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
-        
+
         //User logs in.
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").ClickAsync();
@@ -560,24 +576,24 @@ public class EndToEndTests : PageTest
         await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
         await Page.GetByPlaceholder("password").FillAsync("Test1!");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-        
+
         //User posts a cheep.
         await Page.GetByPlaceholder("Type here!").ClickAsync();
         await Page.GetByPlaceholder("Type here!").FillAsync("Hello, everyone!");
         await Page.GetByPlaceholder("Type here!").ClickAsync();
         await Page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
-        
+
         //User goes to their timeline and confirms their cheep is there.
         await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
         await Page.GetByText("test@mail.com Hello, everyone").ClickAsync();
-        
+
         //The database has registered the user as well as the cheep.
         var result = _cheepService.GetAuthorByEmail("test@mail.com");
         Assert.NotNull(result);
-        
+
         //Get cheeps from the author.
         var cheeps = _cheepService.GetCheepsFromAuthorByID(result.Id);
-        
+
         //Assert that the cheep exists in the database
         bool cheepExists = false;
         foreach (CheepDTO cheep in cheeps)
@@ -587,7 +603,7 @@ public class EndToEndTests : PageTest
                 cheepExists = true;
             }
         }
-        
+
         Assert.True(cheepExists);
 
     }
@@ -599,31 +615,18 @@ public class EndToEndTests : PageTest
         MyEndToEndUtil.StopServer(); // Stops the server after each test
         _context.Dispose();
         _fixture.Dispose();
-
-    // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-    [Theory]
-    [InlineData("Jacqualine Gilcoine")]
-    [InlineData("Quintin Sitts")]
-    public async void CanSeePrivateTimelineAzure(string author)
-    {
-        var response = await _client.GetAsync($"/{author}");
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        //Assert.Fail(content);
-        Assert.Contains("Chirp!", content);
-        Assert.Contains($"{author}'s Timeline", content);
-
     }
 
-}
-
-class TestUtils
-{
-    public static string UnixTimeStampToDateTimeString(double unixTimeStamp) // TODO - Make a util class for this method and use it here and in DBFacade
+    class TestUtils
     {
-        // Unix timestamp is seconds past epoch
-        var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        dateTime = dateTime.AddSeconds(unixTimeStamp);
-        return dateTime.ToString("MM/dd/yy H:mm:ss");
+        public static string
+            UnixTimeStampToDateTimeString(
+                double unixTimeStamp) // TODO - Make a util class for this method and use it here and in DBFacade
+        {
+            // Unix timestamp is seconds past epoch
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(unixTimeStamp);
+            return dateTime.ToString("MM/dd/yy H:mm:ss");
+        }
     }
 }
