@@ -450,11 +450,11 @@ public class EndToEndTests
 
     // This was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
     [Theory]
-    [InlineData("Jacqualine Gilcoine", 10)]
-    [InlineData("Quintin Sitts", 5)]
-    public async void CanSeePrivateTimelineAzure(string author, int authorId)
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Quintin Sitts")]
+    public async void CanSeePrivateTimelineAzure(string author)
     {
-        var response = await _client.GetAsync($"/{authorId}");
+        var response = await _client.GetAsync($"/{author}");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         //Assert.Fail(content);
