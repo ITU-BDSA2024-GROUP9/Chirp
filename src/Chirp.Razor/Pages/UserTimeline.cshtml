@@ -7,6 +7,13 @@
     Layout = "Shared/_Layout";
 }
 <div class="holder">
-    <h2> @Model.Author?.UserName's Timeline </h2>
+    @if (Model.Author != null){
+        <h2> @Model.Author?.UserName's Timeline </h2>
+    } 
+    else 
+    {
+        <h2> Author not found! :( </h2>
+    }
+    
     <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages)" />
 </div>

@@ -38,24 +38,17 @@ public class Model : PageModel
     public void PaginateCheeps(int queryPage, string authorID)
     {
         PageNumber = queryPage;
+        Author = _service.GetAuthorByID(authorID);
         Cheeps = _service.GetCheepsFromAuthorByID(authorID, queryPage);
         TotalPages = PageAmount(_service.GetCheepCountByID(authorID));
-        if (Cheeps.Any())
-        {
-            Author = Cheeps[0].Author;
-        }
-
     }
 
     public void PaginateCheepsByName(int queryPage, string authorName)
     {
         PageNumber = queryPage;
+        Author = _service.GetAuthorByName(authorName);
         TotalPages = PageAmount(_service.GetCheepByName(authorName));
         Cheeps = _service.GetCheepsFromAuthorByName(authorName, queryPage);
-        if (Cheeps.Any())
-        {
-            Author = Cheeps[0].Author;
-        }
     }
     
     private int PageAmount(int totalCheeps)
