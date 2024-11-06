@@ -86,7 +86,7 @@ public class UnitTests : IDisposable
         
         // Assert
         Assert.NotEmpty(result);
-        Assert.Equal(result.Last().Text, text);
+        Assert.Equal(result[0].Text, text);
     }
 
     [Theory]
