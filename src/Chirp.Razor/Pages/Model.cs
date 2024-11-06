@@ -40,7 +40,11 @@ public class Model : PageModel
         PageNumber = queryPage;
         Cheeps = _service.GetCheepsFromAuthorByID(authorID, queryPage);
         TotalPages = PageAmount(_service.GetCheepCountByID(authorID));
-        Author = Cheeps[0].Author;
+        if (Cheeps.Any())
+        {
+            Author = Cheeps[0].Author;
+        }
+
     }
 
     public void PaginateCheepsByName(int queryPage, string authorName)
@@ -48,12 +52,16 @@ public class Model : PageModel
         PageNumber = queryPage;
         TotalPages = PageAmount(_service.GetCheepByName(authorName));
         Cheeps = _service.GetCheepsFromAuthorByName(authorName, queryPage);
-        Author = Cheeps[0].Author;
+        if (Cheeps.Any())
+        {
+            Author = Cheeps[0].Author;
+        }
     }
     
     private int PageAmount(int totalCheeps)
     {
-        return (int) Math.Ceiling(1.0 * totalCheeps / 32);
+        int pages = (int) Math.Ceiling(1.0 * totalCheeps / 32);
+        return pages <= 0 ? 1 : pages;
     }
 
     public IActionResult OnPost()
