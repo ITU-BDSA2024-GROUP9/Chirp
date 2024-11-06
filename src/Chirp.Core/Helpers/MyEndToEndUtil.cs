@@ -14,7 +14,7 @@ public static class MyEndToEndUtil
             StartInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "run",
+                Arguments = "run --test",
                 WorkingDirectory = Path.GetFullPath("../../../../../src/Chirp.Razor", AppContext.BaseDirectory),
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
