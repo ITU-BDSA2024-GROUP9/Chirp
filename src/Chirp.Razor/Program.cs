@@ -10,12 +10,12 @@ using AspNet.Security.OAuth.GitHub;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString, b => b.MigrationsAssembly("Chirp.Razor")));
+builder.Services.AddDbContext<ChirpDBContext>(options =>
+    options.UseSqlite(connectionString, b => b.MigrationsAssembly("Chirp.Razor")));
 
 builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ChirpDBContext>();
@@ -41,16 +41,23 @@ using (var scope = app.Services.CreateScope())
     // From the scope, get an instance of our database context.
     // Through the using keyword, we make sure to dispose it after we are done.
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
-    
+
     // Wiping the database
-    //DbInitializer.WipeDatabase(context);
-    
+    if (args.Contains("--test"))
+    {
+        DbInitializer.WipeDatabase(context);
+    }
+
     // Execute the migration from code.
-    try {
+    try
+    {
         context.Database.Migrate();
-    } catch (Exception ex) {
+    }
+    catch (Exception ex)
+    {
         Console.WriteLine(ex.Message);
     }
+
     DbInitializer.SeedDatabase(context);
 }
 
@@ -61,7 +68,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-else {
+else
+{
     app.UseMigrationsEndPoint();
 }
 
