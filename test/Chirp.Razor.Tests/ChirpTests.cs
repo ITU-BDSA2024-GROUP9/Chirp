@@ -211,6 +211,23 @@ public class UnitTests : IDisposable
         Assert.Equal("Helge", result.UserName);
         Assert.NotEmpty(result.Cheeps);
     }
+
+    [Xunit.Theory]
+    [InlineData("Every word I say to them ahead, yet with their fists and sticks.")]
+    [InlineData("We will leave the metropolis at this point of view you will do good by stealth.")]
+    [InlineData("What was the name of Murphy had given him a coat, which was stolen?")]
+    public void GetAllCheepsInTheDatabase(string text)
+    {
+        // Arrange
+        
+        // Act
+        var result = _cheepService.GetCheeps();
+        // Assert
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Contains(result, c => c.Text == text);
+    }
+
     
     [Xunit.Theory]
     [InlineData("Hej med dig, det her er en test")]
