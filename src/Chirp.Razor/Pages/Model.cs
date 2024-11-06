@@ -30,48 +30,30 @@ public class Model : PageModel
     //Ideally querying slices instead of taking the whole thing.
     public void PaginateCheeps(int queryPage)
     {
-        Cheeps = _service.GetCheeps();
-        Paginate(queryPage);
+        PageNumber = queryPage;
+        Cheeps = _service.GetCheeps(queryPage);
+        TotalPages = PageAmount(_service.GetCheepCount());
     }
 
     public void PaginateCheeps(int queryPage, string authorID)
     {
-        Cheeps = _service.GetCheepsFromAuthorByID(authorID);
-        Paginate(queryPage);
-        Author = _service.GetAuthorByID(authorID);
+        PageNumber = queryPage;
+        Cheeps = _service.GetCheepsFromAuthorByID(authorID, queryPage);
+        TotalPages = PageAmount(_service.GetCheepCountByID(authorID));
+        Author = Cheeps[0].Author;
     }
 
     public void PaginateCheepsByName(int queryPage, string authorName)
     {
-        Cheeps = _service.GetCheepsFromAuthorByName(authorName);
-        Paginate(queryPage);
-        Author = _service.GetAuthorByName(authorName);
-    }
-
-    private void Paginate(int queryPage)
-    {
         PageNumber = queryPage;
-        TotalPages = PageAmount();
-        var startCheep = (PageNumber-1) * 32; //There is no page 0.
-        var endCheep = startCheep + 32 >= Cheeps.Count ? Cheeps.Count : startCheep+32;
-        CheepRange = new Range(startCheep, endCheep);
-    }
-
-    private int ParsePageNumber(string? queryPage)
-    {
-        if (int.TryParse(queryPage, out var page))
-        {
-            if (0 <= page && page <= TotalPages)
-            {
-                return page;
-            }
-        }
-        return 1;
+        TotalPages = PageAmount(_service.GetCheepByName(authorName));
+        Cheeps = _service.GetCheepsFromAuthorByName(authorName, queryPage);
+        Author = Cheeps[0].Author;
     }
     
-    private int PageAmount()
+    private int PageAmount(int totalCheeps)
     {
-        return (int) Math.Ceiling(1.0 * Cheeps.Count / 32);
+        return (int) Math.Ceiling(1.0 * totalCheeps / 32);
     }
 
     public IActionResult OnPost()
