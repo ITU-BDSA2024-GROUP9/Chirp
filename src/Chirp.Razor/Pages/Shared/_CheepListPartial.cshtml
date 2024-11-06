@@ -8,8 +8,12 @@
 }
 <style>
     .holder {
-        --is-first-page: @isFirstPage;
-        --is-last-page: @isLastPage;
+        --is-first-page:
+            @isFirstPage
+        ;
+        --is-last-page:
+            @isLastPage
+        ;
     }
 </style>
 
@@ -20,13 +24,13 @@
         @foreach (var cheep in Model.Cheeps)
         {
             <li>
+                <strong>
+                    <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
+                </strong>
                 <p>
-                    <strong>
-                        <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                    </strong>
                     @cheep.Text
-                    <small>&mdash; @cheep.TimeStamp</small>
                 </p>
+                <small>@cheep.TimeStamp</small>
             </li>
         }
     </ul>
