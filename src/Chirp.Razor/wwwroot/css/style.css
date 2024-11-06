@@ -18,6 +18,11 @@ a:hover {
   text-decoration: underline;
 }
 
+div:has(> input + label) {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 input[type="email"],
 input[type="text"],
 input[type="tel"],
@@ -30,6 +35,13 @@ input[type="password"] {
   color: #ffffff;
   width: 100%;
   box-sizing: border-box;
+}
+
+input + label {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #8899a6;
 }
 
 input[type="email"]:focus,
@@ -103,29 +115,35 @@ div.page ul.cheeps li {
   border: 1px solid #38444d;
   border-radius: 8px;
   color: #ffffff;
+  overflow-y: hidden;
+  position: relative;
 }
 
 div.page ul.cheeps li p {
-  margin: 0;
+  margin: 10px 0;
+  text-wrap: wrap;
+  word-break: break-word;
+  overflow: hidden;
+  position: relative;
 }
 
-div.page ul.cheeps li p strong {
+div.page ul.cheeps li strong {
   display: block;
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 5px;
 }
 
-div.page ul.cheeps li p a {
+div.page ul.cheeps li a {
   color: #1DA1F2;
   text-decoration: none;
 }
 
-div.page ul.cheeps li p a:hover {
+div.page ul.cheeps li a:hover {
   text-decoration: underline;
 }
 
-div.page ul.cheeps li p small {
+div.page ul.cheeps li small {
   display: block;
   font-size: 12px;
   color: #8899a6;
