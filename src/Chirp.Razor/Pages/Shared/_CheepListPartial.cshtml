@@ -17,9 +17,8 @@
 {
 
     <ul id="messagelist" class="cheeps">
-        @for (int cheepAt = Model.CheepRange.Start.Value; cheepAt < Model.CheepRange.End.Value; cheepAt++)
+        @foreach (var cheep in Model.Cheeps)
         {
-            var cheep = Model.Cheeps[cheepAt];
             <li>
                 <p>
                     <strong>
