@@ -216,7 +216,7 @@ public class UnitTests : IDisposable
     [InlineData("Every word I say to them ahead, yet with their fists and sticks.")]
     [InlineData("We will leave the metropolis at this point of view you will do good by stealth.")]
     [InlineData("What was the name of Murphy had given him a coat, which was stolen?")]
-    public void GetAllCheepsInTheDatabase(string text)
+    public void TestGetAllCheepsInTheDatabase(string text)
     {
         // Arrange
         
@@ -230,7 +230,7 @@ public class UnitTests : IDisposable
 
     [Xunit.Theory]
     [InlineData("They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", "10")]
-    public void GetCheepsFromAuthorByID(string text, string id)
+    public void TestGetCheepsFromAuthorByID(string text, string id)
     {
         // Arrange
         // Act
@@ -239,6 +239,19 @@ public class UnitTests : IDisposable
         Assert.NotNull(result);
         Assert.NotEmpty(result);
         Assert.Contains(result, c => c.Text == text);
+    }
+
+    [Xunit.Theory]
+    [InlineData("10")]
+    public void TestGetCheepCountByID(string id)
+    {
+        // Arrange
+        var expectedCount = 359;
+        // Act
+        var result = _cheepService.GetCheepCountByID(id);
+        // Assert
+        Assert.Equal(expectedCount, result);
+        
     }
     
     [Xunit.Theory]
