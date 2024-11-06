@@ -11,10 +11,15 @@ namespace Chirp.Core.Interfaces
     {
         public List<CheepDTO> GetCheeps();
         public List<CheepDTO> GetCheepsFromAuthorByID(string authorId);
-        public List<CheepDTO> GetCheepsFromAuthorByName(string authorName);
+        public List<CheepDTO> GetCheepsFromAuthorByName(string authorName);        public List<CheepDTO> GetCheeps(int page);
+        public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page);
+        public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page);
         public Author? GetAuthorByID(string authorId);
         public Author? GetAuthorByName(string name);
         public Author? GetAuthorByEmail(string email);
         public int CreateCheep(CheepDTO cheep);
+        public int GetCheepCount();
+        public int GetCheepCountByID(string authorId);
+        public int GetCheepByName(string authorName);
     }
 }
