@@ -511,11 +511,11 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Xunit.Theory]
-    [InlineData("Jacqualine Gilcoine", 10)]
-    [InlineData("Quintin Sitts", 5)]
-    public async void CanSeePrivateTimeline(string author, int authorId)
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Quintin Sitts")]
+    public async void CanSeePrivateTimeline(string author)
     {
-        var response = await _client.GetAsync($"/{authorId}");
+        var response = await _client.GetAsync($"/{author}");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         Assert.Contains("Chirp!", content);
