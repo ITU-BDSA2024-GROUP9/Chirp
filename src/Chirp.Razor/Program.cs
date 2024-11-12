@@ -17,7 +17,7 @@ builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString, b => b.MigrationsAssembly("Chirp.Razor")));
 
-builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ChirpDBContext>();
 
 
@@ -51,12 +51,16 @@ using (var scope = app.Services.CreateScope())
     } catch (Exception ex) {
         Console.WriteLine(ex.Message);
     }
-    DbInitializer.SeedDatabase(context);
+    if (app.Environment.IsDevelopment())
+        DbInitializer.WipeDatabase(context); // wipe db every time for dev
+    var authors = DbInitializer.SeedDatabase(context);
+    DbInitializer.SetAuthorPasswords(authors, scope.ServiceProvider);
 }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
+
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();

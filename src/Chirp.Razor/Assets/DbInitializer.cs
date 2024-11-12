@@ -1,11 +1,44 @@
 using System;
+using System.Diagnostics;
 using Chirp.Core.Classes;
 using Chirp.Core.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 public static class DbInitializer
 {
-    public static void SeedDatabase(ChirpDBContext chirpContext)
+    public static async void SetAuthorPasswords(List<Author> authors, IServiceProvider serviceProvider)
     {
+        
+        var userManager = serviceProvider.GetService<UserManager<Author>>();
+        if (userManager == null) return;
+
+        foreach (var author in authors)
+        {
+            string token;
+            switch (author.UserName)
+            {
+                case "Helge":
+                    token = await userManager.GeneratePasswordResetTokenAsync(author);
+                    await userManager.ResetPasswordAsync(author, token, "LetM31n!");
+                    break;
+                case "Adrian":
+                    token = await userManager.GeneratePasswordResetTokenAsync(author);
+                    await userManager.ResetPasswordAsync(author, token, "M32Want_Access");
+                    break;
+                default:
+                    token = await userManager.GeneratePasswordResetTokenAsync(author);
+                    await userManager.ResetPasswordAsync(author, token, "Password123!");
+                    break;
+            }
+            
+            
+        }
+
+    }
+    public static List<Author> SeedDatabase(ChirpDBContext chirpContext)
+    {
+        var authors = new List<Author>();
+        
         if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
         {
             var a1 = new Author() { Id = "1", UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
@@ -21,7 +54,7 @@ public static class DbInitializer
             var a11 = new Author() { Id = "11", UserName = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
             var a12 = new Author() { Id = "12", UserName = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>() };
 
-            var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
+            authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
 
             var c1 = new Cheep() { CheepId = 1, AuthorId = a10.Id, Author = a10, Text = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
             var c2 = new Cheep() { CheepId = 2, AuthorId = a10.Id, Author = a10, Text = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") };
@@ -699,10 +732,14 @@ public static class DbInitializer
             chirpContext.Cheeps.AddRange(cheeps);
             chirpContext.SaveChanges();
         }
+
+        return authors;
+
     }
 
     public static void WipeDatabase(ChirpDBContext context)
     {
+        Console.WriteLine("Wiping DB!");
         context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
     }
