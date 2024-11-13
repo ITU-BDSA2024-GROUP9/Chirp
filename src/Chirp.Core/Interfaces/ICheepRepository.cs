@@ -11,6 +11,8 @@ public interface ICheepRepository {
     public bool IsFollowing(Author followerAuthor, Author followedAuthor);
 
     public void Follow(Author followerAuthor, Author followedAuthor);
+    public List<Author> getFollowedInCheeps(Author follower);
+
 
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page);        
     public List<CheepDTO> GetCheeps(int page);
