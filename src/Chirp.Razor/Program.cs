@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Chirp.Core.Classes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using AspNet.Security.OAuth.GitHub;
+using Chirp.Razor.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
