@@ -10,6 +10,7 @@ namespace Chirp.Core.Interfaces
     public interface ICheepService//<T> where T : IPost
     {     
         public List<CheepDTO> GetCheeps(int page);
+        public bool IsFollowing(Author followerAuthor, Author followedAuthor);
         public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page);
         public List<CheepDTO> GetCheepsFromFollowed(string authorId);
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page);

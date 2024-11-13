@@ -39,6 +39,11 @@ namespace Chirp.Razor.Services
             return _repository.CreateCheep(newCheep);
         }
 
+        public bool IsFollowing(Author followerAuthor, Author followedAuthor)
+        {
+            return _repository.IsFollowing(followerAuthor, followedAuthor);
+        }
+
         public Author GetAuthorByID(string authorId)
         {
             return _repository.GetAuthorByID(authorId);
