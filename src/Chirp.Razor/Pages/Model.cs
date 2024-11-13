@@ -36,9 +36,10 @@ public class Model : PageModel
         CheepRange = new Range(0, Cheeps.Count);
     }
 
-    public void FollowAuthor()
+    public string Follow(string follower, string followed)
     {
-        
+        _service.Follow(_service.GetAuthorByID(follower), _service.GetAuthorByID(followed));
+        return "";
     }
 
     public void PaginateCheeps(int queryPage, string authorID)

@@ -107,6 +107,13 @@ public class CheepRepository : ICheepRepository
         return followerAuthor.Following.Any(f => f.FollowedId == followedAuthor.Id);    
     }
 
+    public void Follow(Author followerAuthor, Author followedAuthor)
+    {
+        var followEntry = new Follow() { Followed = followedAuthor, Follower = followerAuthor, FollowedId = followedAuthor.Id, FollowerId = followerAuthor.Id};
+        _dbContext.Follows.Add(followEntry);
+    }
+
+
     public List<CheepDTO> GetCheepsFromAuthorByID(string authorID, int page)
     {
         var cheeps = _dbContext.Cheeps
