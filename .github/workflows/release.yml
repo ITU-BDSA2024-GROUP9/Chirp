@@ -27,11 +27,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       env:
+        GITHUBCLIENTID: ${{ secrets.GITHUBCLIENTID }}
+        GITHUBCLIENTSECRET: ${{ secrets.GITHUBCLIENTSECRET }}
         CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
       env:
+        GITHUBCLIENTID: ${{ secrets.GITHUBCLIENTID }}
+        GITHUBCLIENTSECRET: ${{ secrets.GITHUBCLIENTSECRET }}
         CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
 
     - name: Publish
