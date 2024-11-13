@@ -52,6 +52,13 @@ public class Model : PageModel
         Console.WriteLine("Follow might have been a success");
         return RedirectToPage();
     }
+    
+    public IActionResult OnPostUnfollow(string unfollowed)
+    {
+        _service.Unfollow(_service.GetAuthorByName(User.Identity.Name), _service.GetAuthorByName(unfollowed));
+        Console.WriteLine("Unfollow might have been a success");
+        return RedirectToPage();
+    }
 
     public void PaginateCheeps(int queryPage, string authorID)
     {
