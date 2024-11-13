@@ -79,6 +79,11 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public List<Author> getFollowedInCheeps(Author follower)
+    {
+        return _dbContext.Follows.Where(f => f.Followed == follower).Select(f => f.Follower).Distinct().ToList();
+    }
+
     public List<CheepDTO> GetCheepsFromFollowed(string authorId)
     {
         return null;
