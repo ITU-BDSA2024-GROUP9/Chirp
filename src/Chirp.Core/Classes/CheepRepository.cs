@@ -102,6 +102,10 @@ public class CheepRepository : ICheepRepository
             .ToList();
         return cheeps;
     }
+        
+    public bool IsFollowing(Author followerAuthor, Author followedAuthor){
+        return followerAuthor.Following.Any(f => f.FollowedId == followedAuthor.Id);    
+    }
 
     public List<CheepDTO> GetCheepsFromAuthorByID(string authorID, int page)
     {
