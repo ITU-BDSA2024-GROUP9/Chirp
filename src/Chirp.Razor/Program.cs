@@ -50,8 +50,8 @@ using (var scope = app.Services.CreateScope())
     } catch (Exception ex) {
         Console.WriteLine(ex.Message);
     }
-    //if (app.Environment.IsDevelopment())
-        //DbInitializer.WipeDatabase(context); // wipe db every time for dev
+    if (app.Environment.IsDevelopment())
+        DbInitializer.WipeDatabase(context);
     var authors = DbInitializer.SeedDatabase(context);
     DbInitializer.SetAuthorPasswords(authors, scope.ServiceProvider);
 }
