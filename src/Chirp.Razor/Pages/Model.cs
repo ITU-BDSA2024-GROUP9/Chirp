@@ -70,12 +70,12 @@ public class Model : PageModel
 
     public string isFollower(string userid, string author_userid)
     {
-        /**
-        if (_service.GetAuthorByID("userid").Following.Contains(author_userid))
+        
+        if (_service.IsFollowing(_service.GetAuthorByID(userid), _service.GetAuthorByID(author_userid)))
         {
             return "Unfollow";
         }
-        **/
+        
         return "Follow";
     }
 
