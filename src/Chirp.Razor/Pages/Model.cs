@@ -53,11 +53,27 @@ public class Model : PageModel
         TotalPages = PageAmount(_service.GetCheepByName(authorName));
         Cheeps = _service.GetCheepsFromAuthorByName(authorName, queryPage);
     }
-    
+
+    public string getAuthorID(string authorName)
+    {
+        return _service.GetAuthorByName(authorName).Id;
+    }
+
     private int PageAmount(int totalCheeps)
     {
         int pages = (int) Math.Ceiling(1.0 * totalCheeps / 32);
         return pages <= 0 ? 1 : pages;
+    }
+
+    public string isFollower(string userid, string author_userid)
+    {
+        /**
+        if (_service.GetAuthorByID("userid").Following.Contains(author_userid))
+        {
+            return "Unfollow";
+        }
+        **/
+        return "Follow";
     }
 
     public IActionResult OnPostCreateCheep()
