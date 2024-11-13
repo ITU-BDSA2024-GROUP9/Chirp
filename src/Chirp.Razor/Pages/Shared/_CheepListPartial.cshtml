@@ -15,6 +15,17 @@
             @isLastPage
         ;
     }
+    .follow-btn {
+        width: auto; /* Adjusts to text width */
+        height: auto; /* Adjusts to text height */
+        padding: 5px 15px; /* Adds padding for more space around the text */
+        font-size: 11px; /* Adjust as needed */
+        text-align: center;
+        border: none;
+        color: black;
+        cursor: pointer;
+        border-radius: 5px; /* Rounded corners */
+    }
 </style>
 
 @if (Model.Cheeps.Any())
@@ -26,6 +37,7 @@
             <li>
                 <strong>
                     <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
+                    <button class="follow-btn" align="right">Follow</button>
                 </strong>
                 <p>
                     @cheep.Text
