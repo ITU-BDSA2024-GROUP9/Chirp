@@ -50,6 +50,12 @@ namespace Chirp.Razor.Services
             _repository.Follow(followerAuthor, followedAuthor);
         }
 
+        public void Unfollow(Author followerAuthor, Author followedAuthor)
+        {
+            _repository.Unfollow(followerAuthor, followedAuthor);
+        }
+
+
         public Author GetAuthorByID(string authorId)
         {
             return _repository.GetAuthorByID(authorId);

@@ -9,6 +9,8 @@ public interface ICheepRepository {
     public bool IsFollowing(Author followerAuthor, Author followedAuthor);
 
     public void Follow(Author followerAuthor, Author followedAuthor);
+    public void Unfollow(Author followerAuthor, Author followedAuthor);
+
     public List<Author> getFollowedInCheeps(Author follower);
 
 

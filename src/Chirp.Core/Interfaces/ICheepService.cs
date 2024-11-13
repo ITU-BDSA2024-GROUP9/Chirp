@@ -12,6 +12,8 @@ namespace Chirp.Core.Interfaces
         public List<CheepDTO> GetCheeps(int page);
         public bool IsFollowing(Author followerAuthor, Author followedAuthor);
         public void Follow(Author followerAuthor, Author followedAuthor);
+        public void Unfollow(Author followerAuthor, Author followedAuthor);
+
         public List<Author> getFollowedInCheeps(Author follower);
 
         public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page);

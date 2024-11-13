@@ -112,6 +112,12 @@ public class CheepRepository : ICheepRepository
         _dbContext.Follows.Add(followEntry);
         _dbContext.SaveChanges();
     }
+    public void Unfollow(Author followerAuthor, Author followedAuthor)
+    {
+        var followEntry = new Follow() { Followed = followedAuthor, Follower = followerAuthor, FollowedId = followedAuthor.Id, FollowerId = followerAuthor.Id};
+        _dbContext.Follows.Remove(followEntry);
+        _dbContext.SaveChanges();
+    }
 
 
     public List<CheepDTO> GetCheepsFromAuthorByID(string authorID, int page)
