@@ -203,7 +203,7 @@ public class UnitTests : IDisposable
         
         // Act
         _cheepService.CreateCheep(cheep);
-        var result = _cheepService.GetCheepsFromAuthorByID(authorID);
+        var result = _cheepService.GetCheepsFromAuthorByID(authorID, 1);
         
         // Assert
         Assert.NotEmpty(result);
@@ -247,7 +247,7 @@ public class UnitTests : IDisposable
         // Act
         _cheepRepo.CreateAuthor(author);
         _cheepService.CreateCheep(cheep);
-        var result = _cheepService.GetCheepsFromAuthorByName(author.UserName);
+        var result = _cheepService.GetCheepsFromAuthorByName(author.UserName, 1);
        
         // Assert
         Assert.NotEmpty(result);
@@ -264,7 +264,7 @@ public class UnitTests : IDisposable
         
         // Act
         Author author = _cheepRepo.GetAuthorByID(id);
-        List<CheepDTO> authorCheeps = _cheepRepo.ReadCheepsByID(author.Id);
+        List<CheepDTO> authorCheeps = _cheepRepo.GetCheepsFromAuthorByID(author.Id, 1);
         // Assert
         bool success = true;
 
@@ -309,9 +309,9 @@ public class UnitTests : IDisposable
         // Act
         _cheepRepo.CreateAuthor(author);
         var cheepID = _cheepService.CreateCheep(originalCheep);
-        var originalResult = _cheepService.GetCheepsFromAuthorByID(author.Id)[0].Text;
+        var originalResult = _cheepService.GetCheepsFromAuthorByID(author.Id, 1)[0].Text;
         _cheepService.UpdateCheep(updatedCheep, cheepID);
-        var updatedResult = _cheepService.GetCheepsFromAuthorByID(author.Id)[0].Text;
+        var updatedResult = _cheepService.GetCheepsFromAuthorByID(author.Id, 1)[0].Text;
         // Assert
         Assert.Equal(originalText, originalResult);
         Assert.Equal(updatedText, updatedResult);
@@ -325,7 +325,7 @@ public class UnitTests : IDisposable
         // Arrange
         
         // Act
-        var result = _cheepService.GetCheepsFromAuthorByID(authorId);
+        var result = _cheepService.GetCheepsFromAuthorByID(authorId, 1);
         // Assert
         Assert.NotEmpty(result);
         Assert.Equal(result[0].Author.Id, authorId);
@@ -338,7 +338,7 @@ public class UnitTests : IDisposable
         // Arrange
         
         // Act
-        var result = _cheepService.GetCheepsFromAuthorByName(name);
+        var result = _cheepService.GetCheepsFromAuthorByName(name, 1);
         // Assert
         Assert.NotEmpty(result);
         Assert.Equal(result[0].Author.UserName, name);
@@ -639,7 +639,7 @@ public class EndToEndTests : PageTest
         Assert.NotNull(result);
 
         //Get cheeps from the author.
-        var cheeps = _cheepService.GetCheepsFromAuthorByID(result.Id);
+        var cheeps = _cheepService.GetCheepsFromAuthorByID(result.Id, 1);
 
         //Assert that the cheep exists in the database
         bool cheepExists = false;
