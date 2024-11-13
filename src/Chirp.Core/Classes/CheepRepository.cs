@@ -81,7 +81,12 @@ public class CheepRepository : ICheepRepository
 
     public List<Author> getFollowedInCheeps(Author follower)
     {
-        return _dbContext.Follows.Where(f => f.Follower == follower).Select(f => f.Followed).Distinct().ToList();
+        var authors = _dbContext.Follows
+            .Where(f => f.Follower == follower)
+            .Select(f => f.Followed)
+            .Distinct()
+            .ToList();
+        return authors;
     }
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
     {
@@ -97,6 +102,27 @@ public class CheepRepository : ICheepRepository
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
+            .Take(32)
+            .ToList();
+        return cheeps;
+    }
+
+    public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, int pageNumber)
+    {
+        var authorIds = followedAuthors.Select(a => a.Id).ToList();
+        
+        var cheeps = _dbContext.Cheeps
+            .Include(c => c.Author)
+            .Where(c => authorIds.Contains(c.Author.Id))
+            .Select(c => new CheepDTO
+            {
+                CheepId = c.CheepId,
+                Text = c.Text,
+                TimeStamp = c.TimeStamp,
+                Author = c.Author
+            })
+            .OrderByDescending(c => c.TimeStamp)
+            .Skip((pageNumber - 1) * 32)
             .Take(32)
             .ToList();
         return cheeps;
