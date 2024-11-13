@@ -79,6 +79,11 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public List<CheepDTO> GetCheepsFromFollowed(string authorId)
+    {
+        return null;
+    }
+
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
     {
         var cheeps = _dbContext.Cheeps

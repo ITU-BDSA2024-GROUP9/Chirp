@@ -37,7 +37,15 @@
             <li>
                 <strong>
                     <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                    <button class="follow-btn" align="right">Follow</button>
+                    <button onclick="handleButtonClick()" class="follow-btn" align="right">Follow</button>
+                    <script>
+                        function handleButtonClick() {
+                            //Do something in db.
+                            @Model.
+                            alert("Button was clicked!");
+                            // Add more JavaScript logic here if needed
+                        }
+                    </script>
                 </strong>
                 <p>
                     @cheep.Text

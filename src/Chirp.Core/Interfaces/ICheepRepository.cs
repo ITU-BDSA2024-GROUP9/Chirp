@@ -6,6 +6,8 @@ public interface ICheepRepository {
     public int GetCheepCountByID(string authorId);
     public int GetCheepCountByName(string authorName); 
     public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page);
+    public List<CheepDTO> GetCheepsFromFollowed(string authorId);
+
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page);        
     public List<CheepDTO> GetCheeps(int page);
     public CheepDTO GetCheepByID(int cheepID);

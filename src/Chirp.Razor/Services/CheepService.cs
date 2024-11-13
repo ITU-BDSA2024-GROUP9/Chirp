@@ -23,6 +23,11 @@ namespace Chirp.Razor.Services
         {
             return _repository.GetCheepsFromAuthorByID(authorId, page);
         }
+        
+        public List<CheepDTO> GetCheepsFromFollowed(string authorId)
+        {
+            return _repository.GetCheepsFromFollowed(authorId);
+        }
 
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
         {
