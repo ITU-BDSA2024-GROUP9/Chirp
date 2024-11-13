@@ -76,6 +76,16 @@ public class Model : PageModel
         Cheeps = _service.GetCheepsFromAuthorByName(authorName, queryPage);
     }
 
+    public void PaginateCheepsByFollowers(int queryPage, string authorName)
+    {
+        var author = _service.GetAuthorByName(authorName);
+        var follows = _service.getFollowedInCheeps(author);
+        PageNumber = queryPage;
+        Author = _service.GetAuthorByName(authorName);
+        TotalPages = PageAmount(_service.GetCheepByName(authorName));
+        Cheeps = _service.GetCheepsFromAuthors(follows, queryPage);
+    }
+
     public string getAuthorID(string authorName)
     {
         return _service.GetAuthorByName(authorName).Id;
