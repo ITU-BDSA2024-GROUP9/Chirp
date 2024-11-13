@@ -81,14 +81,8 @@ public class CheepRepository : ICheepRepository
 
     public List<Author> getFollowedInCheeps(Author follower)
     {
-        return _dbContext.Follows.Where(f => f.Followed == follower).Select(f => f.Follower).Distinct().ToList();
+        return _dbContext.Follows.Where(f => f.Follower == follower).Select(f => f.Followed).Distinct().ToList();
     }
-
-    public List<CheepDTO> GetCheepsFromFollowed(string authorId)
-    {
-        return null;
-    }
-
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
     {
         var cheeps = _dbContext.Cheeps
@@ -116,6 +110,7 @@ public class CheepRepository : ICheepRepository
     {
         var followEntry = new Follow() { Followed = followedAuthor, Follower = followerAuthor, FollowedId = followedAuthor.Id, FollowerId = followerAuthor.Id};
         _dbContext.Follows.Add(followEntry);
+        _dbContext.SaveChanges();
     }
 
 
