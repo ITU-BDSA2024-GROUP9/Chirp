@@ -13,6 +13,8 @@ public class ChirpDBContext : IdentityDbContext<Author>
 	
 	public DbSet<Cheep> Cheeps { get; set; }
 	public DbSet<Author> Authors { get; set; }
+	public DbSet<Follow> Follows { get; set; }
+	
 	
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -29,7 +31,14 @@ public class ChirpDBContext : IdentityDbContext<Author>
 			.Property(c => c.Text)
 			.HasMaxLength(160)
 			.IsRequired();
-
-		// Additional configurations can be added here
+		
+		// Setting the composite key for the follows table
+		modelBuilder.Entity<Follow>()
+			.HasKey(f => new { f.FollowerId, f.FollowedId });
+		
+		modelBuilder.Entity<Follow>()
+			.HasOne(f => f.Follower) // The `Follower` navigation property in `Follow`.
+			.WithMany(a => a.Following) // The `Following` collection in the `Author` class.
+			.HasForeignKey(f => f.FollowerId); // `FollowerId` is the foreign key in `Follow`.
 	}
 }
