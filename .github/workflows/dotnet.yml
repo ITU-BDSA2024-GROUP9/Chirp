@@ -34,6 +34,6 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       env:
-        GitHub__ClientId: ${{ secrets.GITHUBCLIENTID }}
-        GitHub__ClientSecret: ${{ secrets.GITHUBCLIENTSECRET }}
+        GITHUBCLIENTID: ${{ secrets.GITHUBCLIENTID }}
+        GITHUBCLIENTSECRET: ${{ secrets.GITHUBCLIENTSECRET }}
         CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
