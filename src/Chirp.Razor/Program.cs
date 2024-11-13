@@ -30,6 +30,7 @@ builder.Services.AddAuthentication()
     {
         o.ClientId = builder.Configuration["GITHUBCLIENTID"]; // Need to default to something ??
         o.ClientSecret = builder.Configuration["GITHUBCLIENTSECRET"];
+        o.Scope.Add("user:email");
         // o.CallbackPath = "/signin-github";
     });
 
