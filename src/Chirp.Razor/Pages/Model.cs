@@ -14,7 +14,7 @@ public class Model : PageModel
 	[Display(Name = "Message Text")]
 	public string Message { get; set; }
 
-    private readonly ICheepService _service;
+    protected readonly ICheepService _service;
 
     public int PageNumber { get; set; }
 
@@ -23,8 +23,7 @@ public class Model : PageModel
     public List<CheepDTO> Cheeps { get; set; }
     public Author? Author { get; set; }
     public Author? userAuthor { get; set; }
-
-    public List<Author> followedAuthors;
+    public List<Author> followedAuthors { get; set; }
 
     public Model(ICheepService service)
     {
