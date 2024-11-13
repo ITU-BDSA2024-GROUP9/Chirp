@@ -16,4 +16,9 @@ public class PublicModel : Model
         base.PaginateCheeps(page);
         return Page();
     }
+
+    public IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+    {
+        return base.OnPostDeleteCheep(cheepId, page);
+    }
 }

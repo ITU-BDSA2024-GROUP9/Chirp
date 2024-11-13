@@ -35,9 +35,9 @@ public class CheepRepository : ICheepRepository
             Text = newCheep.Text,
             TimeStamp = DateTime.Now
         };
-        
+
         foundAuthor.Cheeps.Add(cheep);
-    
+
         _dbContext.SaveChanges();
         return cheep.CheepId;
     }
@@ -61,27 +61,13 @@ public class CheepRepository : ICheepRepository
             .Count(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName);
     }
 
-    public List<CheepDTO> ReadCheeps()
+    public List<CheepDTO> GetCheeps(int page)
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
             .Select(c => new CheepDTO
             {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .OrderByDescending(c => c.TimeStamp)
-            .ToList();
-        return cheeps;
-    }
-
-    public List<CheepDTO> ReadCheeps(int page)
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Select(c => new CheepDTO
-            {
+                CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
@@ -93,29 +79,14 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public List<CheepDTO> ReadCheepsByName(string authorName)
+    public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
             .Where(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName)
             .Select(c => new CheepDTO
             {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .OrderByDescending(c => c.TimeStamp)
-            .ToList();
-        return cheeps;
-    }
-
-    public List<CheepDTO> ReadCheepsByName(string authorName, int page)
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Where(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName)
-            .Select(c => new CheepDTO
-            {
+                CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
@@ -126,30 +97,15 @@ public class CheepRepository : ICheepRepository
             .ToList();
         return cheeps;
     }
-    
-    public List<CheepDTO> ReadCheepsByID(string authorID)
-    {
-        var cheeps = _dbContext.Cheeps
-            .Include(c => c.Author)
-            .Where(c => c.Author.Id == authorID)
-            .Select(c => new CheepDTO
-            {
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author
-            })
-            .OrderByDescending(c => c.TimeStamp)
-            .ToList();
-        return cheeps;
-    }
 
-        public List<CheepDTO> ReadCheepsByID(string authorID, int page)
+    public List<CheepDTO> GetCheepsFromAuthorByID(string authorID, int page)
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
             .Where(c => c.Author.Id == authorID)
             .Select(c => new CheepDTO
             {
+                CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
                 Author = c.Author
@@ -159,6 +115,35 @@ public class CheepRepository : ICheepRepository
             .Take(32)
             .ToList();
         return cheeps;
+    }
+
+    public CheepDTO GetCheepByID(int cheepID)
+    {
+        var cheep = _dbContext.Cheeps
+            .Include(c => c.Author)
+            .FirstOrDefault(c => c.CheepId == cheepID);
+        if (cheep == null)
+        {
+            throw new ArgumentException("Cheep not found.");
+        }
+
+        return new CheepDTO
+        {
+            CheepId = cheep.CheepId,
+            Text = cheep.Text,
+            TimeStamp = cheep.TimeStamp,
+            Author = cheep.Author
+        };
+    }
+
+    public void DeleteCheep(int cheepID)
+    {
+        var cheep = _dbContext.Cheeps.Find(cheepID);
+        if (cheep != null)
+        {
+            _dbContext.Cheeps.Remove(cheep);
+            _dbContext.SaveChanges();
+        }
     }
 
 

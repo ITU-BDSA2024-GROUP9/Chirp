@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 namespace Chirp.Core.Interfaces
 {
     public interface ICheepService//<T> where T : IPost
-    {
-        public List<CheepDTO> GetCheeps();
-        public List<CheepDTO> GetCheepsFromAuthorByID(string authorId);
-        public List<CheepDTO> GetCheepsFromAuthorByName(string authorName);        public List<CheepDTO> GetCheeps(int page);
+    {     
+        public List<CheepDTO> GetCheeps(int page);
         public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page);
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page);
+        public CheepDTO GetCheepByID(int cheepId);
         public Author? GetAuthorByID(string authorId);
         public Author? GetAuthorByName(string name);
         public Author? GetAuthorByEmail(string email);
@@ -21,5 +20,7 @@ namespace Chirp.Core.Interfaces
         public int GetCheepCount();
         public int GetCheepCountByID(string authorId);
         public int GetCheepByName(string authorName);
+        public void UpdateCheep(CheepDTO cheep, int cheepId);
+        public void DeleteCheep(int cheepId);
     }
 }

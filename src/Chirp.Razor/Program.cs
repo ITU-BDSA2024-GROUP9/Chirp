@@ -43,9 +43,6 @@ using (var scope = app.Services.CreateScope())
     // Through the using keyword, we make sure to dispose it after we are done.
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
     
-    // Wiping the database
-    // DbInitializer.WipeDatabase(context);
-    
     // Execute the migration from code.
     try {
         context.Database.Migrate();

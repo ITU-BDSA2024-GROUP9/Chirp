@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Chirp.Core.Classes;
 
 public class CheepDTO {
+    public required int CheepId { get; set; }
     [Required]
     [StringLength(160)]
     public required string Text { get; set; }

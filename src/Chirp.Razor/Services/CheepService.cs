@@ -13,44 +13,25 @@ namespace Chirp.Razor.Services
         {
             _repository = repository;
         }
-        public List<CheepDTO> GetCheeps()
-        {
-            return _repository.ReadCheeps();
-        }
 
         public List<CheepDTO> GetCheeps(int page)
         {
-            return _repository.ReadCheeps(page);
-        }
-
-        public List<CheepDTO> GetCheepsFromAuthorByID(string authorId)
-        {
-            return _repository.ReadCheepsByID(authorId);
+            return _repository.GetCheeps(page);
         }
 
         public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page)
         {
-            return _repository.ReadCheepsByID(authorId, page);
-        }
-
-        public List<CheepDTO> GetCheepsFromAuthorByName(string authorName)
-        {
-            return _repository.ReadCheepsByName(authorName);
+            return _repository.GetCheepsFromAuthorByID(authorId, page);
         }
 
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
         {
-            return _repository.ReadCheepsByName(authorName, page);
+            return _repository.GetCheepsFromAuthorByName(authorName, page);
         }
 
         public int CreateCheep(CheepDTO newCheep)
         {
             return _repository.CreateCheep(newCheep);
-        }
-
-        public void UpdateCheep(CheepDTO newCheep, int cheepID)
-        {
-            _repository.UpdateCheep(newCheep, cheepID);
         }
 
         public Author GetAuthorByID(string authorId)
@@ -81,6 +62,21 @@ namespace Chirp.Razor.Services
         public int GetCheepByName(string authorName)
         {
             return _repository.GetCheepCountByName(authorName);
+        }
+
+        public void UpdateCheep(CheepDTO newCheep, int cheepID)
+        {
+            _repository.UpdateCheep(newCheep, cheepID);
+        }
+
+        public void DeleteCheep(int cheepId)
+        {
+            _repository.DeleteCheep(cheepId);
+        }
+
+        public CheepDTO GetCheepByID(int cheepId)
+        {
+            return _repository.GetCheepByID(cheepId);
         }
     }
 }

@@ -384,3 +384,58 @@ ul.nav li a:hover {
   margin: 0 10px;
   text-transform: capitalize;
 }
+
+.cheep-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: #8899a6;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #192734;
+  min-width: 120px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  border: 1px solid #38444d;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu form {
+  margin: 0;
+}
+
+.dropdown-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: #e0245e;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-menu button:hover {
+  background-color: #22303c;
+}

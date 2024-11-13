@@ -9,14 +9,16 @@ public class UserTimelineModel : Model
 {
     public UserTimelineModel(ICheepService service) : base(service) { }
 
-
-
     public ActionResult OnGet([FromQuery] int page, string author)
     {
         if (page < 1) page = 1;
         base.PaginateCheepsByName(page, author);
         
-        
         return Page();
+    }
+
+    public IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+    {
+        return base.OnPostDeleteCheep(cheepId, page);
     }
 }

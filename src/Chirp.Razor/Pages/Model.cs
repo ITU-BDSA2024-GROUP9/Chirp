@@ -33,6 +33,7 @@ public class Model : PageModel
         PageNumber = queryPage;
         Cheeps = _service.GetCheeps(queryPage);
         TotalPages = PageAmount(_service.GetCheepCount());
+        CheepRange = new Range(0, Cheeps.Count);
     }
 
     public void PaginateCheeps(int queryPage, string authorID)
@@ -57,7 +58,7 @@ public class Model : PageModel
         return pages <= 0 ? 1 : pages;
     }
 
-    public IActionResult OnPost()
+    public IActionResult OnPostCreateCheep()
     {
         if (!ModelState.IsValid)
         {
@@ -81,12 +82,38 @@ public class Model : PageModel
         }
         var cheep = new CheepDTO
         {
+            CheepId = 0,
             Text = Message,
             Author = author,
             TimeStamp = DateTimeOffset.Now.DateTime
         };
 
         _service.CreateCheep(cheep);
+
+        return RedirectToPage();
+    }
+
+    protected IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+    {
+        ModelState.Remove("Message");
+        if (!ModelState.IsValid)
+        {
+            PaginateCheeps(page);
+            return Page();
+        }
+
+        if (User.Identity?.Name == null)
+        {
+            return RedirectToPage("/Error");
+        }
+
+        var cheep = _service.GetCheepByID(cheepId);
+        if (cheep == null || cheep.Author.UserName != User.Identity.Name)
+        {
+            return RedirectToPage("/Error");
+        }
+
+        _service.DeleteCheep(cheepId);
 
         return RedirectToPage();
     }

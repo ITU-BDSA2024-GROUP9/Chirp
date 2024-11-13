@@ -31,6 +31,21 @@
                     @cheep.Text
                 </p>
                 <small>@cheep.TimeStamp</small>
+                @if (User.Identity.IsAuthenticated && User.Identity.Name == cheep.Author.UserName)
+                {
+                    <div class="cheep-actions">
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" onclick="toggleDropdown(this)">⋯</button>
+                            <div class="dropdown-menu">
+                                <form method="post" asp-page-handler="DeleteCheep">
+                                    <input type="hidden" name="cheepId" value="@cheep.CheepId" />
+                                    <input type="hidden" name="page" value="@Model.PageNumber" />
+                                    <button type="submit">Delete Cheep</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
             </li>
         }
     </ul>
@@ -44,3 +59,24 @@ else
     <span>Page @Model.PageNumber / @Model.TotalPages</span>
     <button onclick="window.location.href='?page=@nextPage'" disabled="@isLastPage" class="next">→</button>
 </div>
+
+@* @section Scripts { *@
+    <script>
+        function toggleDropdown(button) {
+            event.preventDefault();
+            const menu = button.nextElementSibling;
+            menu.classList.toggle('show');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                const dropdowns = document.getElementsByClassName('dropdown-menu');
+                for (const dropdown of dropdowns) {
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+@* } *@
