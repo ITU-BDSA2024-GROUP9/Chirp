@@ -44,6 +44,11 @@ namespace Chirp.Razor.Services
             return _repository.getFollowedInCheeps(follower);
         }
 
+        public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, int pageNumber)
+        {
+            return _repository.GetCheepsFromAuthors(followedAuthors, pageNumber);
+        }
+
 
         public void Follow(Author followerAuthor, Author followedAuthor)
         {
