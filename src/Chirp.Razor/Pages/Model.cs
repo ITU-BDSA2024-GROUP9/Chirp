@@ -22,24 +22,35 @@ public class Model : PageModel
     public Range CheepRange {get;set;}
     public List<CheepDTO> Cheeps { get; set; }
     public Author? Author { get; set; }
+    public Author? userAuthor { get; set; }
+
+    public List<Author> followedAuthors;
 
     public Model(ICheepService service)
     {
         _service = service;
+
     }
+
     //Ideally querying slices instead of taking the whole thing.
     public void PaginateCheeps(int queryPage)
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            userAuthor = _service.GetAuthorByName(User.Identity.Name);
+            followedAuthors = _service.getFollowedInCheeps(userAuthor);
+        }
         PageNumber = queryPage;
         Cheeps = _service.GetCheeps(queryPage);
         TotalPages = PageAmount(_service.GetCheepCount());
         CheepRange = new Range(0, Cheeps.Count);
     }
 
-    public string Follow(string follower, string followed)
+    public IActionResult OnPostFollow(string followed)
     {
-        _service.Follow(_service.GetAuthorByID(follower), _service.GetAuthorByID(followed));
-        return "";
+        _service.Follow(_service.GetAuthorByName(User.Identity.Name), _service.GetAuthorByName(followed));
+        Console.WriteLine("Follow might have been a success");
+        return RedirectToPage();
     }
 
     public void PaginateCheeps(int queryPage, string authorID)
