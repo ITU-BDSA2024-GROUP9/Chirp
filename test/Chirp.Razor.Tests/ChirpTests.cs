@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Formats.Asn1;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using Chirp.Core.Classes;
@@ -22,27 +23,36 @@ namespace Chirp.Razor.Tests;
 // ref: https://learn.microsoft.com/en-us/ef/core/testing/testing-with-the-database 
 public class TestDatabaseFixture : IDisposable
 {
-    private readonly SqliteConnection _connection;
-    private ChirpDBContext context;
+    public readonly SqliteConnection ConnectionString;
+    public readonly List<Author> Authors;
 
     public TestDatabaseFixture()
     {
-        _connection = new SqliteConnection("Filename=:memory:");
-        _connection.Open();
+        // Create an in-memory SQLite connection
+        ConnectionString = new SqliteConnection("Filename=:memory:");
+        ConnectionString.Open();
 
         var options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseSqlite(_connection)
+            .UseSqlite(ConnectionString)
             .Options;
 
         var context = new ChirpDBContext(options);
-        context.Database.EnsureCreated();
-        DbInitializer.SeedDatabase(context);
-    }   
+
+        // Ensure the schema is created, including Identity tables (via migrations)
+        context.Database.EnsureCreated();  // This will create tables from any migrations applied
+
+        // Optionally, apply pending migrations if necessary
+        context.Database.Migrate();  // Apply any pending migrations to ensure all tables (including Identity) are created
+
+        // Seed the database with initial data, if necessary
+        Authors = DbInitializer.SeedDatabase(context);
+        // TODO - run dbinitializer.setpasswords() somehow
+    }
 
     public ChirpDBContext CreateContext()
     {
         var options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseSqlite(_connection)
+            .UseSqlite(ConnectionString)
             .Options;
 
         return new ChirpDBContext(options);
@@ -50,9 +60,10 @@ public class TestDatabaseFixture : IDisposable
 
     public void Dispose()
     {
-        _connection.Dispose();
+        ConnectionString.Dispose();  // Cleanup
     }
 }
+
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
@@ -437,19 +448,53 @@ public class UnitTests : IDisposable
 }
 
 // This class was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<TestDatabaseFixture>
 {
     private readonly WebApplicationFactory<Program> _fixture;
     private readonly HttpClient _client;
+    private readonly TestDatabaseFixture _testDatabaseFixture;
 
-    public IntegrationTests(WebApplicationFactory<Program> fixture)
+    // The constructor should accept both WebApplicationFactory<Program> and TestDatabaseFixture
+    public IntegrationTests(WebApplicationFactory<Program> fixture, TestDatabaseFixture testDatabaseFixture)
     {
-        _fixture = fixture.WithWebHostBuilder(Builder =>
+        _testDatabaseFixture = testDatabaseFixture;
+
+        // Customize the web host to use the test-specific configuration
+        _fixture = fixture.WithWebHostBuilder(builder =>
         {
-            Builder.UseUrls("http://localhost:5273");
+            builder.ConfigureServices(services =>
+            {
+                // Remove the existing DbContext registration (if it exists)
+                var descriptor = services.SingleOrDefault(
+                    d => d.ServiceType == typeof(DbContextOptions<ChirpDBContext>));
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
+
+                // Register the test-specific DbContext using the fixture's connection string
+                services.AddDbContext<ChirpDBContext>(options =>
+                {
+                    options.UseSqlite(_testDatabaseFixture.ConnectionString);
+                });
+
+                // Ensure migrations are applied before tests run
+                using (var scope = services.BuildServiceProvider().CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<ChirpDBContext>();
+                    dbContext.Database.Migrate();  // Apply migrations if necessary
+                }
+            });
         });
-        _client = _fixture.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true, HandleCookies = true });
+
+        // Initialize HttpClient
+        _client = _fixture.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = true,
+            HandleCookies = true
+        });
     }
+
 
     // This test is from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
     [Xunit.Theory]
