@@ -39,18 +39,22 @@
                     <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <form method="post" asp-page-handler="Follow">
-                            <input type="hidden" name="followed" value=@cheep.Author.UserName>
+
                             @if (!Model.followedAuthors.Contains(cheep.Author))
                             {
-                                <button class="follow-btn" align="right">Follow</button>
+                                <form method="post" asp-page-handler="Follow">
+                                    <input type="hidden" name="followed" value=@cheep.Author.UserName>
+                                    <button class="follow-btn" align="right">Follow</button>
+                                </form>
 
                             }
                             else
                             {
-                                <button class="follow-btn" align="right">Unfollow</button>
+                                <form method="post" asp-page-handler="Unfollow">
+                                    <input type="hidden" name="unfollowed" value=@cheep.Author.UserName>
+                                    <button class="follow-btn" align="right">Unfollow</button>
+                                </form>
                             }
-                        </form>
                     }
                 </strong>
                 <p>
