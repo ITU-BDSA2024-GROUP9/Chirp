@@ -35,8 +35,11 @@ public class Model : PageModel
         TotalPages = PageAmount(_service.GetCheepCount());
         CheepRange = new Range(0, Cheeps.Count);
     }
-    
-    //Lave en metode her.
+
+    public void FollowAuthor()
+    {
+        
+    }
 
     public void PaginateCheeps(int queryPage, string authorID)
     {
