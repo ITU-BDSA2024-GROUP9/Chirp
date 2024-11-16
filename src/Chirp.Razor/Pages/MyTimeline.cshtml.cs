@@ -15,11 +15,10 @@ public class MyTimelineModel : Model
         if (string.IsNullOrEmpty(author))
         {
             author = User.Identity?.Name;
-            Console.WriteLine("Defaulted author to User.Identity.Name: " + author);
         }
         
         if (!string.IsNullOrEmpty(author))
-            base.PaginateCheepsByName(page, author);
+            base.PaginateCheepsByFollowers(page, author);
 
         return Page();
     }

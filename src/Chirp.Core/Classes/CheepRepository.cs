@@ -107,9 +107,10 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, int pageNumber)
+    public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, string currentUserID, int pageNumber)
     {
         var authorIds = followedAuthors.Select(a => a.Id).ToList();
+        authorIds.Add(currentUserID);
         
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
