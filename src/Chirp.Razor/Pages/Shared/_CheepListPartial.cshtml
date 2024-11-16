@@ -43,7 +43,7 @@
                             @if (!Model.followedAuthors.Contains(cheep.Author))
                             {
                                 <form method="post" asp-page-handler="Follow">
-                                    <input type="hidden" name="followed" value=@cheep.Author.UserName>
+                                    <input type="hidden" name="followed" value="@cheep.Author.UserName" />
                                     <button class="follow-btn" align="right">Follow</button>
                                 </form>
 
@@ -51,7 +51,7 @@
                             else
                             {
                                 <form method="post" asp-page-handler="Unfollow">
-                                    <input type="hidden" name="unfollowed" value=@cheep.Author.UserName>
+                                    <input type="hidden" name="unfollowed" value="@cheep.Author.UserName" />
                                     <button class="follow-btn" align="right">Unfollow</button>
                                 </form>
                             }

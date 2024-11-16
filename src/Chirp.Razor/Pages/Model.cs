@@ -47,14 +47,18 @@ public class Model : PageModel
 
     public IActionResult OnPostFollow(string followed)
     {
-        _service.Follow(_service.GetAuthorByName(User.Identity.Name), _service.GetAuthorByName(followed));
+        var userToFollow = _service.GetAuthorByName(followed);
+        var currentUser = _service.GetAuthorByName(User.Identity?.Name);
+        _service.Follow(currentUser, userToFollow);
         Console.WriteLine("Follow might have been a success");
         return RedirectToPage();
     }
     
     public IActionResult OnPostUnfollow(string unfollowed)
     {
-        _service.Unfollow(_service.GetAuthorByName(User.Identity.Name), _service.GetAuthorByName(unfollowed));
+        var userToUnfollow = _service.GetAuthorByName(unfollowed);
+        var currentUser = _service.GetAuthorByName(User.Identity.Name);
+        _service.Unfollow(currentUser, userToUnfollow);
         Console.WriteLine("Unfollow might have been a success");
         return RedirectToPage();
     }
