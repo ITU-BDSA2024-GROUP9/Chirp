@@ -11,6 +11,7 @@ public class MyTimelineModel : Model
 
     public ActionResult OnGet([FromQuery] int page, string author)
     {
+        if (page < 1) page = 1;
         // Default to the current user's name if `author` is not provided
         if (string.IsNullOrEmpty(author))
         {

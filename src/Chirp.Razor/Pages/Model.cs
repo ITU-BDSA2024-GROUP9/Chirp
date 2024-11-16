@@ -93,7 +93,7 @@ public class Model : PageModel
         }
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
-        TotalPages = PageAmount(_service.GetCheepByName(authorName));
+        TotalPages = PageAmount(_service.GetCheepCountByAuthors(followedAuthors, userAuthor.Id));
         Cheeps = _service.GetCheepsFromAuthors(followedAuthors, userAuthor.Id, queryPage);
     }
 

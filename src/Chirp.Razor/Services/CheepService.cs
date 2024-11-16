@@ -91,6 +91,11 @@ namespace Chirp.Razor.Services
             return _repository.GetCheepCountByName(authorName);
         }
 
+        public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId)
+        {
+            return _repository.GetCheepCountByAuthors(followedAuthors, currentUserId);
+        }
+
         public void UpdateCheep(CheepDTO newCheep, int cheepID)
         {
             _repository.UpdateCheep(newCheep, cheepID);

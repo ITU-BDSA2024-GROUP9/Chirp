@@ -18,6 +18,7 @@ namespace Chirp.Core.Interfaces
         public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, string currentUserID, int pageNumber);
         public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page);
         public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page);
+        public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId);
         public CheepDTO GetCheepByID(int cheepId);
         public Author? GetAuthorByID(string authorId);
         public Author? GetAuthorByName(string name);

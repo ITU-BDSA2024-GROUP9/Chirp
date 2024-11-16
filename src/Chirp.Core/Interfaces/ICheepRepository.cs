@@ -6,6 +6,7 @@ public interface ICheepRepository {
     public int GetCheepCountByID(string authorId);
     public int GetCheepCountByName(string authorName); 
     public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page);
+    public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId);
     public bool IsFollowing(Author followerAuthor, Author followedAuthor);
     public void Follow(Author followerAuthor, Author followedAuthor);
     public void Unfollow(Author followerAuthor, Author followedAuthor);
