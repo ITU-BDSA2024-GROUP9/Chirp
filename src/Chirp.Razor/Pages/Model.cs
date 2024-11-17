@@ -53,7 +53,8 @@ public class Model : PageModel
     public IActionResult OnPostFollow(string followed)
     {
         if (User.Identity == null) return RedirectToPage();
-        if (User.Identity.Name == null) return RedirectToPage();
+        if (User.Identity.Name == null) return RedirectToPage(); // these should never happen
+
         var userToFollow = _service.GetAuthorByName(followed);
         var currentUser = _service.GetAuthorByName(User.Identity.Name);
         if (userToFollow == null || currentUser == null) return RedirectToPage();
@@ -65,7 +66,8 @@ public class Model : PageModel
     public IActionResult OnPostUnfollow(string unfollowed)
     {
         if (User.Identity == null) return RedirectToPage();
-        if (User.Identity.Name == null) return RedirectToPage();
+        if (User.Identity.Name == null) return RedirectToPage(); // these should never happen
+
         var userToUnfollow = _service.GetAuthorByName(unfollowed);
         var currentUser = _service.GetAuthorByName(User.Identity.Name);
         if (userToUnfollow == null || currentUser == null) return RedirectToPage();
@@ -95,7 +97,6 @@ public class Model : PageModel
             }
         }
         
-
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
         TotalPages = PageAmount(_service.GetCheepByName(authorName));
@@ -114,9 +115,14 @@ public class Model : PageModel
                     followedAuthors = _service.getFollowedInCheeps(userAuthor);
             }
         }
+
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
-        if (followedAuthors == null || userAuthor == null) return;
+        if (followedAuthors == null || userAuthor == null)
+        {
+            TotalPages = 1; 
+            return;
+        }
         TotalPages = PageAmount(_service.GetCheepCountByAuthors(followedAuthors, userAuthor.Id));
         Cheeps = _service.GetCheepsFromAuthors(followedAuthors, userAuthor.Id, queryPage);
     }
@@ -150,22 +156,13 @@ public class Model : PageModel
             return Page();
         }
 
-        if (User.Identity?.Name == null)
-        {
-            return RedirectToPage("/Error");
-        }
-
+        if (User.Identity?.Name == null) return RedirectToPage("/Error");
         var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userid == null)
-        {
-            return RedirectToPage("/Error");
-        }
+        if (userid == null) return RedirectToPage("/Error");
 
         var author = _service.GetAuthorByID(userid);
-        if (author == null)
-        {
-            return RedirectToPage("/Error");
-        }
+        if (author == null)return RedirectToPage("/Error");
+
         var cheep = new CheepDTO
         {
             CheepId = 0,
