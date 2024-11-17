@@ -34,14 +34,15 @@ public class Model : PageModel
     //Ideally querying slices instead of taking the whole thing.
     public void PaginateCheeps(int queryPage)
     {
-        if (User.Identity == null) return;
-
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity != null)
         {
-            if (User.Identity.Name == null) return;
-            userAuthor = _service.GetAuthorByName(User.Identity.Name);
-            if (userAuthor == null) return;
-            followedAuthors = _service.getFollowedInCheeps(userAuthor);
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.Identity.Name != null)
+                    userAuthor = _service.GetAuthorByName(User.Identity.Name);
+                if (userAuthor != null)
+                    followedAuthors = _service.getFollowedInCheeps(userAuthor);
+            }
         }
         PageNumber = queryPage;
         Cheeps = _service.GetCheeps(queryPage);
@@ -83,14 +84,18 @@ public class Model : PageModel
 
     public void PaginateCheepsByName(int queryPage, string authorName)
     {
-        if (User.Identity == null) return;
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity != null)
         {
-            if (User.Identity.Name == null) return;
-            userAuthor = _service.GetAuthorByName(User.Identity.Name);
-            if (userAuthor == null) return;
-            followedAuthors = _service.getFollowedInCheeps(userAuthor);
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.Identity.Name != null)
+                    userAuthor = _service.GetAuthorByName(User.Identity.Name);
+                if (userAuthor != null)
+                    followedAuthors = _service.getFollowedInCheeps(userAuthor);
+            }
         }
+        
+
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
         TotalPages = PageAmount(_service.GetCheepByName(authorName));
@@ -99,13 +104,15 @@ public class Model : PageModel
 
     public void PaginateCheepsByFollowers(int queryPage, string authorName)
     {
-        if (User.Identity == null) return;
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity != null)
         {
-            if (User.Identity.Name == null) return;
-            userAuthor = _service.GetAuthorByName(User.Identity.Name);
-            if (userAuthor == null) return;
-            followedAuthors = _service.getFollowedInCheeps(userAuthor);
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.Identity.Name != null)
+                    userAuthor = _service.GetAuthorByName(User.Identity.Name);
+                if (userAuthor != null)
+                    followedAuthors = _service.getFollowedInCheeps(userAuthor);
+            }
         }
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
