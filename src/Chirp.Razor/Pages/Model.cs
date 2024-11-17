@@ -12,7 +12,7 @@ public class Model : PageModel
 	[Required]
 	[StringLength(160, ErrorMessage = "Maximum length is {1}")]
 	[Display(Name = "Message Text")]
-	public string Message { get; set; }
+	public string Message { get; set; } = "";
 
     protected readonly ICheepService _service;
 
@@ -20,10 +20,10 @@ public class Model : PageModel
 
     public int TotalPages { get; set; }
     public Range CheepRange {get;set;}
-    public List<CheepDTO> Cheeps { get; set; }
+    public List<CheepDTO>? Cheeps { get; set; }
     public Author? Author { get; set; }
     public Author? userAuthor { get; set; }
-    public List<Author> followedAuthors { get; set; }
+    public List<Author>? followedAuthors { get; set; }
 
     public Model(ICheepService service)
     {
@@ -34,9 +34,13 @@ public class Model : PageModel
     //Ideally querying slices instead of taking the whole thing.
     public void PaginateCheeps(int queryPage)
     {
+        if (User.Identity == null) return;
+
         if (User.Identity.IsAuthenticated)
         {
+            if (User.Identity.Name == null) return;
             userAuthor = _service.GetAuthorByName(User.Identity.Name);
+            if (userAuthor == null) return;
             followedAuthors = _service.getFollowedInCheeps(userAuthor);
         }
         PageNumber = queryPage;
@@ -47,8 +51,11 @@ public class Model : PageModel
 
     public IActionResult OnPostFollow(string followed)
     {
+        if (User.Identity == null) return RedirectToPage();
+        if (User.Identity.Name == null) return RedirectToPage();
         var userToFollow = _service.GetAuthorByName(followed);
-        var currentUser = _service.GetAuthorByName(User.Identity?.Name);
+        var currentUser = _service.GetAuthorByName(User.Identity.Name);
+        if (userToFollow == null || currentUser == null) return RedirectToPage();
         _service.Follow(currentUser, userToFollow);
         Console.WriteLine("Follow might have been a success");
         return RedirectToPage();
@@ -56,8 +63,11 @@ public class Model : PageModel
     
     public IActionResult OnPostUnfollow(string unfollowed)
     {
+        if (User.Identity == null) return RedirectToPage();
+        if (User.Identity.Name == null) return RedirectToPage();
         var userToUnfollow = _service.GetAuthorByName(unfollowed);
         var currentUser = _service.GetAuthorByName(User.Identity.Name);
+        if (userToUnfollow == null || currentUser == null) return RedirectToPage();
         _service.Unfollow(currentUser, userToUnfollow);
         Console.WriteLine("Unfollow might have been a success");
         return RedirectToPage();
@@ -73,9 +83,12 @@ public class Model : PageModel
 
     public void PaginateCheepsByName(int queryPage, string authorName)
     {
+        if (User.Identity == null) return;
         if (User.Identity.IsAuthenticated)
         {
+            if (User.Identity.Name == null) return;
             userAuthor = _service.GetAuthorByName(User.Identity.Name);
+            if (userAuthor == null) return;
             followedAuthors = _service.getFollowedInCheeps(userAuthor);
         }
         PageNumber = queryPage;
@@ -86,20 +99,19 @@ public class Model : PageModel
 
     public void PaginateCheepsByFollowers(int queryPage, string authorName)
     {
+        if (User.Identity == null) return;
         if (User.Identity.IsAuthenticated)
         {
+            if (User.Identity.Name == null) return;
             userAuthor = _service.GetAuthorByName(User.Identity.Name);
+            if (userAuthor == null) return;
             followedAuthors = _service.getFollowedInCheeps(userAuthor);
         }
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
+        if (followedAuthors == null || userAuthor == null) return;
         TotalPages = PageAmount(_service.GetCheepCountByAuthors(followedAuthors, userAuthor.Id));
         Cheeps = _service.GetCheepsFromAuthors(followedAuthors, userAuthor.Id, queryPage);
-    }
-
-    public string getAuthorID(string authorName)
-    {
-        return _service.GetAuthorByName(authorName).Id;
     }
 
     private int PageAmount(int totalCheeps)
@@ -110,8 +122,11 @@ public class Model : PageModel
 
     public string isFollower(string userid, string author_userid)
     {
+        var user = _service.GetAuthorByID(userid);
+        var author = _service.GetAuthorByID(author_userid);
+        if (user == null || author == null) return "Follow";
         
-        if (_service.IsFollowing(_service.GetAuthorByID(userid), _service.GetAuthorByID(author_userid)))
+        if (_service.IsFollowing(user, author))
         {
             return "Unfollow";
         }
@@ -123,7 +138,6 @@ public class Model : PageModel
     {
         if (!ModelState.IsValid)
         {
-            Console.WriteLine("Died at ModelState");
             // Repopulate the page data before returning
             PaginateCheeps(1);
             return Page();
@@ -131,14 +145,18 @@ public class Model : PageModel
 
         if (User.Identity?.Name == null)
         {
-            Console.WriteLine("Died at Name: " + User.Identity);
             return RedirectToPage("/Error");
         }
 
-        var author = _service.GetAuthorByID(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userid == null)
+        {
+            return RedirectToPage("/Error");
+        }
+
+        var author = _service.GetAuthorByID(userid);
         if (author == null)
         {
-            Console.WriteLine("Died at Author: " + User.Identity.Name);
             return RedirectToPage("/Error");
         }
         var cheep = new CheepDTO
