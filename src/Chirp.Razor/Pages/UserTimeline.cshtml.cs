@@ -17,7 +17,7 @@ public class UserTimelineModel : Model
         return Page();
     }
 
-    public IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+    public new IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
     {
         return base.OnPostDeleteCheep(cheepId, page);
     }

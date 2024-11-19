@@ -25,12 +25,19 @@ builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireCon
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
+string? githubClientId = builder.Configuration["GITHUBCLIENTID"];
+string? githubClientSecret = builder.Configuration["GITHUBCLIENTSECRET"];
+if (string.IsNullOrEmpty(githubClientId) || string.IsNullOrEmpty(githubClientSecret))
+{
+    throw new Exception("GitHub Client ID and Client Secret must be set in the configuration.");
+}
+
 builder.Services.AddAuthentication()
     .AddCookie()
     .AddGitHub(o =>
     {
-        o.ClientId = builder.Configuration["GITHUBCLIENTID"]; // Need to default to something ??
-        o.ClientSecret = builder.Configuration["GITHUBCLIENTSECRET"];
+        o.ClientId = githubClientId; // Need to default to something ??
+        o.ClientSecret = githubClientSecret;
         o.Scope.Add("user:email");
         // o.CallbackPath = "/signin-github";
     });
@@ -43,6 +50,10 @@ using (var scope = app.Services.CreateScope())
     // From the scope, get an instance of our database context.
     // Through the using keyword, we make sure to dispose it after we are done.
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
+    if (context == null)
+    {
+        throw new Exception("Could not get ChirpDBContext from service provider.");
+    }
     
     // Execute the migration from code.
     try {

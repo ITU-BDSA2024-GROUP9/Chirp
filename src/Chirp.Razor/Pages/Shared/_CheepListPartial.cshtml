@@ -30,16 +30,16 @@
 
 @if (Model.Cheeps.Any())
 {
-
     <ul id="messagelist" class="cheeps">
         @foreach (var cheep in Model.Cheeps)
         {
             <li>
                 <strong>
                     <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                    @if (User.Identity.IsAuthenticated && User.Identity.Name != cheep.Author.UserName)
+                    @if (User.Identity != null)
                     {
-
+                        @if (User.Identity.IsAuthenticated && User.Identity.Name != cheep.Author.UserName)
+                        {
                             @if (!Model.followedAuthors.Contains(cheep.Author))
                             {
                                 <form method="post" asp-page-handler="Follow">
@@ -55,26 +55,30 @@
                                     <button class="follow-btn" align="right">Unfollow</button>
                                 </form>
                             }
+                        }
                     }
                 </strong>
                 <p>
                     @cheep.Text
                 </p>
                 <small>@cheep.TimeStamp</small>
-                @if (User.Identity.IsAuthenticated && User.Identity.Name == cheep.Author.UserName)
+                @if (User.Identity != null)
                 {
-                    <div class="cheep-actions">
-                        <div class="dropdown">
-                            <button class="dropdown-toggle" onclick="toggleDropdown(this)">⋯</button>
-                            <div class="dropdown-menu">
-                                <form method="post" asp-page-handler="DeleteCheep">
-                                    <input type="hidden" name="cheepId" value="@cheep.CheepId" />
-                                    <input type="hidden" name="page" value="@Model.PageNumber" />
-                                    <button type="submit">Delete Cheep</button>
-                                </form>
+                    @if (User.Identity.IsAuthenticated && User.Identity.Name == cheep.Author.UserName)
+                    {
+                        <div class="cheep-actions">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle" onclick="toggleDropdown(this)">⋯</button>
+                                <div class="dropdown-menu">
+                                    <form method="post" asp-page-handler="DeleteCheep">
+                                        <input type="hidden" name="cheepId" value="@cheep.CheepId" />
+                                        <input type="hidden" name="page" value="@Model.PageNumber" />
+                                        <button type="submit">Delete Cheep</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
             </li>
         }

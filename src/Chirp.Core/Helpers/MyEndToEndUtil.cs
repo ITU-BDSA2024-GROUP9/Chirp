@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 public static class MyEndToEndUtil
 {
-    private static Process _serverProcess;
+    private static Process? _serverProcess;
+
+    
 
     public static async Task StartServer()
     {
@@ -52,7 +54,8 @@ public static class MyEndToEndUtil
         if (!isServerReady)
         {
             throw new Exception("Server did not start within the expected time.");
-        }    }
+        }    
+    }
 
     public static void StopServer()
     {

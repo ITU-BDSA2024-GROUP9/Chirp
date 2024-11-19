@@ -99,11 +99,14 @@ public class CheepRepository : ICheepRepository
 
     public List<Author> getFollowedInCheeps(Author follower)
     {
-        var authors = _dbContext.Follows
+        List<Author> authors = _dbContext.Follows
             .Where(f => f.Follower == follower)
             .Select(f => f.Followed)
+            .Where(a => a != null)
             .Distinct()
-            .ToList();
+            .ToList()!;
+        
+        
         return authors;
     }
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)

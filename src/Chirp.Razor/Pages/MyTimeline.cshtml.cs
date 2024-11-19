@@ -9,7 +9,7 @@ public class MyTimelineModel : Model
 {
     public MyTimelineModel(ICheepService service) : base(service) { }
 
-    public ActionResult OnGet([FromQuery] int page, string author)
+    public ActionResult OnGet([FromQuery] int page, string? author)
     {
         if (page < 1) page = 1;
         // Default to the current user's name if `author` is not provided
@@ -19,12 +19,12 @@ public class MyTimelineModel : Model
         }
         
         if (!string.IsNullOrEmpty(author))
-            base.PaginateCheepsByFollowers(page, author);
+            PaginateCheepsByFollowers(page, author);
 
         return Page();
     }
 
-    public IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+    public new IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
     {
         return base.OnPostDeleteCheep(cheepId, page);
     }
