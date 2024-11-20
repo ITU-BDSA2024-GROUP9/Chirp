@@ -668,6 +668,23 @@ public class EndToEndTests : PageTest
 
         Assert.True(cheepExists);
 
+        //User goes to the public timeline and clicks on a user which isn't them.
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Public Timeline" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).ClickAsync();
+
+        //User follows the user.
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
+
+        //User goes to their timeline and confirms the user they followed is there.
+        await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
+        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" })).ToBeVisibleAsync();
+
+        //User unfollows the user.
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
+
+        //User goes to their timeline and confirms the user they unfollowed is not there.
+        await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
+        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" })).Not.ToBeVisibleAsync();
     }
 
 
