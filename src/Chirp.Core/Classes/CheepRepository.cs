@@ -63,10 +63,8 @@ public class CheepRepository : ICheepRepository
     
     public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId)
     {
-        // Ensure that followedAuthors is not null to avoid NullReferenceException
         followedAuthors ??= new List<Author>();
-
-        // Add the current user's ID to the list of author IDs
+        
         var authorIds = followedAuthors.Select(a => a.Id).ToList();
         if (!authorIds.Contains(currentUserId))
         {
@@ -75,7 +73,7 @@ public class CheepRepository : ICheepRepository
 
         // Return the count of cheeps where the author ID is in the list of author IDs
         return _dbContext.Cheeps
-            .Include(c => c.Author)  // Ensures that Author is loaded for the condition check
+            .Include(c => c.Author) 
             .Count(c => authorIds.Contains(c.Author.Id));
     }
 
