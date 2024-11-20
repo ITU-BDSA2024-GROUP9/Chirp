@@ -15,17 +15,6 @@
             @isLastPage
         ;
     }
-    .follow-btn {
-        width: auto;
-        height: auto;
-        padding: 5px 15px;
-        font-size: 11px;
-        text-align: center;
-        border: none;
-        color: black;
-        cursor: pointer;
-        border-radius: 5px;
-    }
 </style>
 
 @if (Model.Cheeps.Any())
@@ -36,27 +25,6 @@
             <li>
                 <strong>
                     <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                    @if (User.Identity != null)
-                    {
-                        @if (User.Identity.IsAuthenticated && User.Identity.Name != cheep.Author.UserName)
-                        {
-                            @if (!Model.followedAuthors.Contains(cheep.Author))
-                            {
-                                <form method="post" asp-page-handler="Follow">
-                                    <input type="hidden" name="followed" value="@cheep.Author.UserName" />
-                                    <button class="follow-btn" align="right">Follow</button>
-                                </form>
-
-                            }
-                            else
-                            {
-                                <form method="post" asp-page-handler="Unfollow">
-                                    <input type="hidden" name="unfollowed" value="@cheep.Author.UserName" />
-                                    <button class="follow-btn" align="right">Unfollow</button>
-                                </form>
-                            }
-                        }
-                    }
                 </strong>
                 <p>
                     @cheep.Text

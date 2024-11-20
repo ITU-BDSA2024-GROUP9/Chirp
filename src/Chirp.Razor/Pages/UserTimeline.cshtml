@@ -10,6 +10,24 @@
 <div class="holder">
     @if (Model.Author != null){
         <h2> @Model.Author?.UserName's Timeline </h2>
+        @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != Model.Author.UserName)
+        {
+            @if (!Model.followedAuthors?.Contains(Model.Author) ?? false)
+            {
+                <form method="post" asp-page-handler="Follow">
+                    <input type="hidden" name="followed" value="@Model.Author.UserName" />
+                    <button class="follow-btn" align="right">Follow</button>
+                </form>
+
+            }
+            else
+            {
+                <form method="post" asp-page-handler="Unfollow">
+                    <input type="hidden" name="unfollowed" value="@Model.Author.UserName" />
+                    <button class="follow-btn" align="right">Unfollow</button>
+                </form>
+            }
+        }
     } 
     else 
     {
