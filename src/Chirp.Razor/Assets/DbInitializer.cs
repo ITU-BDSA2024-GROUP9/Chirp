@@ -34,10 +34,7 @@ public static class DbInitializer
                     await userManager.ResetPasswordAsync(author, token, "Password123!");
                     break;
             }
-            
-            
         }
-
     }
     public static List<Author> SeedDatabase(ChirpDBContext chirpContext)
     {
@@ -746,6 +743,6 @@ public static class DbInitializer
     {
         Console.WriteLine("Wiping DB!");
         context.Database.EnsureDeleted();
-        // context.Database.EnsureCreated();
+        context.Database.EnsureCreated();
     }
 }
