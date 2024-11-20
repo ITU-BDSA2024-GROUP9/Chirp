@@ -18,7 +18,7 @@ public class WipeDBModel : PageModel
 
     public IActionResult OnPostWipeDB()
     {
-        DbInitializer.WipeDatabase(_context);
+        _context.Database.EnsureDeleted();
         _context.Database.Migrate();
         return RedirectToPage("/");
     }
