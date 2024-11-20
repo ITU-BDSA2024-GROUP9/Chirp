@@ -23,6 +23,31 @@
             return sb.ToString();
         }
     }
+
+    public static string timeSince(DateTime time)
+    {
+        TimeSpan span = DateTime.Now - time;
+        if (span.TotalDays > 7)
+        {
+            return time.ToString("MMM d" + (time.Year != DateTime.Now.Year ? ", yyyy" : ""));
+        }
+        else if (span.TotalDays > 1)
+        {
+            return $"{(int)span.TotalDays} days ago";
+        }
+        else if (span.TotalHours > 1)
+        {
+            return $"{(int)span.TotalHours} hours ago";
+        }
+        else if (span.TotalMinutes > 1)
+        {
+            return $"{(int)span.TotalMinutes} minutes ago";
+        }
+        else
+        {
+            return "Just now";
+        }
+    }
 }
 <style>
     .holder {
@@ -50,11 +75,13 @@
                 <div class="info">
                 <strong>
                     <a href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
+                    <span
+                    title="@cheep.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")"> · @timeSince(cheep.TimeStamp)</span>
                 </strong>
                 <p>
                     @cheep.Text
                 </p>
-                <small>@cheep.TimeStamp</small>
+                </div>
                 @if (User.Identity != null)
                 {
                     @if (User.Identity.IsAuthenticated && User.Identity.Name == cheep.Author.UserName)
@@ -73,7 +100,6 @@
                         </div>
                     }
                 }
-                </div>
             </li>
         }
     </ul>
