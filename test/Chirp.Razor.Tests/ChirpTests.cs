@@ -393,7 +393,7 @@ public class UnitTests : IDisposable
     }
 
     [Xunit.Theory]
-    [InlineData("13", "John Doe", "johndoe@yahoo.com")]
+    [InlineData("69420", "John Doe", "johndoe@yahoo.com")]
     public void TestCreateAuthor(string id, string newAuthor, string email){
         // arrange
         var author = new Author(){Cheeps = new List<Cheep>()};
