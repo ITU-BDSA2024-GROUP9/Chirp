@@ -1,6 +1,6 @@
-﻿@page "/{author}"
+@page "/timeline"
 @using Chirp.Core.Classes
-@model Chirp.Razor.Pages.UserTimelineModel
+@model Chirp.Razor.Pages.MyTimelineModel
 @inject SignInManager<Author> SignInManager
 @inject UserManager<Author> UserManager
 @{
@@ -8,17 +8,13 @@
     Layout = "Shared/_Layout";
 }
 <div class="holder">
-    @if (Model.Author != null){
-        <h2> @Model.Author?.UserName's Timeline </h2>
+    @if (SignInManager.IsSignedIn(User) && User.Identity?.Name != null){
+        <h2> @User.Identity?.Name's Timeline </h2>
+        <partial name="_CheepBoxPartial" />
     } 
     else 
     {
         <h2> Author not found! :( </h2>
-    }
-    
-    @if (SignInManager.IsSignedIn(User) && Model.Author?.UserName == User.Identity?.Name)
-    {
-        <partial name="_CheepBoxPartial" />
     }
     <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.userAuthor, Model.followedAuthors)" />
 </div>

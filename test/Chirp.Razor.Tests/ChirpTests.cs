@@ -161,7 +161,7 @@ public class UITests : PageTest
 
 
     [TearDown]
-    public async Task Cleanup()
+    public void Cleanup()
     {
         MyEndToEndUtil.StopServer(); // Stops the server after each test
     }
@@ -194,11 +194,17 @@ public class UnitTests : IDisposable
     public void TestCreateCheeps(string text, string authorID)
     {
         // Arrange
+        var author = _cheepService.GetAuthorByID(authorID);
+        if (author == null)
+        {
+            throw new ArgumentException("Author does not exist");
+        }
+        
         var cheep = new CheepDTO()
         {
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = _cheepService.GetAuthorByID(authorID)
+            Author = author
         };
         
         // Act
@@ -219,6 +225,7 @@ public class UnitTests : IDisposable
         // Act
         var result = _cheepService.GetAuthorByID(ID);
         // Assert
+        Assert.NotNull(result);
         Assert.Equal("11", result.Id);
         Assert.Equal("ropf@itu.dk", result.Email);
         Assert.Equal("Helge", result.UserName);
@@ -260,11 +267,15 @@ public class UnitTests : IDisposable
     public void TestGetCheeps(string id)
     {
         // Arrange
-        
+        var author = _cheepRepo.GetAuthorByID(id);
+        if (author == null)
+        {
+            throw new ArgumentException("Author does not exist");
+        }
         
         // Act
-        Author author = _cheepRepo.GetAuthorByID(id);
         List<CheepDTO> authorCheeps = _cheepRepo.GetCheepsFromAuthorByID(author.Id, 1);
+
         // Assert
         bool success = true;
 
@@ -586,10 +597,14 @@ public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>, I
 [TestFixture]
 public class EndToEndTests : PageTest
 {
+
+    // dissable nullable warnings since the fields are initialized in the setup method
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     private TestDatabaseFixture _fixture;
     private CheepRepository _cheepRepo;
     private ChirpDBContext _context;
     private CheepService _cheepService;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     [SetUp]
     public async Task Init()
@@ -657,7 +672,7 @@ public class EndToEndTests : PageTest
 
 
     [TearDown]
-    public async Task Cleanup()
+    public void Cleanup()
     {
         MyEndToEndUtil.StopServer(); // Stops the server after each test
         _context.Dispose();

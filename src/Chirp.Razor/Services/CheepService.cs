@@ -34,17 +34,44 @@ namespace Chirp.Razor.Services
             return _repository.CreateCheep(newCheep);
         }
 
-        public Author GetAuthorByID(string authorId)
+        public bool IsFollowing(Author followerAuthor, Author followedAuthor)
+        {
+            return _repository.IsFollowing(followerAuthor, followedAuthor);
+        }
+
+        public List<Author> getFollowedInCheeps(Author follower)
+        {
+            return _repository.getFollowedInCheeps(follower);
+        }
+
+        public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, string currentUserID, int pageNumber)
+        {
+            return _repository.GetCheepsFromAuthors(followedAuthors, currentUserID, pageNumber);
+        }
+
+
+        public void Follow(Author followerAuthor, Author followedAuthor)
+        {
+            _repository.Follow(followerAuthor, followedAuthor);
+        }
+
+        public void Unfollow(Author followerAuthor, Author followedAuthor)
+        {
+            _repository.Unfollow(followerAuthor, followedAuthor);
+        }
+
+
+        public Author? GetAuthorByID(string authorId)
         {
             return _repository.GetAuthorByID(authorId);
         }
 
-        public Author GetAuthorByName(string authorName)
+        public Author? GetAuthorByName(string authorName)
         {
             return _repository.GetAuthorByName(authorName);
         }
 
-        public Author GetAuthorByEmail(string email)
+        public Author? GetAuthorByEmail(string email)
         {
             return _repository.GetAuthorByEmail(email);
         }
@@ -62,6 +89,11 @@ namespace Chirp.Razor.Services
         public int GetCheepByName(string authorName)
         {
             return _repository.GetCheepCountByName(authorName);
+        }
+
+        public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId)
+        {
+            return _repository.GetCheepCountByAuthors(followedAuthors, currentUserId);
         }
 
         public void UpdateCheep(CheepDTO newCheep, int cheepID)

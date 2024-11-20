@@ -60,6 +60,22 @@ public class CheepRepository : ICheepRepository
             .Include(c => c.Author)
             .Count(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName);
     }
+    
+    public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId)
+    {
+        followedAuthors ??= new List<Author>();
+        
+        var authorIds = followedAuthors.Select(a => a.Id).ToList();
+        if (!authorIds.Contains(currentUserId))
+        {
+            authorIds.Add(currentUserId);
+        }
+
+        // Return the count of cheeps where the author ID is in the list of author IDs
+        return _dbContext.Cheeps
+            .Include(c => c.Author) 
+            .Count(c => authorIds.Contains(c.Author.Id));
+    }
 
     public List<CheepDTO> GetCheeps(int page)
     {
@@ -79,6 +95,18 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public List<Author> getFollowedInCheeps(Author follower)
+    {
+        List<Author> authors = _dbContext.Follows
+            .Where(f => f.Follower == follower)
+            .Select(f => f.Followed)
+            .Where(a => a != null)
+            .Distinct()
+            .ToList()!;
+        
+        
+        return authors;
+    }
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
     {
         var cheeps = _dbContext.Cheeps
@@ -97,6 +125,46 @@ public class CheepRepository : ICheepRepository
             .ToList();
         return cheeps;
     }
+
+    public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, string currentUserID, int pageNumber)
+    {
+        var authorIds = followedAuthors.Select(a => a.Id).ToList();
+        authorIds.Add(currentUserID);
+        
+        var cheeps = _dbContext.Cheeps
+            .Include(c => c.Author)
+            .Where(c => authorIds.Contains(c.Author.Id))
+            .Select(c => new CheepDTO
+            {
+                CheepId = c.CheepId,
+                Text = c.Text,
+                TimeStamp = c.TimeStamp,
+                Author = c.Author
+            })
+            .OrderByDescending(c => c.TimeStamp)
+            .Skip((pageNumber - 1) * 32)
+            .Take(32)
+            .ToList();
+        return cheeps;
+    }
+        
+    public bool IsFollowing(Author followerAuthor, Author followedAuthor){
+        return followerAuthor.Following.Any(f => f.FollowedId == followedAuthor.Id);    
+    }
+
+    public void Follow(Author followerAuthor, Author followedAuthor)
+    {
+        var followEntry = new Follow() { Followed = followedAuthor, Follower = followerAuthor, FollowedId = followedAuthor.Id, FollowerId = followerAuthor.Id};
+        _dbContext.Follows.Add(followEntry);
+        _dbContext.SaveChanges();
+    }
+    public void Unfollow(Author followerAuthor, Author followedAuthor)
+    {
+        var followEntry = new Follow() { Followed = followedAuthor, Follower = followerAuthor, FollowedId = followedAuthor.Id, FollowerId = followerAuthor.Id};
+        _dbContext.Follows.Remove(followEntry);
+        _dbContext.SaveChanges();
+    }
+
 
     public List<CheepDTO> GetCheepsFromAuthorByID(string authorID, int page)
     {

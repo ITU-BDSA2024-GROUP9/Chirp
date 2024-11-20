@@ -5,7 +5,7 @@
 @inject UserManager<Author> UserManager
 
 <div class="cheepbox">
-    <h3>What's on your mind @(User.Identity.Name)?</h3>
+    <h3>What's on your mind @(User.Identity?.Name)?</h3>
     <form method="post" asp-page-handler="CreateCheep">
         <input style="float: left" name="Message" type="text" placeholder="Type here!" required asp-for="Message">
         <input type="submit" value="Share">

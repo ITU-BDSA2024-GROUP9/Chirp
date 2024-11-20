@@ -1,5 +1,4 @@
-﻿
-@page "/"
+﻿@page "/"
 @model Chirp.Razor.Pages.PublicModel
 @using Chirp.Core.Classes;
 @inject SignInManager<Author> SignInManager
@@ -14,5 +13,5 @@
     {
         <partial name="_CheepBoxPartial" />
     }
-    <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages)" />
+    <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.userAuthor, Model.followedAuthors)" />
 </div>
