@@ -1,0 +1,23 @@
+@page "/admin/wipedb"
+@using Chirp.Core.Classes
+@model Chirp.Razor.Pages.WipeDBModel
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
+@{
+    ViewData["Title"] = "Chirp!";
+    Layout = "Shared/_Layout";
+}
+<div class="holder">
+    @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin")
+    {
+        <h2> Wipe Database </h2>
+        <form method="post" asp-page-handler="WipeDB">
+            <button class="follow-btn" align="right">Wipe Database</button>
+        </form>
+       
+    } 
+    else 
+    {
+        <h2> Not Allowed </h2>
+    }
+</div>

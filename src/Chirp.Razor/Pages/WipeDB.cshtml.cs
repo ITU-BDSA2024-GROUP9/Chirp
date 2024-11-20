@@ -1,0 +1,28 @@
+using Chirp.Core.Classes;
+using Chirp.Core.Helpers;
+using Chirp.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+
+namespace Chirp.Razor.Pages;
+
+public class WipeDBModel : PageModel
+{
+    private readonly ChirpDBContext _context;
+    private readonly IServiceProvider _provider;
+    public WipeDBModel(ChirpDBContext context, IServiceProvider provider) {
+        _context = context;
+        _provider = provider;
+    }
+
+    public IActionResult OnPostWipeDB()
+    {
+        DbInitializer.WipeDatabase(_context);
+        _context.Database.Migrate();
+        return RedirectToPage("/");
+    }
+
+
+
+}

@@ -25,6 +25,10 @@ public static class DbInitializer
                     token = await userManager.GeneratePasswordResetTokenAsync(author);
                     await userManager.ResetPasswordAsync(author, token, "M32Want_Access");
                     break;
+                case "admin":
+                    token = await userManager.GeneratePasswordResetTokenAsync(author);
+                    await userManager.ResetPasswordAsync(author, token, "Admin_123");
+                    break;
                 default:
                     token = await userManager.GeneratePasswordResetTokenAsync(author);
                     await userManager.ResetPasswordAsync(author, token, "Password123!");
@@ -53,8 +57,9 @@ public static class DbInitializer
             var a10 = new Author() { Id = "10", UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
             var a11 = new Author() { Id = "11", UserName = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
             var a12 = new Author() { Id = "12", UserName = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>() };
+            var a13 = new Author() { Id = "13", UserName = "admin", Email = "admin@admin.dk", Cheeps = new List<Cheep>() };
 
-            authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
+            authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13 };
 
             var c1 = new Cheep() { CheepId = 1, AuthorId = a10.Id, Author = a10, Text = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
             var c2 = new Cheep() { CheepId = 2, AuthorId = a10.Id, Author = a10, Text = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") };
@@ -741,6 +746,6 @@ public static class DbInitializer
     {
         Console.WriteLine("Wiping DB!");
         context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
+        // context.Database.EnsureCreated();
     }
 }

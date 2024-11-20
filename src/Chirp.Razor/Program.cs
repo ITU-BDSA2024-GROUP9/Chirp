@@ -54,6 +54,9 @@ using (var scope = app.Services.CreateScope())
     {
         throw new Exception("Could not get ChirpDBContext from service provider.");
     }
+
+    if (app.Environment.IsDevelopment())
+        DbInitializer.WipeDatabase(context);
     
     // Execute the migration from code.
     try {
@@ -61,8 +64,7 @@ using (var scope = app.Services.CreateScope())
     } catch (Exception ex) {
         Console.WriteLine(ex.Message);
     }
-    if (app.Environment.IsDevelopment())
-        DbInitializer.WipeDatabase(context);
+
     var authors = DbInitializer.SeedDatabase(context);
     DbInitializer.SetAuthorPasswords(authors, scope.ServiceProvider);
 }
