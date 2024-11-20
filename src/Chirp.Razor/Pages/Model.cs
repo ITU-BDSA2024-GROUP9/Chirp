@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;

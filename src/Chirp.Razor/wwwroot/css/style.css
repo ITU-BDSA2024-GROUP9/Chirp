@@ -117,6 +117,14 @@ div.page ul.cheeps li {
   color: #ffffff;
   overflow-y: hidden;
   position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+ul.cheeps li .icon {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 
 div.page ul.cheeps li p {
