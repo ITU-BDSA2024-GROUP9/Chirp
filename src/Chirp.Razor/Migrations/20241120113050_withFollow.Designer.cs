@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Razor.Migrations
 {
     [DbContext(typeof(ChirpDBContext))]
-    [Migration("20241120112340_withFollow")]
+    [Migration("20241120113050_withFollow")]
     partial class withFollow
     {
         /// <inheritdoc />
