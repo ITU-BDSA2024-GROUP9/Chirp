@@ -37,8 +37,8 @@ public class ChirpDBContext : IdentityDbContext<Author>
 			.HasKey(f => new { f.FollowerId, f.FollowedId });
 		
 		modelBuilder.Entity<Follow>()
-			.HasOne(f => f.Follower) // The `Follower` navigation property in `Follow`.
-			.WithMany(a => a.Following) // The `Following` collection in the `Author` class.
-			.HasForeignKey(f => f.FollowerId); // `FollowerId` is the foreign key in `Follow`.
+			.HasOne(f => f.Follower)
+			.WithMany(a => a.Following)
+			.HasForeignKey(f => f.FollowerId);
 	}
 }
