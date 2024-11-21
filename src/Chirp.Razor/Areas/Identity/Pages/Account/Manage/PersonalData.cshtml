@@ -13,15 +13,57 @@
         <p>
             <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
         </p>
+
+        <button id="toggleBar" onclick="toggleAuthors()">Show / Hide my follows</button>
+        <div id="authorList" class="is-hidden">
+            <partial name="~/Pages/Shared/_FollowedListPartial.cshtml" />
+        </div>
+
+        <button id="toggleBar" onclick="toggleCheeps()">Show / Hide my cheeps</button>
+
+        @if (Model.PageNumber != 1) 
+        { 
+        <div id="cheepList"> 
+            <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.userAuthor, Model.followedAuthors)" />
+        </div>
+        }
+        else
+        {
+        <div id="cheepList" class="is-hidden">
+            <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.userAuthor, Model.followedAuthors)" />
+        </div>
+        }
+
         <form id="download-data" asp-page="DownloadPersonalData" method="post">
             <button class="btn btn-primary" type="submit">Download</button>
         </form>
+        
         <p>
             <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Forget me</a>
         </p>
     </div>
 </div>
 
+<script>
+    function toggleCheeps() {
+        var cheepList = document.getElementById("cheepList");
+        if (cheepList.style.display === "none" || cheepList.style.display === "") {
+            cheepList.style.display = "block";
+        } else {
+            cheepList.style.display = "none";
+        }
+    }
+    function toggleAuthors() {
+        var authorList = document.getElementById("authorList");
+        if (authorList.style.display === "none" || authorList.style.display === "") {
+            authorList.style.display = "block";
+        } else {
+            authorList.style.display = "none";
+        }
+    }
+</script>  
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
 }
