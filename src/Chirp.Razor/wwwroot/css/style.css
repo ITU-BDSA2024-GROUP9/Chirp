@@ -115,7 +115,6 @@ div.page ul.cheeps li {
   border: 1px solid #38444d;
   border-radius: 8px;
   color: #ffffff;
-  overflow-y: hidden;
   position: relative;
   display: flex;
   gap: 10px;
@@ -133,6 +132,7 @@ div.page ul.cheeps li p {
   word-break: break-word;
   overflow: hidden;
   position: relative;
+  font-size: 15px;
 }
 
 div.page ul.cheeps li strong {
@@ -142,8 +142,13 @@ div.page ul.cheeps li strong {
   margin-bottom: 5px;
 }
 
+ul.cheeps li strong > span {
+  color: #8899a6;
+  font-weight: normal;
+}
+
 div.page ul.cheeps li a {
-  color: #1DA1F2;
+  color: #ffffff;
   text-decoration: none;
 }
 
