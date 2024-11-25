@@ -1,4 +1,4 @@
-@using Chirp.Core.Classes;
+@using Chirp.Core.Classes
 @inject SignInManager<Author> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

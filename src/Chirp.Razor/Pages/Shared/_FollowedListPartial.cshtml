@@ -1,0 +1,52 @@
+@using Chirp.Core.Classes
+@using System.Text;
+@using System.Security.Cryptography;
+@model Chirp.Razor.Pages.Model
+
+@functions {
+    public static string sha256_hash(string value)
+    {
+        using (SHA256 hash = SHA256.Create())
+        {
+            Encoding enc = Encoding.UTF8;
+            Byte[] result = hash.ComputeHash(enc.GetBytes(value));
+
+            var sb = new StringBuilder();
+            foreach (Byte b in result)
+                sb.Append(b.ToString("x2"));
+
+            return sb.ToString();
+        }
+    }
+}
+
+@if (Model.followedAuthors.Any())
+{
+    <ul id="authorlist" class="authors">
+        @foreach (var author in Model.followedAuthors)
+        {
+            <li>
+                @if (author.Email != null)
+                {
+                    <img class="icon" src="https://gravatar.com/avatar/@sha256_hash(author.Email)" alt="Icon1" />
+                } else{
+                    <img class="icon" src="https://gravatar.com/avatar/?d=identicon" alt="Icon1" />
+                }
+                <div class="info">
+                <strong>
+                    <a href="/@author.UserName">@author.UserName</a>
+                </strong>
+                </div>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <em>You are not currently following any authors.</em>
+}
+
+
+<script>
+
+</script>   
