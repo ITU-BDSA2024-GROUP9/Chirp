@@ -12,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<ICheepService, CheepService>();
-builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<ICheepService, Chirp.Razor.Services.CheepService>();
+builder.Services.AddScoped<ICheepRepository, Chirp.Core.Classes.CheepRepository>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString, b => b.MigrationsAssembly("Chirp.Razor")));

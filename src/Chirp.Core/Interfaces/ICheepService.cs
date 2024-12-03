@@ -29,5 +29,9 @@ namespace Chirp.Core.Interfaces
         public int GetCheepByName(string authorName);
         public void UpdateCheep(CheepDTO cheep, int cheepId);
         public void DeleteCheep(int cheepId);
+
+        List<CommentDTO> GetCommentsForCheep(int cheepId);
+        void AddComment(CommentDTO comment);
+        void DeleteComment(int commentId);
     }
 }

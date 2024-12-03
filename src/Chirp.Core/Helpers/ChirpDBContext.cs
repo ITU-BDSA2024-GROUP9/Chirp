@@ -14,6 +14,7 @@ public class ChirpDBContext : IdentityDbContext<Author>
 	public DbSet<Cheep> Cheeps { get; set; }
 	public DbSet<Author> Authors { get; set; }
 	public DbSet<Follow> Follows { get; set; }
+	public DbSet<Comment> Comments { get; set; }
 	
 	
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,5 +41,15 @@ public class ChirpDBContext : IdentityDbContext<Author>
 			.HasOne(f => f.Follower)
 			.WithMany(a => a.Following)
 			.HasForeignKey(f => f.FollowerId);
+
+		modelBuilder.Entity<Follow>()
+			.HasOne(f => f.Followed)
+			.WithMany(a => a.Followers)
+			.HasForeignKey(f => f.FollowedId);
+		
+		modelBuilder.Entity<Comment>()
+			.HasOne(c => c.Author)
+			.WithMany(a => a.Comments)
+			.HasForeignKey(c => c.AuthorId);
 	}
 }

@@ -252,4 +252,53 @@ public class CheepRepository : ICheepRepository
             _dbContext.SaveChanges();
         }
     }
+
+    public List<CommentDTO> GetCommentsForCheep(int cheepId)
+    {
+        return _dbContext.Comments
+            .Include(c => c.Author)
+            .Where(c => c.CheepId == cheepId)
+            .Select(c => new CommentDTO
+            {
+                CommentId = c.CommentId,
+                Text = c.Text,
+                TimeStamp = c.TimeStamp,
+                Author = c.Author,
+                CheepId = c.CheepId
+            })
+            .OrderBy(c => c.TimeStamp)
+            .ToList();
+    }
+
+    public void AddComment(CommentDTO comment)
+    {
+        var cheep = _dbContext.Cheeps.Find(comment.CheepId);
+        if (cheep == null)
+        {
+            throw new ArgumentException("Cheep not found.");
+        }
+
+        var newComment = new Comment
+        {
+            Text = comment.Text,
+            TimeStamp = DateTime.Now,
+            Author = comment.Author,
+            AuthorId = comment.Author.Id,
+            Cheep = cheep,
+            CheepId = cheep.CheepId
+        };
+
+        _dbContext.Comments.Add(newComment);
+        _dbContext.SaveChanges();
+    }
+
+    public void DeleteComment(int commentId)
+    {
+        var comment = _dbContext.Comments.Find(commentId);
+        if (comment != null)
+        {
+            _dbContext.Comments.Remove(comment);
+            _dbContext.SaveChanges();
+        }
+    }
 }

@@ -22,4 +22,9 @@ public interface ICheepRepository {
     public void CreateAuthor(Author newAuthor);
     public void UpdateCheep(CheepDTO newCheep, int cheepID);
     public void DeleteCheep(int cheepID);
+
+    // Comment-related methods
+    List<CommentDTO> GetCommentsForCheep(int cheepId);
+    void AddComment(CommentDTO comment);
+    void DeleteComment(int commentId);
 }
