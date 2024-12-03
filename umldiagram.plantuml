@@ -1,0 +1,81 @@
+@startuml
+title Chirp Razor System
+
+package "Chirp Razor" {
+    class User {
+        +id: int
+        +username: string
+        +email: string
+    }
+
+    class Public {
+        +id: int
+        +content: string
+        +timestamp: datetime
+    }
+
+    class Model {
+        +PageNumber: int
+        +TotalPages: int
+        +CheepRange: range
+        +Author: Author
+        +userAuthor: Author
+        +Cheeps: List<Cheep>
+        +followedAuthors: List<Author>
+        +PaginateCheeps(int queryPage)
+        +PaginateCheepsByName(int queryPage, string authorName)
+        +PaginateCheepsByFollowers(int queryPage, string authorName)
+        +GetAllCheepsFromThisAuthor()
+        +isFollower(string userid, string author_userid): string
+
+        +IActionResult OnPostCreateCheep()
+        +IActionResult OnPostAddComment(int cheepId, string commentText)
+        +IActionResult OnPostDeleteComment(int commentId, int page = 1)
+        +IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+        +IActionResult OnPostFollow(string followed)
+        +IActionResult OnPostUnfollow(string unfollowed)
+
+    }
+
+    class Program {
+        +ChirpDBContext: DBContext
+        +CheepService: ICheepService
+        +CheepRepository: ICheepRepository
+    }
+
+    User "1" -- "0..*" Public : creates
+    Program "1" -- "1" Public : creates
+    Model "1" -- "1" Program : dependency injection
+}
+
+package "Chirp Core" {
+    class Author {
+        +Id: string
+        +UserName: string
+        +Email: string
+    }
+
+    class Cheep {
+        +Id: int
+        +Text: string
+        +Timestamp: datetime
+    }
+
+    class Follow {
+        +FollowerId: string
+        +FollowedId: string
+    }
+
+    class Comment {
+        +Id: int
+        +Text: string
+        +Timestamp: datetime
+    }
+
+    Author "1" -- "0..*" Cheep : creates
+    Author "1" -- "0..*" Follow : follows
+    Author "1" -- "0..*" Comment : comments
+    Cheep "1" -- "0..*" Comment : has
+}
+
+@enduml

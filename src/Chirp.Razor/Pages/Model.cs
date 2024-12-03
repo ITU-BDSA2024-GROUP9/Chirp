@@ -74,14 +74,6 @@ public class Model : PageModel
         return RedirectToPage();
     }
 
-    public void PaginateCheeps(int queryPage, string authorID)
-    {
-        PageNumber = queryPage;
-        Author = _service.GetAuthorByID(authorID);
-        Cheeps = _service.GetCheepsFromAuthorByID(authorID, queryPage);
-        TotalPages = PageAmount(_service.GetCheepCountByID(authorID));
-    }
-
     public void PaginateCheepsByName(int queryPage, string authorName)
     {
         SetUserVariables();
