@@ -12,13 +12,13 @@ public class ChirpDBContext : IdentityDbContext<Author>
 	public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
 	{
 	}
-	
+
 	public DbSet<Cheep> Cheeps { get; set; }
 	public DbSet<Author> Authors { get; set; }
 	public DbSet<Follow> Follows { get; set; }
 	public DbSet<Comment> Comments { get; set; }
-	
-	
+
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
@@ -34,11 +34,11 @@ public class ChirpDBContext : IdentityDbContext<Author>
 			.Property(c => c.Text)
 			.HasMaxLength(160)
 			.IsRequired();
-		
+
 		// Setting the composite key for the follows table
 		modelBuilder.Entity<Follow>()
 			.HasKey(f => new { f.FollowerId, f.FollowedId });
-		
+
 		modelBuilder.Entity<Follow>()
 			.HasOne(f => f.Follower)
 			.WithMany(a => a.Following)
@@ -48,19 +48,19 @@ public class ChirpDBContext : IdentityDbContext<Author>
 			.HasOne(f => f.Followed)
 			.WithMany(a => a.Followers)
 			.HasForeignKey(f => f.FollowedId);
-		
+
 		modelBuilder.Entity<Comment>()
 			.HasOne(c => c.Author)
 			.WithMany(a => a.Comments)
 			.HasForeignKey(c => c.AuthorId);
 
-			
-        var imagesConverter = new ValueConverter<List<string>, string>(
-            static v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-            static v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null));
 
-        modelBuilder.Entity<Cheep>()
-            .Property(c => c.Images)
-            .HasConversion(imagesConverter);
+		var imagesConverter = new ValueConverter<List<string>?, string>(
+			static v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
+			static v => JsonSerializer.Deserialize<List<string>>(v, JsonSerializerOptions.Default) ?? new List<string>());
+
+		_ = modelBuilder.Entity<Cheep>()
+			.Property(c => c.Images)
+			.HasConversion(imagesConverter);
 	}
 }
