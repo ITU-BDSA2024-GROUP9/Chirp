@@ -160,11 +160,8 @@ else
 {
     <em>There are no cheeps so far.</em>
 }
-<div class="pager">
-    <button onclick="window.location.href='?page=@lastPage'" disabled="@isFirstPage" class="prev">←</button>
-    <span>Page @Model.PageNumber / @Model.TotalPages</span>
-    <button onclick="window.location.href='?page=@nextPage'" disabled="@isLastPage" class="next">→</button>
-</div>
+
+<div id="loading" style="display: none;">Loading more cheeps...</div>
 
 <div id="image-modal" class="image-modal">
     <button class="close-modal" onclick="closeModal()">&times;</button>
@@ -257,5 +254,38 @@ else
         commentsContainer.style.display = isHidden ? 'block' : 'none';
         const commentCount = commentsContainer.querySelectorAll('.comment').length;
         event.target.textContent = isHidden ? `Hide Comments (${commentCount})` : `Show Comments (${commentCount})`;
+    }
+
+    let currentPage = @Model.PageNumber;
+    let totalPages = @Model.TotalPages;
+    let isLoading = false;
+
+    window.addEventListener('scroll', function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            if (!isLoading && currentPage < totalPages) {
+                isLoading = true;
+                loadMoreCheeps();
+            }
+        }
+    });
+
+    function loadMoreCheeps() {
+        currentPage++;
+        document.getElementById('loading').style.display = 'block';
+        fetch(`/?handler=LoadMoreCheeps&page=${currentPage}`)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(data, 'text/html');
+                const newCheeps = htmlDoc.querySelector('#messagelist').innerHTML;
+                document.querySelector('#messagelist').insertAdjacentHTML('beforeend', newCheeps);
+                document.getElementById('loading').style.display = 'none';
+                isLoading = false;
+            })
+            .catch(error => {
+                console.error('Error loading more cheeps:', error);
+                document.getElementById('loading').style.display = 'none';
+                isLoading = false;
+            });
     }
 </script>
