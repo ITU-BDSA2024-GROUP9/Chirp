@@ -2,6 +2,8 @@ using Chirp.Core.Classes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json;
 
 namespace Chirp.Core.Helpers;
 
@@ -51,5 +53,14 @@ public class ChirpDBContext : IdentityDbContext<Author>
 			.HasOne(c => c.Author)
 			.WithMany(a => a.Comments)
 			.HasForeignKey(c => c.AuthorId);
+
+			
+        var imagesConverter = new ValueConverter<List<string>, string>(
+            static v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+            static v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null));
+
+        modelBuilder.Entity<Cheep>()
+            .Property(c => c.Images)
+            .HasConversion(imagesConverter);
 	}
 }

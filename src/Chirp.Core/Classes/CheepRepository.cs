@@ -33,7 +33,8 @@ public class CheepRepository : ICheepRepository
             Author = foundAuthor,
             AuthorId = foundAuthor.Id,
             Text = newCheep.Text,
-            TimeStamp = DateTime.Now
+            TimeStamp = DateTime.Now,
+            Images = newCheep.Images
         };
 
         foundAuthor.Cheeps.Add(cheep);
@@ -86,7 +87,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
@@ -117,7 +119,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
@@ -139,7 +142,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((pageNumber - 1) * 32)
@@ -176,7 +180,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
@@ -200,7 +205,8 @@ public class CheepRepository : ICheepRepository
             CheepId = cheep.CheepId,
             Text = cheep.Text,
             TimeStamp = cheep.TimeStamp,
-            Author = cheep.Author
+            Author = cheep.Author,
+            Images = cheep.Images
         };
     }
 
