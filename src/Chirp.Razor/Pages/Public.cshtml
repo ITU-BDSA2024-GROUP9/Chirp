@@ -14,4 +14,39 @@
         <partial name="_CheepBoxPartial" />
     }
     <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.UserAuthor, Model.FollowedAuthors)" />
+    <div id="loading" style="display: none;">Loading more cheeps...</div>
 </div>
+<script>
+    let currentPage = @Model.PageNumber;
+    let totalPages = @Model.TotalPages;
+    let isLoading = false;
+
+    window.addEventListener('scroll', function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            if (!isLoading && currentPage < totalPages) {
+                isLoading = true;
+                loadMoreCheeps();
+            }
+        }
+    });
+
+    function loadMoreCheeps() {
+        currentPage++;
+        document.getElementById('loading').style.display = 'block';
+        fetch(`/?handler=LoadMoreCheeps&page=${currentPage}`)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(data, 'text/html');
+                const newCheeps = htmlDoc.querySelector('#messagelist').innerHTML;
+                document.querySelector('#messagelist').insertAdjacentHTML('beforeend', newCheeps);
+                document.getElementById('loading').style.display = 'none';
+                isLoading = false;
+            })
+            .catch(error => {
+                console.error('Error loading more cheeps:', error);
+                document.getElementById('loading').style.display = 'none';
+                isLoading = false;
+            });
+    }
+</script>

@@ -9,6 +9,7 @@ namespace Chirp.Razor.Pages;
 public class PublicModel : Model
 {
     public PublicModel(ICheepService service) : base(service) { }
+    private int infinitePage = 1;
 
     public ActionResult OnGet([FromQuery] int page)
     {
@@ -17,9 +18,10 @@ public class PublicModel : Model
         return Page();
     }
 
-    public PartialViewResult OnGetLoadMoreCheeps(int page)
+    public PartialViewResult OnGetLoadMoreCheeps()
     {
-        PaginateCheeps(page);
+        infinitePage++;
+        base.PaginateCheeps(infinitePage);
         return Partial("_CheepListPartial", (Cheeps, CheepRange, PageNumber, TotalPages, UserAuthor, FollowedAuthors));
     }
 
