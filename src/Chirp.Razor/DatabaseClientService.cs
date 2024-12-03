@@ -48,12 +48,7 @@ namespace SimpleDB.Services
                     return [];
                 }
 
-                if (count == null)
-                {
-                    return fullList;
-                }
-
-                return fullList.TakeLast((int)count).ToList();
+                return count == null ? fullList : fullList.TakeLast((int)count).ToList();
             }
             finally
             {

@@ -2,7 +2,7 @@
 @using Chirp.Core.Interfaces
 @using System.Text;
 @using System.Security.Cryptography;
-@model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, Author? userAuthor, List<Author> followedAuthors)
+@model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, Author? UserAuthor, List<Author> FollowedAuthors)
 @inject ICheepService CheepService
 @{
     var nextPage = Model.PageNumber < Model.TotalPages ? Model.PageNumber + 1 : Model.TotalPages;
@@ -118,7 +118,7 @@
                     }
                 }
                 <div class="comments-section">
-                    <button class="comment-toggle" onclick="toggleComments(@cheep.CheepId)">Show Comments</button>
+                    <button class="comment-toggle" onclick="toggleComments(@cheep.CheepId)">Show Comments (@CheepService.GetCommentCountForCheep(cheep.CheepId))</button>
                     <div id="comments-@cheep.CheepId" class="comments-container" style="display: none;">
                         <div class="comments-list">
                             @foreach (var comment in CheepService.GetCommentsForCheep(cheep.CheepId))
@@ -255,6 +255,7 @@ else
         const commentsContainer = document.getElementById(`comments-${cheepId}`);
         const isHidden = commentsContainer.style.display === 'none';
         commentsContainer.style.display = isHidden ? 'block' : 'none';
-        event.target.textContent = isHidden ? 'Hide Comments' : 'Show Comments';
+        const commentCount = commentsContainer.querySelectorAll('.comment').length;
+        event.target.textContent = isHidden ? `Hide Comments (${commentCount})` : `Show Comments (${commentCount})`;
     }
 </script>

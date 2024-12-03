@@ -20,10 +20,10 @@
     }
 }
 
-@if (Model.followedAuthors.Any())
+@if (Model.FollowedAuthors.Any())
 {
     <ul id="authorlist" class="authors">
-        @foreach (var author in Model.followedAuthors)
+        @foreach (var author in Model.FollowedAuthors)
         {
             <li>
                 @if (author.Email != null)

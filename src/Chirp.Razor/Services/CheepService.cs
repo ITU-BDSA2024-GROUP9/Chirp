@@ -116,6 +116,11 @@ namespace Chirp.Razor.Services
             return _repository.GetCommentsForCheep(cheepId);
         }
 
+        public int GetCommentCountForCheep(int cheepId)
+        {
+            return _repository.GetCommentsForCheep(cheepId).Count;
+        }
+
         public void AddComment(CommentDTO comment)
         {
             _repository.AddComment(comment);

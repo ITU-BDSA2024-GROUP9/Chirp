@@ -28,8 +28,8 @@ public class Model : PageModel
     public Range CheepRange {get;set;}
     public List<CheepDTO>? Cheeps { get; set; }
     public Author? Author { get; set; }
-    public Author? userAuthor { get; set; }
-    public List<Author> followedAuthors { get; set; } = new List<Author>();
+    public Author? UserAuthor { get; set; }
+    public List<Author> FollowedAuthors { get; set; } = [];
 
     public Model(ICheepService service)
     {
@@ -49,6 +49,7 @@ public class Model : PageModel
 
     public void GetAllCheepsFromThisAuthor()
     {
+        if (Author == null) return;
         Cheeps = _service.GetCheepsFromAuthorByID(Author.Id, 1);
     }
 
@@ -92,13 +93,13 @@ public class Model : PageModel
         SetUserVariables();
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
-        if (followedAuthors == null || userAuthor == null)
+        if (FollowedAuthors == null || UserAuthor == null)
         {
             TotalPages = 1; 
             return;
         }
-        TotalPages = PageAmount(_service.GetCheepCountByAuthors(followedAuthors, userAuthor.Id));
-        Cheeps = _service.GetCheepsFromAuthors(followedAuthors, userAuthor.Id, queryPage);
+        TotalPages = PageAmount(_service.GetCheepCountByAuthors(FollowedAuthors, UserAuthor.Id));
+        Cheeps = _service.GetCheepsFromAuthors(FollowedAuthors, UserAuthor.Id, queryPage);
     }
 
     private int PageAmount(int totalCheeps)
@@ -107,18 +108,13 @@ public class Model : PageModel
         return pages <= 0 ? 1 : pages;
     }
 
-    public string isFollower(string userid, string author_userid)
+    public string IsFollower(string userid, string author_userid)
     {
         var user = _service.GetAuthorByID(userid);
         var author = _service.GetAuthorByID(author_userid);
         if (user == null || author == null) return "Follow";
-        
-        if (_service.IsFollowing(user, author))
-        {
-            return "Unfollow";
-        }
-        
-        return "Follow";
+
+        return _service.IsFollowing(user, author) ? "Unfollow" : "Follow";
     }
 
     public IActionResult OnPostCreateCheep()
@@ -229,9 +225,9 @@ public class Model : PageModel
             if (User.Identity.IsAuthenticated)
             {
                 if (User.Identity.Name != null)
-                    userAuthor = _service.GetAuthorByName(User.Identity.Name);
-                if (userAuthor != null)
-                    followedAuthors = _service.getFollowedInCheeps(userAuthor);
+                    UserAuthor = _service.GetAuthorByName(User.Identity.Name);
+                if (UserAuthor != null)
+                    FollowedAuthors = _service.getFollowedInCheeps(UserAuthor);
             }
         }
     }

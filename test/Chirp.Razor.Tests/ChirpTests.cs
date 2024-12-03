@@ -241,7 +241,7 @@ public class UnitTests : IDisposable
         {
             UserName = "testy",
             Email = "testyeeawea",
-            Cheeps = new List<Cheep>()
+            Cheeps = []
         };
         
         var cheep = new CheepDTO()
@@ -303,7 +303,7 @@ public class UnitTests : IDisposable
         {
             UserName = "testName",
             Email = "testName@test.dk",
-            Cheeps = new List<Cheep>()
+            Cheeps = []
         };
         var originalCheep = new CheepDTO()
         {
@@ -396,11 +396,14 @@ public class UnitTests : IDisposable
     [InlineData("69420", "John Doe", "johndoe@yahoo.com")]
     public void TestCreateAuthor(string id, string newAuthor, string email){
         // arrange
-        var author = new Author(){Cheeps = new List<Cheep>()};
-        author.Id = id;
-        author.UserName = newAuthor;
-        author.Email = email;
-        
+        var author = new Author
+        {
+            Cheeps = [],
+            Id = id,
+            UserName = newAuthor,
+            Email = email
+        };
+
         // act
         _cheepRepo.CreateAuthor(author);
 
@@ -419,7 +422,7 @@ public class UnitTests : IDisposable
         {
             UserName = userName,
             Email = email,
-            Cheeps = new List<Cheep>()
+            Cheeps = []
         };
         var cheep = new CheepDTO()
         {
@@ -443,7 +446,7 @@ public class UnitTests : IDisposable
         {
             UserName = "testname",
             Email = "userName@test.dk",
-            Cheeps = new List<Cheep>()
+            Cheeps = []
         };
         var cheep = new CheepDTO()
         {
