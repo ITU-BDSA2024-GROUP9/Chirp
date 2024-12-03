@@ -26,14 +26,15 @@ public class CheepRepository : ICheepRepository
         {
             throw new ArgumentException("Author not found.");
         }
-        else foundAuthor.Cheeps ??= new List<Cheep>();
+        else foundAuthor.Cheeps ??= [];
 
         var cheep = new Cheep
         {
             Author = foundAuthor,
             AuthorId = foundAuthor.Id,
             Text = newCheep.Text,
-            TimeStamp = DateTime.Now
+            TimeStamp = DateTime.Now,
+            Images = newCheep.Images
         };
 
         foundAuthor.Cheeps.Add(cheep);
@@ -63,7 +64,7 @@ public class CheepRepository : ICheepRepository
     
     public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId)
     {
-        followedAuthors ??= new List<Author>();
+        followedAuthors ??= [];
         
         var authorIds = followedAuthors.Select(a => a.Id).ToList();
         if (!authorIds.Contains(currentUserId))
@@ -86,7 +87,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
@@ -117,7 +119,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
@@ -139,7 +142,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((pageNumber - 1) * 32)
@@ -176,7 +180,8 @@ public class CheepRepository : ICheepRepository
                 CheepId = c.CheepId,
                 Text = c.Text,
                 TimeStamp = c.TimeStamp,
-                Author = c.Author
+                Author = c.Author,
+                Images = c.Images
             })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
@@ -190,17 +195,15 @@ public class CheepRepository : ICheepRepository
         var cheep = _dbContext.Cheeps
             .Include(c => c.Author)
             .FirstOrDefault(c => c.CheepId == cheepID);
-        if (cheep == null)
-        {
-            throw new ArgumentException("Cheep not found.");
-        }
-
-        return new CheepDTO
+        return cheep == null
+            ? throw new ArgumentException("Cheep not found.")
+            : new CheepDTO
         {
             CheepId = cheep.CheepId,
             Text = cheep.Text,
             TimeStamp = cheep.TimeStamp,
-            Author = cheep.Author
+            Author = cheep.Author,
+            Images = cheep.Images
         };
     }
 
@@ -255,7 +258,7 @@ public class CheepRepository : ICheepRepository
 
     public List<CommentDTO> GetCommentsForCheep(int cheepId)
     {
-        return _dbContext.Comments
+        return [.. _dbContext.Comments
             .Include(c => c.Author)
             .Where(c => c.CheepId == cheepId)
             .Select(c => new CommentDTO
@@ -266,8 +269,12 @@ public class CheepRepository : ICheepRepository
                 Author = c.Author,
                 CheepId = c.CheepId
             })
-            .OrderBy(c => c.TimeStamp)
-            .ToList();
+            .OrderBy(c => c.TimeStamp)];
+    }
+
+    public int GetCommentCountForCheep(int cheepId)
+    {
+        return _dbContext.Comments.Count(c => c.CheepId == cheepId);
     }
 
     public void AddComment(CommentDTO comment)

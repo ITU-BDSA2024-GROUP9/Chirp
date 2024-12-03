@@ -31,6 +31,7 @@ namespace Chirp.Core.Interfaces
         public void DeleteCheep(int cheepId);
 
         List<CommentDTO> GetCommentsForCheep(int cheepId);
+        int GetCommentCountForCheep(int cheepId);
         void AddComment(CommentDTO comment);
         void DeleteComment(int commentId);
     }

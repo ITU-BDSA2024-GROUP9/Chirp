@@ -10,9 +10,9 @@
 <div class="holder">
     @if (Model.Author != null){
         <h2> @Model.Author?.UserName's Timeline </h2>
-        @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != Model.Author.UserName)
+        @if (Model.Author != null && User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != Model.Author.UserName)
         {
-            @if (!Model.followedAuthors?.Contains(Model.Author) ?? false)
+            @if (!Model.FollowedAuthors?.Contains(Model.Author!) ?? false)
             {
                 <form method="post" asp-page-handler="Follow">
                     <input type="hidden" name="followed" value="@Model.Author.UserName" />
@@ -38,5 +38,5 @@
     {
         <partial name="_CheepBoxPartial" />
     }
-    <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.userAuthor, Model.followedAuthors)" />
+    <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.UserAuthor, Model.FollowedAuthors)" />
 </div>

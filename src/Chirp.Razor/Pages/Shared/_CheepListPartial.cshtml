@@ -2,7 +2,7 @@
 @using Chirp.Core.Interfaces
 @using System.Text;
 @using System.Security.Cryptography;
-@model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, Author? userAuthor, List<Author> followedAuthors)
+@model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, Author? UserAuthor, List<Author> FollowedAuthors)
 @inject ICheepService CheepService
 @{
     var nextPage = Model.PageNumber < Model.TotalPages ? Model.PageNumber + 1 : Model.TotalPages;
@@ -52,18 +52,17 @@
     }
 }
 <style>
-    .holder {
-        --is-first-page:
-            @isFirstPage
-        ;
-        --is-last-page:
-            @isLastPage
-        ;
-    }
+    
+
+.holder {
+  --is-first-page:
+      @isFirstPage
+  ;
+  --is-last-page:
+      @isLastPage
+  ;
+}
 </style>
-
-
-
 
 @if (Model.Cheeps.Any())
 {
@@ -89,6 +88,17 @@
                 </p>
                 </div>
                 </div>
+                @if (cheep.Images != null && cheep.Images.Any())
+                {
+                    <div class="cheep-images" data-cheep-id="@cheep.CheepId">
+                        @for (var i = 0; i < cheep.Images.Count; i++)
+                        {
+                            <div class="cheep-image-container" onclick="openImageModal('@cheep.CheepId', @i)">
+                                <img src="@cheep.Images[i]" alt="Cheep image @(i + 1)" loading="lazy" />
+                            </div>
+                        }
+                    </div>
+                }
                 @if (User.Identity != null)
                 {
                     @if (User.Identity.IsAuthenticated && User.Identity.Name == cheep.Author.UserName)
@@ -108,7 +118,7 @@
                     }
                 }
                 <div class="comments-section">
-                    <button class="comment-toggle" onclick="toggleComments(@cheep.CheepId)">Show Comments</button>
+                    <button class="comment-toggle" onclick="toggleComments(@cheep.CheepId)">Show Comments (@CheepService.GetCommentCountForCheep(cheep.CheepId))</button>
                     <div id="comments-@cheep.CheepId" class="comments-container" style="display: none;">
                         <div class="comments-list">
                             @foreach (var comment in CheepService.GetCommentsForCheep(cheep.CheepId))
@@ -150,36 +160,132 @@ else
 {
     <em>There are no cheeps so far.</em>
 }
-<div class="pager">
-    <button onclick="window.location.href='?page=@lastPage'" disabled="@isFirstPage" class="prev">←</button>
-    <span>Page @Model.PageNumber / @Model.TotalPages</span>
-    <button onclick="window.location.href='?page=@nextPage'" disabled="@isLastPage" class="next">→</button>
+
+<div id="loading" style="display: none;">Loading more cheeps...</div>
+
+<div id="image-modal" class="image-modal">
+    <button class="close-modal" onclick="closeModal()">&times;</button>
+    <div class="modal-content">
+        <img src="" alt="Full size image" id="modal-image" />
+        <div class="modal-nav">
+            <button id="prev-image" onclick="navigateImage(-1)">&lt;</button>
+            <button id="next-image" onclick="navigateImage(1)">&gt;</button>
+        </div>
+        <div class="image-counter">
+            <span id="current-image">1</span> / <span id="total-images">1</span>
+        </div>
+    </div>
 </div>
 
-@* @section Scripts { *@
-    <script>
-        function toggleDropdown(button) {
-            event.preventDefault();
-            const menu = button.nextElementSibling;
-            menu.classList.toggle('show');
-        }
+<script>
+    let currentCheepImages = [];
+    let currentImageIndex = 0;
 
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropdown-toggle')) {
-                const dropdowns = document.getElementsByClassName('dropdown-menu');
-                for (const dropdown of dropdowns) {
-                    if (dropdown.classList.contains('show')) {
-                        dropdown.classList.remove('show');
-                    }
+    function openImageModal(cheepId, imageIndex) {
+        const cheepImagesDiv = document.querySelector(`.cheep-images[data-cheep-id="${cheepId}"]`);
+        const images = Array.from(cheepImagesDiv.querySelectorAll('img')).map(img => img.src);
+        
+        currentCheepImages = images;
+        currentImageIndex = imageIndex;
+        updateModalImage();
+        
+        document.getElementById('image-modal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        updateNavigationButtons();
+    }
+
+    function closeModal() {
+        document.getElementById('image-modal').classList.remove('active');
+        document.body.style.overflow = '';
+        currentCheepImages = [];
+        currentImageIndex = 0;
+    }
+
+    function updateModalImage() {
+        const modalImg = document.getElementById('modal-image');
+        modalImg.src = currentCheepImages[currentImageIndex];
+        
+        document.getElementById('current-image').textContent = currentImageIndex + 1;
+        document.getElementById('total-images').textContent = currentCheepImages.length;
+    }
+
+    function navigateImage(direction) {
+        currentImageIndex = (currentImageIndex + direction + currentCheepImages.length) % currentCheepImages.length;
+        updateModalImage();
+        updateNavigationButtons();
+    }
+
+    function updateNavigationButtons() {
+        const prevButton = document.getElementById('prev-image');
+        const nextButton = document.getElementById('next-image');
+        
+        prevButton.style.display = currentCheepImages.length > 1 ? 'block' : 'none';
+        nextButton.style.display = currentCheepImages.length > 1 ? 'block' : 'none';
+    }
+
+    document.getElementById('image-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+</script>
+<script>
+    function toggleDropdown(button) {
+        event.preventDefault();
+        const menu = button.nextElementSibling;
+        menu.classList.toggle('show');
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            const dropdowns = document.getElementsByClassName('dropdown-menu');
+            for (const dropdown of dropdowns) {
+                if (dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
                 }
             }
         }
+    }
 
-        function toggleComments(cheepId) {
-            const commentsContainer = document.getElementById(`comments-${cheepId}`);
-            const isHidden = commentsContainer.style.display === 'none';
-            commentsContainer.style.display = isHidden ? 'block' : 'none';
-            event.target.textContent = isHidden ? 'Hide Comments' : 'Show Comments';
+    function toggleComments(cheepId) {
+        const commentsContainer = document.getElementById(`comments-${cheepId}`);
+        const isHidden = commentsContainer.style.display === 'none';
+        commentsContainer.style.display = isHidden ? 'block' : 'none';
+        const commentCount = commentsContainer.querySelectorAll('.comment').length;
+        event.target.textContent = isHidden ? `Hide Comments (${commentCount})` : `Show Comments (${commentCount})`;
+    }
+
+    let currentPage = @Model.PageNumber;
+    let totalPages = @Model.TotalPages;
+    let isLoading = false;
+
+    window.addEventListener('scroll', function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            if (!isLoading && currentPage < totalPages) {
+                isLoading = true;
+                loadMoreCheeps();
+            }
         }
-    </script>
-@* } *@
+    });
+
+    function loadMoreCheeps() {
+        currentPage++;
+        document.getElementById('loading').style.display = 'block';
+        fetch(`/?handler=LoadMoreCheeps&page=${currentPage}`)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(data, 'text/html');
+                const newCheeps = htmlDoc.querySelector('#messagelist').innerHTML;
+                document.querySelector('#messagelist').insertAdjacentHTML('beforeend', newCheeps);
+                document.getElementById('loading').style.display = 'none';
+                isLoading = false;
+            })
+            .catch(error => {
+                console.error('Error loading more cheeps:', error);
+                document.getElementById('loading').style.display = 'none';
+                isLoading = false;
+            });
+    }
+</script>

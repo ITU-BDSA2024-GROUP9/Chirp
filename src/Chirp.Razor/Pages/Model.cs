@@ -7,6 +7,7 @@ using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 namespace Chirp.Razor.Pages;
 public class Model : PageModel
 {
@@ -16,6 +17,9 @@ public class Model : PageModel
 	[Display(Name = "Message Text")]
 	public string Message { get; set; } = "";
 
+    [BindProperty]
+    public List<IFormFile> UploadedImages { get; set; } = [];
+
     protected readonly ICheepService _service;
 
     public int PageNumber { get; set; }
@@ -24,8 +28,8 @@ public class Model : PageModel
     public Range CheepRange {get;set;}
     public List<CheepDTO>? Cheeps { get; set; }
     public Author? Author { get; set; }
-    public Author? userAuthor { get; set; }
-    public List<Author> followedAuthors { get; set; } = new List<Author>();
+    public Author? UserAuthor { get; set; }
+    public List<Author> FollowedAuthors { get; set; } = [];
 
     public Model(ICheepService service)
     {
@@ -45,6 +49,7 @@ public class Model : PageModel
 
     public void GetAllCheepsFromThisAuthor()
     {
+        if (Author == null) return;
         Cheeps = _service.GetCheepsFromAuthorByID(Author.Id, 1);
     }
 
@@ -88,13 +93,13 @@ public class Model : PageModel
         SetUserVariables();
         PageNumber = queryPage;
         Author = _service.GetAuthorByName(authorName);
-        if (followedAuthors == null || userAuthor == null)
+        if (FollowedAuthors == null || UserAuthor == null)
         {
             TotalPages = 1; 
             return;
         }
-        TotalPages = PageAmount(_service.GetCheepCountByAuthors(followedAuthors, userAuthor.Id));
-        Cheeps = _service.GetCheepsFromAuthors(followedAuthors, userAuthor.Id, queryPage);
+        TotalPages = PageAmount(_service.GetCheepCountByAuthors(FollowedAuthors, UserAuthor.Id));
+        Cheeps = _service.GetCheepsFromAuthors(FollowedAuthors, UserAuthor.Id, queryPage);
     }
 
     private int PageAmount(int totalCheeps)
@@ -103,18 +108,13 @@ public class Model : PageModel
         return pages <= 0 ? 1 : pages;
     }
 
-    public string isFollower(string userid, string author_userid)
+    public string IsFollower(string userid, string author_userid)
     {
         var user = _service.GetAuthorByID(userid);
         var author = _service.GetAuthorByID(author_userid);
         if (user == null || author == null) return "Follow";
-        
-        if (_service.IsFollowing(user, author))
-        {
-            return "Unfollow";
-        }
-        
-        return "Follow";
+
+        return _service.IsFollowing(user, author) ? "Unfollow" : "Follow";
     }
 
     public IActionResult OnPostCreateCheep()
@@ -133,12 +133,32 @@ public class Model : PageModel
         var author = _service.GetAuthorByID(userid);
         if (author == null)return RedirectToPage("/Error");
 
+        var imageUrls = new List<string>();
+        if (UploadedImages != null && UploadedImages.Count > 0)
+        {
+            foreach (var formFile in UploadedImages.Take(3)) // Limit to 3 images
+            {
+                if (formFile.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(formFile.FileName);
+                    var filePath = Path.Combine("wwwroot/images", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        formFile.CopyTo(stream);
+                    }
+                    var url = "/images/" + fileName;
+                    imageUrls.Add(url);
+                }
+            }
+        }
+
         var cheep = new CheepDTO
         {
             CheepId = 0,
             Text = Message,
             Author = author,
-            TimeStamp = DateTimeOffset.Now.DateTime
+            TimeStamp = DateTimeOffset.Now.DateTime,
+            Images = imageUrls
         };
 
         _service.CreateCheep(cheep);
@@ -205,9 +225,9 @@ public class Model : PageModel
             if (User.Identity.IsAuthenticated)
             {
                 if (User.Identity.Name != null)
-                    userAuthor = _service.GetAuthorByName(User.Identity.Name);
-                if (userAuthor != null)
-                    followedAuthors = _service.getFollowedInCheeps(userAuthor);
+                    UserAuthor = _service.GetAuthorByName(User.Identity.Name);
+                if (UserAuthor != null)
+                    FollowedAuthors = _service.getFollowedInCheeps(UserAuthor);
             }
         }
     }

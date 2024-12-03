@@ -34,8 +34,8 @@ namespace Chirp.Razor.Areas.Identity.Pages.Account.Manage
             }
             if (page < 1) page = 1;
             SetUserVariables();
-            if (userAuthor != null && userAuthor.UserName != null)
-                PaginateCheepsByName(page, userAuthor.UserName);
+            if (UserAuthor != null && UserAuthor.UserName != null)
+                PaginateCheepsByName(page, UserAuthor.UserName);
             return Page();
         }
     }

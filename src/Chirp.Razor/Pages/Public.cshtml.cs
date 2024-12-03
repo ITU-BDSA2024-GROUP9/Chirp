@@ -17,6 +17,12 @@ public class PublicModel : Model
         return Page();
     }
 
+    public PartialViewResult OnGetLoadMoreCheeps(int page)
+    {
+        PaginateCheeps(page);
+        return Partial("_CheepListPartial", (Cheeps, CheepRange, PageNumber, TotalPages, UserAuthor, FollowedAuthors));
+    }
+
     public new IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
     {
         return base.OnPostDeleteCheep(cheepId, page);

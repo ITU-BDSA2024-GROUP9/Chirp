@@ -176,11 +176,9 @@ namespace Chirp.Razor.Areas.Identity.Pages.Account
 
         private IUserEmailStore<Author> GetEmailStore()
         {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<Author>)_userStore;
+            return !_userManager.SupportsUserEmail
+                ? throw new NotSupportedException("The default UI requires a user store with email support.")
+                : (IUserEmailStore<Author>)_userStore;
         }
     }
 }

@@ -24,13 +24,13 @@
         @if (Model.PageNumber != 1) 
         { 
         <div id="cheepList"> 
-            <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.userAuthor, Model.followedAuthors)" />
+            <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.UserAuthor, Model.FollowedAuthors)" />
         </div>
         }
         else
         {
         <div id="cheepList" class="is-hidden">
-            <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.userAuthor, Model.followedAuthors)" />
+            <partial name="_CheepListPartial" model="(Model.Cheeps, Model.CheepRange, Model.PageNumber, Model.TotalPages, Model.UserAuthor, Model.FollowedAuthors)" />
         </div>
         }
 
