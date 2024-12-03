@@ -154,6 +154,58 @@ public class Model : PageModel
         return RedirectToPage();
     }
 
+    public IActionResult OnPostAddComment(int cheepId, string commentText)
+    {
+        ModelState.Remove("Message");
+        if (!ModelState.IsValid)
+        {
+            PaginateCheeps(1);
+            return Page();
+        }
+
+        if (User.Identity?.Name == null)
+        {
+            return RedirectToPage("/Error");
+        }
+
+        var author = _service.GetAuthorByName(User.Identity.Name);
+        if (author == null)
+        {
+            return RedirectToPage("/Error");
+        }
+
+        var comment = new CommentDTO
+        {
+            Text = commentText,
+            TimeStamp = DateTime.Now,
+            Author = author,
+            CheepId = cheepId
+        };
+
+        _service.AddComment(comment);
+
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostDeleteComment(int commentId, int page = 1)
+    {
+        ModelState.Remove("Message");
+        if (!ModelState.IsValid)
+        {
+            PaginateCheeps(page);
+            return Page();
+        }
+
+        if (User.Identity?.Name == null)
+        {
+            return RedirectToPage("/Error");
+        }
+
+        _service.DeleteComment(commentId);
+
+        return RedirectToPage();
+    }
+
     protected void SetUserVariables()
     {
         if (User.Identity != null)

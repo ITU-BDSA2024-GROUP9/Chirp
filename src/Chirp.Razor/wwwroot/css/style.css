@@ -156,16 +156,21 @@ div.page ul.cheeps li {
   color: #ffffff;
   position: relative;
   display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
-ul.cheeps li .icon {
+ul.cheeps .info {
+  display: flex;
+  gap: 10px;
+}
+ul.cheeps .info .icon {
   border-radius: 50%;
   width: 40px;
   height: 40px;
 }
 
-div.page ul.cheeps li p {
+ul.cheeps .info .details p {
   margin: 10px 0;
   text-wrap: wrap;
   word-break: break-word;
@@ -174,28 +179,28 @@ div.page ul.cheeps li p {
   font-size: 15px;
 }
 
-div.page ul.cheeps li strong {
+ul.cheeps .info .details strong {
   display: block;
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 5px;
 }
 
-ul.cheeps li strong > span {
+ul.cheeps .info .details strong > span {
   color: #8899a6;
   font-weight: normal;
 }
 
-div.page ul.cheeps li a {
+ul.cheeps .info .details a {
   color: #ffffff;
   text-decoration: none;
 }
 
-div.page ul.cheeps li a:hover {
+ul.cheeps .info .details a:hover {
   text-decoration: underline;
 }
 
-div.page ul.cheeps li small {
+ul.cheeps .info .details small {
   display: block;
   font-size: 12px;
   color: #8899a6;
@@ -502,4 +507,83 @@ ul.nav li a:hover {
 
 .dropdown-menu button:hover {
   background-color: #22303c;
+}
+
+.comments-section {
+  margin-top: 10px;
+  border-top: 1px solid #38444d;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-toggle {
+  background: none;
+  border: 1px solid #38444d;
+  color: #8899a6;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.comment-toggle:hover {
+  background: #192734;
+}
+
+.comments-container {
+  margin-top: 10px;
+}
+
+.comment {
+  padding: 10px;
+  border-left: 2px solid #38444d;
+  margin: 5px 0 5px 20px;
+}
+
+.comment-header {
+  font-size: 13px;
+  color: #8899a6;
+  margin-bottom: 5px;
+}
+
+.comment p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.comment-form {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.comment-form input[type="text"] {
+  flex: 1;
+  background: #192734;
+  border: 1px solid #38444d;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 15px;
+  color: #ffffff;
+}
+
+.comment-form button {
+  padding: 5px 15px;
+  font-size: 14px;
+  border-radius: 15px;
+}
+
+.delete-comment {
+  background: none;
+  border: none;
+  color: #e0245e;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.delete-comment:hover {
+  text-decoration: underline;
 }

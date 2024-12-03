@@ -110,5 +110,20 @@ namespace Chirp.Razor.Services
         {
             return _repository.GetCheepByID(cheepId);
         }
+
+        public List<CommentDTO> GetCommentsForCheep(int cheepId)
+        {
+            return _repository.GetCommentsForCheep(cheepId);
+        }
+
+        public void AddComment(CommentDTO comment)
+        {
+            _repository.AddComment(comment);
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            _repository.DeleteComment(commentId);
+        }
     }
 }
