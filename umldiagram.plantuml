@@ -2,17 +2,19 @@
 title Chirp Razor System
 
 package "Chirp Razor" {
-    class User {
-        +id: int
-        +username: string
-        +email: string
+
+    card Pages.Public {
+
+    }
+    
+    card Pages.UserTimeline {
+
     }
 
-    class Public {
-        +id: int
-        +content: string
-        +timestamp: datetime
+    card Pages._CheepBoxPartial{
+
     }
+
 
     class Model {
         +PageNumber: int
@@ -37,28 +39,61 @@ package "Chirp Razor" {
 
     }
 
+    class PublicModel {
+        +ActionResult OnGet([FromQuery] int page)
+        +IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+    }
+
+    class UserTimelineModel {
+        +ActionResult OnGet([FromQuery] int page, string author)
+        +IActionResult OnPostDeleteCheep(int cheepId, int page = 1)
+    }
+
     class Program {
-        +ChirpDBContext: DBContext
-        +CheepService: ICheepService
         +CheepRepository: ICheepRepository
     }
 
-    User "1" -- "0..*" Public : creates
-    Program "1" -- "1" Public : creates
+    
+    PublicModel --|> Model : inherits
+    UserTimelineModel --|> Model : inherits
+    Public "1" -- "1" _CheepBoxPartial : uses
+    Public "1" -- "0..*" PublicModel : uses model
+    UserTimeline "1" -- "1" _CheepBoxPartial : uses
+    UserTimeline "1" -- "0..*" UserTimelineModel : uses model
+    Program -- Pages : creates
     Model "1" -- "1" Program : dependency injection
+
 }
 
 package "Chirp Core" {
+    class ChirpDBContext {
+        +Authors: DbSet<Author>
+        +Cheeps: DbSet<Cheep>
+        +Follows: DbSet<Follow>
+        +Comments: DbSet<Comment>
+    }
+
+    interface ICheepService {
+        +GetAllCheepsFromThisAuthor(string authorId): List<Cheep>
+        +PaginateCheeps(int queryPage): Model
+        +PaginateCheepsByName(int queryPage, string authorName): Model
+    }
+
+    interface ICheepRepository {
+        +GetAllCheepsFromThisAuthor(string authorId): List<Cheep>
+        +PaginateCheeps(int queryPage): Model
+        +PaginateCheepsByName(int queryPage, string authorName): Model
+    }
+
     class Author {
-        +Id: string
-        +UserName: string
-        +Email: string
+
     }
 
     class Cheep {
-        +Id: int
+        +CheepId: int
         +Text: string
         +Timestamp: datetime
+        +Images: List<string>
     }
 
     class Follow {
@@ -71,9 +106,47 @@ package "Chirp Core" {
         +Text: string
         +Timestamp: datetime
     }
+    class CheepRepository {
 
+    }
+    class CheepService {
+
+    }
+
+    class ASPIdentity.IdentityUser {
+        +Id: string
+        +UserName: string
+        +NormalizedUserName: string
+        +Email: string
+        +NormalizedEmail: string
+        +EmailConfirmed: bool
+        +PasswordHash: string
+        +SecurityStamp: string
+        +ConcurrencyStamp: string
+        +PhoneNumber: string
+        +PhoneNumberConfirmed: bool
+        +TwoFactorEnabled: bool
+        +LockoutEnd: datetime
+        +LockoutEnabled: bool
+        +AccessFailedCount: int
+    }
+
+    class EfCore.DbContext {
+    }
+
+
+    Program "1" --|> "1" CheepRepository : uses
+    Program "1" --|> "1" CheepService : uses
+    Program "1" --|> "1" ChirpDBContext : uses
+
+
+    CheepRepository --|> ICheepRepository : implements
+    CheepService --|> ICheepService : implements
+    ChirpDBContext --|> DbContext : inherits
+    Author --|> IdentityUser : inherits
+    
     Author "1" -- "0..*" Cheep : creates
-    Author "1" -- "0..*" Follow : follows
+    Author "1" -- "0..*" Follow : Following
     Author "1" -- "0..*" Comment : comments
     Cheep "1" -- "0..*" Comment : has
 }
