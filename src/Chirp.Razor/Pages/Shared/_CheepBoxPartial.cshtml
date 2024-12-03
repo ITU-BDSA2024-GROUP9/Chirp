@@ -6,10 +6,82 @@
 
 <div class="cheepbox">
     <h3>What's on your mind @(User.Identity?.Name)?</h3>
-    <form method="post" asp-page-handler="CreateCheep">
-        <input style="float: left" name="Message" type="text" placeholder="Type here!" required asp-for="Message">
-        <input type="submit" value="Share">
+    <form method="post" asp-page-handler="CreateCheep" enctype="multipart/form-data">
+        <div class="input-container">
+            <input name="Message" type="text" placeholder="Type here!" required asp-for="Message">
+            <div class="image-upload">
+                <label for="upload-image" class="upload-image-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    <span id="image-count"></span>
+                </label>
+                <input type="file" id="upload-image" name="UploadedImages" accept="image/*" multiple>
+            </div>
+            <button type="submit" class="share-btn">Share</button>
+        </div>
+        <div id="image-preview" class="cheep-images preview-grid" data-cheep-id="preview"></div>
         <span asp-validation-for="Message"></span>
     </form>
 </div>
 <hr>
+
+<script>
+const imageInput = document.getElementById('upload-image');
+const imagePreview = document.getElementById('image-preview');
+const imageCount = document.getElementById('image-count');
+let selectedFiles = [];
+
+imageInput.addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    selectedFiles = files;
+    updateImagePreview();
+});
+
+function updateImagePreview() {
+    imagePreview.innerHTML = '';
+    imageCount.textContent = selectedFiles.length ? `${selectedFiles.length}` : '';
+
+    selectedFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.onclick = (evt) => {
+                evt.stopPropagation();
+                // Use the shared modal system
+                openImageModal('preview', index);
+            };
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.innerHTML = '×';
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                removeImage(index);
+            };
+            
+            div.appendChild(img);
+            div.appendChild(removeBtn);
+            imagePreview.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+
+    window.currentCheepImages = selectedFiles.map(file => URL.createObjectURL(file));
+}
+
+function removeImage(index) {
+    selectedFiles = selectedFiles.filter((_, i) => i !== index);
+    updateImagePreview();
+    
+    if (selectedFiles.length === 0) {
+        imageInput.value = '';
+    }
+}
+</script>

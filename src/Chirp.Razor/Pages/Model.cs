@@ -7,6 +7,7 @@ using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 namespace Chirp.Razor.Pages;
 public class Model : PageModel
 {
@@ -15,6 +16,9 @@ public class Model : PageModel
 	[StringLength(160, ErrorMessage = "Maximum length is {1}")]
 	[Display(Name = "Message Text")]
 	public string Message { get; set; } = "";
+
+    [BindProperty]
+    public List<IFormFile> UploadedImages { get; set; } = [];
 
     protected readonly ICheepService _service;
 
@@ -141,12 +145,32 @@ public class Model : PageModel
         var author = _service.GetAuthorByID(userid);
         if (author == null)return RedirectToPage("/Error");
 
+        var imageUrls = new List<string>();
+        if (UploadedImages != null && UploadedImages.Count > 0)
+        {
+            foreach (var formFile in UploadedImages.Take(3)) // Limit to 3 images
+            {
+                if (formFile.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(formFile.FileName);
+                    var filePath = Path.Combine("wwwroot/images", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        formFile.CopyTo(stream);
+                    }
+                    var url = "/images/" + fileName;
+                    imageUrls.Add(url);
+                }
+            }
+        }
+
         var cheep = new CheepDTO
         {
             CheepId = 0,
             Text = Message,
             Author = author,
-            TimeStamp = DateTimeOffset.Now.DateTime
+            TimeStamp = DateTimeOffset.Now.DateTime,
+            Images = imageUrls
         };
 
         _service.CreateCheep(cheep);
