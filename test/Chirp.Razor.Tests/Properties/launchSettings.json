@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Chirp.Razor.Tests": {
+    "Chirp.Tests": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

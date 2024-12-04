@@ -9,7 +9,7 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using Assert = Xunit.Assert;
 
-namespace Chirp.Razor.Tests;
+namespace Chirp.Tests;
 
 // ref: https://learn.microsoft.com/en-us/ef/core/testing/testing-with-the-database 
 public class TestDatabaseFixture : IDisposable
