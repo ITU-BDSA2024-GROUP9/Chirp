@@ -1,7 +1,7 @@
-namespace Chirp.Core.Helpers;
-
 using System.Diagnostics;
 using System.Threading.Tasks;
+
+namespace Chirp.Tests.Helpers;
 
 public static class E2EHelper
 {
