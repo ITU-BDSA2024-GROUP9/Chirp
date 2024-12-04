@@ -30,7 +30,7 @@ public class CheepRepository : ICheepRepository
 
         var cheep = new Cheep
         {
-            Author = foundAuthor,
+            Author = AuthorMapper.toDomain(foundAuthor),
             AuthorId = foundAuthor.Id,
             Text = newCheep.Text,
             TimeStamp = DateTime.Now,
