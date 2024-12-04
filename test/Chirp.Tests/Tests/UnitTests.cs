@@ -1,5 +1,6 @@
 ﻿using Chirp.Core.Classes;
 using Chirp.Core.DTO;
+using Chirp.Repositories.Helpers;
 using Chirp.Repositories.Repositories;
 using Chirp.Services;
 using Chirp.Tests.Helpers;
@@ -42,7 +43,7 @@ namespace Chirp.Tests.Tests
 			{
 				Text = text,
 				TimeStamp = DateTime.Now,
-				Author = author
+				Author = _cheepService.ToDomain(author)
 			};
 
 			// Act
@@ -90,7 +91,7 @@ namespace Chirp.Tests.Tests
 			};
 
 			// Act
-			_cheepRepo.CreateAuthor(author);
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
 			_cheepService.CreateCheep(cheep);
 			var result = _cheepService.GetCheepsFromAuthorByName(author.UserName, 1);
 
@@ -156,7 +157,7 @@ namespace Chirp.Tests.Tests
 				Author = author
 			};
 			// Act
-			_cheepRepo.CreateAuthor(author);
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
 			var cheepID = _cheepService.CreateCheep(originalCheep);
 			var originalResult = _cheepService.GetCheepsFromAuthorByID(author.Id, 1)[0].Text;
 			_cheepService.UpdateCheep(updatedCheep, cheepID);
@@ -244,7 +245,7 @@ namespace Chirp.Tests.Tests
 			};
 
 			// act
-			_cheepRepo.CreateAuthor(author);
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
 
 			// assert
 			var result = _cheepService.GetAuthorByID(id);
