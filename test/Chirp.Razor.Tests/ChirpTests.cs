@@ -204,7 +204,7 @@ public class UnitTests : IDisposable
         {
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = AuthorMapper.toDomain(author)
+            Author = _cheepService.ToDomain(author)
         };
         
         // Act

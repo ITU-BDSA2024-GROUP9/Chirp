@@ -29,7 +29,7 @@ namespace Chirp.Core.Interfaces
         public int GetCheepByName(string authorName);
         public void UpdateCheep(CheepDTO cheep, int cheepId);
         public void DeleteCheep(int cheepId);
-
+        Author ToDomain(AuthorDTO author);
         List<CommentDTO> GetCommentsForCheep(int cheepId);
         int GetCommentCountForCheep(int cheepId);
         void AddComment(CommentDTO comment);

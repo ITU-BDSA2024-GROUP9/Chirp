@@ -157,7 +157,7 @@ public class Model : PageModel
         {
             CheepId = 0,
             Text = Message,
-            Author = AuthorMapper.toDomain(author),
+            Author = _service.ToDomain(author),
             TimeStamp = DateTimeOffset.Now.DateTime,
             Images = imageUrls
         };
@@ -191,7 +191,7 @@ public class Model : PageModel
         {
             Text = commentText,
             TimeStamp = DateTime.Now,
-            Author = AuthorMapper.toDomain(author),
+            Author = _service.ToDomain(author),
             CheepId = cheepId
         };
 

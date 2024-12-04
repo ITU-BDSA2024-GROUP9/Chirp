@@ -18,8 +18,14 @@ public class AuthorMapper
         };
     }
 
-    public static Author toDomain(AuthorDTO authorDTO)
+    public static Author toDomain(AuthorDTO authorDTO, ChirpDBContext dbContext)
     {
+        var existingAuthor = dbContext.Authors.Find(authorDTO.Id);
+        if (existingAuthor != null)
+        {
+            return existingAuthor;
+        }
+        
         return new Author
         {
             Id = authorDTO.Id,

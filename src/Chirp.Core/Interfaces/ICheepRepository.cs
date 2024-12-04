@@ -22,6 +22,7 @@ public interface ICheepRepository {
     public void CreateAuthor(AuthorDTO newAuthor);
     public void UpdateCheep(CheepDTO newCheep, int cheepID);
     public void DeleteCheep(int cheepID);
+    public Author ToDomain(AuthorDTO authorDTO);
 
     // Comment-related methods
     List<CommentDTO> GetCommentsForCheep(int cheepId);
