@@ -70,7 +70,7 @@ namespace Chirp.Tests.Tests
 		[Xunit.Theory]
 		[InlineData("Jacqualine Gilcoine")]
 		[InlineData("Quintin Sitts")]
-		public async void CanSeePrivateTimelineAzure(string author)
+		public async Task CanSeePrivateTimelineAzure(string author)
 		{
 			var response = await _client.GetAsync($"/{author}");
 			response.EnsureSuccessStatusCode();
@@ -82,7 +82,7 @@ namespace Chirp.Tests.Tests
 		}
 
 		[Fact]
-		public async void CanSeePublicTimeline()
+		public async Task CanSeePublicTimeline()
 		{
 			var response = await _client.GetAsync("/");
 			response.EnsureSuccessStatusCode();
@@ -100,7 +100,7 @@ namespace Chirp.Tests.Tests
 		}
 
 		[Fact]
-		public async void PagesLimitedTo32()
+		public async Task PagesLimitedTo32()
 		{
 			// arrange
 			var response = await _client.GetAsync("/");
@@ -118,7 +118,7 @@ namespace Chirp.Tests.Tests
 		[Xunit.Theory]
 		[InlineData("Jacqualine Gilcoine")]
 		[InlineData("Quintin Sitts")]
-		public async void CanSeePrivateTimeline(string author)
+		public async Task CanSeePrivateTimeline(string author)
 		{
 			var response = await _client.GetAsync($"/{author}");
 			response.EnsureSuccessStatusCode();
@@ -130,7 +130,7 @@ namespace Chirp.Tests.Tests
 		[Xunit.Theory]
 		[InlineData("Jacqualine Gilcoine")]
 		[InlineData("Quintin Sitts")]
-		public async void CanSeePrivateTimelineFromName(string author)
+		public async Task CanSeePrivateTimelineFromName(string author)
 		{
 			var response = await _client.GetAsync($"/{author}");
 			response.EnsureSuccessStatusCode();

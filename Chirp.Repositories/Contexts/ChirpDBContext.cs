@@ -7,10 +7,10 @@ using System.Text.Json;
 namespace Chirp.Repositories.Repositories;
 public class ChirpDBContext(DbContextOptions<ChirpDBContext> options) : IdentityDbContext<Author>(options)
 {
-	public DbSet<Cheep> Cheeps { get; set; }
-	public DbSet<Author> Authors { get; set; }
-	public DbSet<Follow> Follows { get; set; }
-	public DbSet<Comment> Comments { get; set; }
+	public DbSet<Cheep>? Cheeps { get; set; }
+	public DbSet<Author>? Authors { get; set; }
+	public DbSet<Follow>? Follows { get; set; }
+	public DbSet<Comment>? Comments { get; set; }
 
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
