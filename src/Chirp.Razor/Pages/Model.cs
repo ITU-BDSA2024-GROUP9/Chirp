@@ -19,12 +19,12 @@ public class Model : PageModel
 	protected readonly ICheepService _service;
 
 	public int PageNumber { get; set; }
-    public int TotalPages { get; set; }
-    public Range CheepRange {get;set;}
-    public List<CheepDTO>? Cheeps { get; set; }
-    public AuthorDTO? Author { get; set; }
-    public AuthorDTO? UserAuthor { get; set; }
-    public List<AuthorDTO> FollowedAuthors { get; set; } = [];
+	public int TotalPages { get; set; }
+	public Range CheepRange { get; set; }
+	public List<CheepDTO>? Cheeps { get; set; }
+	public AuthorDTO? Author { get; set; }
+	public AuthorDTO? UserAuthor { get; set; }
+	public List<AuthorDTO> FollowedAuthors { get; set; } = [];
 
 	public Model(ICheepService service)
 	{
@@ -181,12 +181,12 @@ public class Model : PageModel
 		}
 
 		var comment = new CommentDTO
-        {
-            Text = commentText,
-            TimeStamp = DateTime.Now,
-            Author = _service.ToDomain(author),
-            CheepId = cheepId
-        };
+		{
+			Text = commentText,
+			TimeStamp = DateTime.Now,
+			Author = _service.ToDomain(author),
+			CheepId = cheepId
+		};
 
 		_service.AddComment(comment);
 
