@@ -2,6 +2,7 @@ namespace Chirp.Repositories.Repositories;
 
 using Chirp.Core.Classes;
 using Chirp.Core.DTO;
+using Chirp.Repositories.Helpers;
 using Chirp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +30,7 @@ public class CheepRepository : ICheepRepository
 
 		var cheep = new Cheep
 		{
-			Author = foundAuthor,
+			Author = ToDomain(foundAuthor),
 			AuthorId = foundAuthor.Id,
 			Text = newCheep.Text,
 			TimeStamp = DateTime.Now,
@@ -61,7 +62,7 @@ public class CheepRepository : ICheepRepository
 			.Count(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName);
 	}
 
-	public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId)
+	public int GetCheepCountByAuthors(List<AuthorDTO> followedAuthors, string currentUserId)
 	{
 		followedAuthors ??= [];
 
@@ -81,24 +82,17 @@ public class CheepRepository : ICheepRepository
 	{
 		var cheeps = _dbContext.Cheeps
 			.Include(c => c.Author)
-			.Select(c => new CheepDTO
-			{
-				CheepId = c.CheepId,
-				Text = c.Text,
-				TimeStamp = c.TimeStamp,
-				Author = c.Author,
-				Images = c.Images
-			})
 			.OrderByDescending(c => c.TimeStamp)
 			.Skip((page - 1) * 32)
 			.Take(32)
 			.ToList();
-		return cheeps;
+		return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
 	}
 
-	public List<Author> getFollowedInCheeps(Author follower)
+	public List<AuthorDTO> getFollowedInCheeps(AuthorDTO followerDTO)
 	{
-		List<Author> authors = _dbContext.Follows
+		var follower = ToDomain(followerDTO);
+		var authors = _dbContext.Follows
 			.Where(f => f.Follower == follower)
 			.Select(f => f.Followed)
 			.Where(a => a != null)
@@ -106,29 +100,21 @@ public class CheepRepository : ICheepRepository
 			.ToList()!;
 
 
-		return authors;
+		return authors.Select(a => AuthorMapper.toDTO(a!)).ToList();
 	}
 	public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
 	{
 		var cheeps = _dbContext.Cheeps
 			.Include(c => c.Author)
 			.Where(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName)
-			.Select(c => new CheepDTO
-			{
-				CheepId = c.CheepId,
-				Text = c.Text,
-				TimeStamp = c.TimeStamp,
-				Author = c.Author,
-				Images = c.Images
-			})
 			.OrderByDescending(c => c.TimeStamp)
 			.Skip((page - 1) * 32)
 			.Take(32)
 			.ToList();
-		return cheeps;
+		return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
 	}
 
-	public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, string currentUserID, int pageNumber)
+	public List<CheepDTO> GetCheepsFromAuthors(List<AuthorDTO> followedAuthors, string currentUserID, int pageNumber)
 	{
 		var authorIds = followedAuthors.Select(a => a.Id).ToList();
 		authorIds.Add(currentUserID);
@@ -136,38 +122,54 @@ public class CheepRepository : ICheepRepository
 		var cheeps = _dbContext.Cheeps
 			.Include(c => c.Author)
 			.Where(c => authorIds.Contains(c.Author.Id))
-			.Select(c => new CheepDTO
-			{
-				CheepId = c.CheepId,
-				Text = c.Text,
-				TimeStamp = c.TimeStamp,
-				Author = c.Author,
-				Images = c.Images
-			})
 			.OrderByDescending(c => c.TimeStamp)
 			.Skip((pageNumber - 1) * 32)
 			.Take(32)
 			.ToList();
-		return cheeps;
+		return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
 	}
 
-	public bool IsFollowing(Author followerAuthor, Author followedAuthor)
+	public bool IsFollowing(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 	{
 		return followerAuthor.Following.Any(f => f.FollowedId == followedAuthor.Id);
 	}
 
-	public void Follow(Author followerAuthor, Author followedAuthor)
+	public void Follow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 	{
-		var followEntry = new Follow() { Followed = followedAuthor, Follower = followerAuthor, FollowedId = followedAuthor.Id, FollowerId = followerAuthor.Id };
+		var existingFollow = _dbContext.Follows
+			.FirstOrDefault(f => f.FollowerId == followerAuthor.Id && f.FollowedId == followedAuthor.Id);
+
+		if (existingFollow != null)
+		{
+			Console.WriteLine($"Follow relationship already exists: {followerAuthor.Id} -> {followedAuthor.Id}");
+			return;
+		}
+
+		var followEntry = new Follow
+		{
+			Followed = ToDomain(followedAuthor),
+			Follower = ToDomain(followerAuthor),
+			FollowedId = followedAuthor.Id,
+			FollowerId = followerAuthor.Id
+		};
+
 		_dbContext.Follows.Add(followEntry);
 		_dbContext.SaveChanges();
 	}
-	public void Unfollow(Author followerAuthor, Author followedAuthor)
+	public void Unfollow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 	{
-		var followEntry = new Follow() { Followed = followedAuthor, Follower = followerAuthor, FollowedId = followedAuthor.Id, FollowerId = followerAuthor.Id };
+		var followEntry = _dbContext.Follows
+			.FirstOrDefault(f => f.FollowerId == followerAuthor.Id && f.FollowedId == followedAuthor.Id);
+
+		if (followEntry == null)
+		{
+			throw new ArgumentException("Follow relationship does not exist.");
+		}
+
 		_dbContext.Follows.Remove(followEntry);
 		_dbContext.SaveChanges();
 	}
+
 
 
 	public List<CheepDTO> GetCheepsFromAuthorByID(string authorID, int page)
@@ -175,19 +177,11 @@ public class CheepRepository : ICheepRepository
 		var cheeps = _dbContext.Cheeps
 			.Include(c => c.Author)
 			.Where(c => c.Author.Id == authorID)
-			.Select(c => new CheepDTO
-			{
-				CheepId = c.CheepId,
-				Text = c.Text,
-				TimeStamp = c.TimeStamp,
-				Author = c.Author,
-				Images = c.Images
-			})
 			.OrderByDescending(c => c.TimeStamp)
 			.Skip((page - 1) * 32)
 			.Take(32)
 			.ToList();
-		return cheeps;
+		return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
 	}
 
 	public CheepDTO GetCheepByID(int cheepID)
@@ -195,16 +189,7 @@ public class CheepRepository : ICheepRepository
 		var cheep = _dbContext.Cheeps
 			.Include(c => c.Author)
 			.FirstOrDefault(c => c.CheepId == cheepID);
-		return cheep == null
-			? throw new ArgumentException("Cheep not found.")
-			: new CheepDTO
-			{
-				CheepId = cheep.CheepId,
-				Text = cheep.Text,
-				TimeStamp = cheep.TimeStamp,
-				Author = cheep.Author,
-				Images = cheep.Images
-			};
+		return cheep == null ? throw new ArgumentException("Cheep not found.") : CheepMapper.toDTO(cheep);
 	}
 
 	public void DeleteCheep(int cheepID)
@@ -217,32 +202,38 @@ public class CheepRepository : ICheepRepository
 		}
 	}
 
-
-
-	public Author? GetAuthorByID(string authorId)
+	public AuthorDTO? GetAuthorByID(string authorId)
 	{
-		return _dbContext.Authors
+		var author = _dbContext.Authors
 			.Include(a => a.Cheeps) // Eager loading
 			.FirstOrDefault(a => a.Id == authorId);
+		return author == null ? null : AuthorMapper.toDTO(author);
 	}
 
-	public Author? GetAuthorByName(string authorName)
+	public AuthorDTO? GetAuthorByName(string authorName)
 	{
-		return _dbContext.Authors
+		var author = _dbContext.Authors
 			.Include(a => a.Cheeps) // Eager loading
 			.FirstOrDefault(a => EF.Functions.Collate(a.UserName, "NOCASE") == authorName);
+		return author == null ? null : AuthorMapper.toDTO(author);
 	}
 
-	public Author? GetAuthorByEmail(string email)
+	public AuthorDTO? GetAuthorByEmail(string email)
 	{
-		return _dbContext.Authors
+		var author = _dbContext.Authors
 			.Include(a => a.Cheeps) // Eager loading
 			.FirstOrDefault(a => a.Email == email);
+		return author == null ? throw new ArgumentException("Author not found!") : AuthorMapper.toDTO(author);
 	}
 
-	public void CreateAuthor(Author newAuthor)
+	public Author ToDomain(AuthorDTO author)
 	{
-		_dbContext.Authors.Add(newAuthor);
+		return AuthorMapper.toDomain(author, _dbContext);
+	}
+
+	public void CreateAuthor(AuthorDTO newAuthor)
+	{
+		_dbContext.Authors.Add(ToDomain(newAuthor));
 		_dbContext.SaveChanges();
 	}
 
@@ -258,18 +249,12 @@ public class CheepRepository : ICheepRepository
 
 	public List<CommentDTO> GetCommentsForCheep(int cheepId)
 	{
-		return [.. _dbContext.Comments
+		var comments = _dbContext.Comments
 			.Include(c => c.Author)
 			.Where(c => c.CheepId == cheepId)
-			.Select(c => new CommentDTO
-			{
-				CommentId = c.CommentId,
-				Text = c.Text,
-				TimeStamp = c.TimeStamp,
-				Author = c.Author,
-				CheepId = c.CheepId
-			})
-			.OrderBy(c => c.TimeStamp)];
+			.OrderBy(c => c.TimeStamp)
+			.ToList();
+		return comments.Select(c => CommentMapper.toDTO(c)).ToList();
 	}
 
 	public int GetCommentCountForCheep(int cheepId)
@@ -285,12 +270,19 @@ public class CheepRepository : ICheepRepository
 			throw new ArgumentException("Cheep not found.");
 		}
 
+		// Retrieve the tracked Author instance from the DbContext
+		var trackedAuthor = _dbContext.Authors.Find(comment.Author.Id);
+		if (trackedAuthor == null)
+		{
+			throw new ArgumentException("Author not found.");
+		}
+
 		var newComment = new Comment
 		{
 			Text = comment.Text,
 			TimeStamp = DateTime.Now,
-			Author = comment.Author,
-			AuthorId = comment.Author.Id,
+			Author = trackedAuthor, // Use the tracked Author instance
+			AuthorId = trackedAuthor.Id,
 			Cheep = cheep,
 			CheepId = cheep.CheepId
 		};
@@ -298,6 +290,7 @@ public class CheepRepository : ICheepRepository
 		_dbContext.Comments.Add(newComment);
 		_dbContext.SaveChanges();
 	}
+
 
 	public void DeleteComment(int commentId)
 	{

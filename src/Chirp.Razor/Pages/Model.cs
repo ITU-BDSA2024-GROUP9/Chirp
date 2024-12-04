@@ -1,11 +1,5 @@
-using Chirp.Core.Classes;
-<<<<<<< HEAD
-using Chirp.Core.Helpers;
-using Chirp.Core.Interfaces;
-=======
 using Chirp.Core.DTO;
 using Chirp.Services.Interfaces;
->>>>>>> onion
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -25,27 +19,16 @@ public class Model : PageModel
 	protected readonly ICheepService _service;
 
 	public int PageNumber { get; set; }
-
-<<<<<<< HEAD
     public int TotalPages { get; set; }
     public Range CheepRange {get;set;}
     public List<CheepDTO>? Cheeps { get; set; }
     public AuthorDTO? Author { get; set; }
     public AuthorDTO? UserAuthor { get; set; }
     public List<AuthorDTO> FollowedAuthors { get; set; } = [];
-=======
-	public int TotalPages { get; set; }
-	public Range CheepRange { get; set; }
-	public List<CheepDTO>? Cheeps { get; set; }
-	public Author? Author { get; set; }
-	public Author? UserAuthor { get; set; }
-	public List<Author> FollowedAuthors { get; set; } = [];
->>>>>>> onion
 
 	public Model(ICheepService service)
 	{
 		_service = service;
-
 	}
 
 	//Ideally querying slices instead of taking the whole thing.
@@ -144,16 +127,6 @@ public class Model : PageModel
 		var author = _service.GetAuthorByID(userid);
 		if (author == null) return RedirectToPage("/Error");
 
-<<<<<<< HEAD
-        var cheep = new CheepDTO
-        {
-            CheepId = 0,
-            Text = Message,
-            Author = _service.ToDomain(author),
-            TimeStamp = DateTimeOffset.Now.DateTime,
-            Images = imageUrls
-        };
-=======
 		var imageUrls = new List<string>();
 		if (UploadedImages != null && UploadedImages.Count > 0)
 		{
@@ -172,13 +145,12 @@ public class Model : PageModel
 				}
 			}
 		}
->>>>>>> onion
 
 		var cheep = new CheepDTO
 		{
 			CheepId = 0,
 			Text = Message,
-			Author = author,
+			Author = _service.ToDomain(author),
 			TimeStamp = DateTimeOffset.Now.DateTime,
 			Images = imageUrls
 		};
@@ -202,29 +174,19 @@ public class Model : PageModel
 			return RedirectToPage("/Error");
 		}
 
-<<<<<<< HEAD
-        var comment = new CommentDTO
+		var author = _service.GetAuthorByName(User.Identity.Name);
+		if (author == null)
+		{
+			return RedirectToPage("/Error");
+		}
+
+		var comment = new CommentDTO
         {
             Text = commentText,
             TimeStamp = DateTime.Now,
             Author = _service.ToDomain(author),
             CheepId = cheepId
         };
-=======
-		var author = _service.GetAuthorByName(User.Identity.Name);
-		if (author == null)
-		{
-			return RedirectToPage("/Error");
-		}
->>>>>>> onion
-
-		var comment = new CommentDTO
-		{
-			Text = commentText,
-			TimeStamp = DateTime.Now,
-			Author = author,
-			CheepId = cheepId
-		};
 
 		_service.AddComment(comment);
 
