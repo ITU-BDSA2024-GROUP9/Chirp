@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Helpers\DbInitializer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Chirp.Repositories\Chirp.Repositories.csproj" />
     <ProjectReference Include="..\..\Chirp.Services\Chirp.Services.csproj" />
     <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
@@ -42,10 +38,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.1" />
     <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.48.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Helpers\" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 namespace Chirp.Repositories.Repositories;
 
 using Chirp.Core.Classes;
+using Chirp.Core.DTO;
 using Chirp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,5 @@
 using Chirp.Core.Classes;
+using Chirp.Core.DTO;
 
 namespace Chirp.Repositories.Interfaces;
 

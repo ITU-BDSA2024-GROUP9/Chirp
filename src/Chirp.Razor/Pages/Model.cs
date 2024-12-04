@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Http;
 using Chirp.Services.Interfaces;
+using Chirp.Core.DTO;
 namespace Chirp.Razor.Pages;
 public class Model : PageModel
 {

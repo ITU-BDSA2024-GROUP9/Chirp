@@ -1,4 +1,5 @@
 ﻿using Chirp.Core.Classes;
+using Chirp.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Chirp.Services.Interfaces
 {
-    public interface ICheepService//<T> where T : IPost
+	public interface ICheepService//<T> where T : IPost
     {     
         public List<CheepDTO> GetCheeps(int page);
         public bool IsFollowing(Author followerAuthor, Author followedAuthor);

@@ -1,11 +1,12 @@
 ﻿using Chirp.Core.Classes;
+using Chirp.Core.DTO;
 using Chirp.Repositories.Interfaces;
 using Chirp.Services.Interfaces;
 using System.ComponentModel.Design;
 
 namespace Chirp.Services
 {
-    public class CheepService : ICheepService
+	public class CheepService : ICheepService
     {
         private readonly ICheepRepository _repository;
 
