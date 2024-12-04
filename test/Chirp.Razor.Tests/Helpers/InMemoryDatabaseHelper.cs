@@ -1,13 +1,7 @@
 using Chirp.Core.Classes;
 using Chirp.Repositories.Repositories;
-using Chirp.Services;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Playwright;
-using Microsoft.Playwright.NUnit;
-using NUnit.Framework;
-using Assert = Xunit.Assert;
 
 namespace Chirp.Tests.Helpers;
 

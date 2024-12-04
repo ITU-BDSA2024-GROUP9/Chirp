@@ -1,7 +1,6 @@
 ﻿using Chirp.Tests.Helpers;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 
 namespace Chirp.Tests.Tests
