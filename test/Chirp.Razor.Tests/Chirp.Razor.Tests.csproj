@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\src\Chirp.Razor\Chirp.Razor.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="ChirpTests.cs" />
+  </ItemGroup>
+
 </Project>
