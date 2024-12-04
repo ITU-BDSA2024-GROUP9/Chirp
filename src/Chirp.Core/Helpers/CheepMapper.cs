@@ -2,7 +2,7 @@ using Chirp.Core.Classes;
 
 namespace Chirp.Core.Helpers;
 
-public class CheepHelper
+public class CheepMapper
 {
     public static CheepDTO toDTO(Cheep cheep)
     {
