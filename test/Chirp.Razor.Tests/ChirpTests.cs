@@ -1,20 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-using System.Formats.Asn1;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 using Chirp.Core.Classes;
 using Chirp.Core.Helpers;
-using Chirp.Core.Interfaces;
 using Chirp.Services;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using NUnit.Framework;
 using Assert = Xunit.Assert;
 
@@ -72,7 +63,7 @@ public class UITests : PageTest
     [SetUp]
     public async Task Init()
     {
-        await MyEndToEndUtil.StartServer(); // Starts the server before each test
+        await E2EHelper.StartServer(); // Starts the server before each test
     }
 
     [Test]
@@ -163,7 +154,7 @@ public class UITests : PageTest
     [TearDown]
     public void Cleanup()
     {
-        MyEndToEndUtil.StopServer(); // Stops the server after each test
+        E2EHelper.StopServer(); // Stops the server after each test
     }
 
 }
@@ -616,7 +607,7 @@ public class EndToEndTests : PageTest
         _context = _fixture.CreateContext();
         _cheepRepo = new CheepRepository(_context);
         _cheepService = new CheepService(_cheepRepo);
-        await MyEndToEndUtil.StartServer(); // Starts the server before each test
+        await E2EHelper.StartServer(); // Starts the server before each test
     }
 
     [Test]
@@ -694,7 +685,7 @@ public class EndToEndTests : PageTest
     [TearDown]
     public void Cleanup()
     {
-        MyEndToEndUtil.StopServer(); // Stops the server after each test
+        E2EHelper.StopServer(); // Stops the server after each test
         _context.Dispose();
         _fixture.Dispose();
     }

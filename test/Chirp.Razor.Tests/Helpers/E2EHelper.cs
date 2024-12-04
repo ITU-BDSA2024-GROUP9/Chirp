@@ -3,11 +3,9 @@ namespace Chirp.Core.Helpers;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-public static class MyEndToEndUtil
+public static class E2EHelper
 {
     private static Process? _serverProcess;
-
-    
 
     public static async Task StartServer()
     {
