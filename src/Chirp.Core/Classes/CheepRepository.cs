@@ -82,12 +82,11 @@ public class CheepRepository : ICheepRepository
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
-            .Select(c => CheepMapper.toDTO(c))
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32)
             .ToList();
-        return cheeps;
+        return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
     }
 
     public List<AuthorDTO> getFollowedInCheeps(AuthorDTO followerDTO)
@@ -98,23 +97,21 @@ public class CheepRepository : ICheepRepository
             .Select(f => f.Followed)
             .Where(a => a != null)
             .Distinct()
-            .Select(a => AuthorMapper.toDTO(a))
             .ToList()!;
         
         
-        return authors;
+        return authors.Select(a => AuthorMapper.toDTO(a)).ToList();
     }
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
     {
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
             .Where(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName)
-            .Select(c => CheepMapper.toDTO(c))
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32)
             .ToList();
-        return cheeps;
+        return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
     }
 
     public List<CheepDTO> GetCheepsFromAuthors(List<AuthorDTO> followedAuthors, string currentUserID, int pageNumber)
@@ -125,12 +122,11 @@ public class CheepRepository : ICheepRepository
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
             .Where(c => authorIds.Contains(c.Author.Id))
-            .Select(c => CheepMapper.toDTO(c))
             .OrderByDescending(c => c.TimeStamp)
             .Skip((pageNumber - 1) * 32)
             .Take(32)
             .ToList();
-        return cheeps;
+        return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
     }
         
     public bool IsFollowing(AuthorDTO followerAuthor, AuthorDTO followedAuthor){
@@ -166,19 +162,11 @@ public class CheepRepository : ICheepRepository
         var cheeps = _dbContext.Cheeps
             .Include(c => c.Author)
             .Where(c => c.Author.Id == authorID)
-            .Select(c => new CheepDTO
-            {
-                CheepId = c.CheepId,
-                Text = c.Text,
-                TimeStamp = c.TimeStamp,
-                Author = c.Author,
-                Images = c.Images
-            })
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32)
             .ToList();
-        return cheeps;
+        return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
     }
 
     public CheepDTO GetCheepByID(int cheepID)
@@ -241,11 +229,12 @@ public class CheepRepository : ICheepRepository
 
     public List<CommentDTO> GetCommentsForCheep(int cheepId)
     {
-        return [.. _dbContext.Comments
+        var comments = _dbContext.Comments
             .Include(c => c.Author)
             .Where(c => c.CheepId == cheepId)
-            .Select(c => CommentMapper.toDTO(c))
-            .OrderBy(c => c.TimeStamp)];
+            .OrderBy(c => c.TimeStamp)
+            .ToList();
+        return comments.Select(c => CommentMapper.toDTO(c)).ToList();
     }
 
     public int GetCommentCountForCheep(int cheepId)

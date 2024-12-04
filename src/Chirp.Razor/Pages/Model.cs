@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Chirp.Core.Classes;
+using Chirp.Core.Helpers;
 using Chirp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -27,9 +28,9 @@ public class Model : PageModel
     public int TotalPages { get; set; }
     public Range CheepRange {get;set;}
     public List<CheepDTO>? Cheeps { get; set; }
-    public Author? Author { get; set; }
-    public Author? UserAuthor { get; set; }
-    public List<Author> FollowedAuthors { get; set; } = [];
+    public AuthorDTO? Author { get; set; }
+    public AuthorDTO? UserAuthor { get; set; }
+    public List<AuthorDTO> FollowedAuthors { get; set; } = [];
 
     public Model(ICheepService service)
     {
@@ -83,7 +84,8 @@ public class Model : PageModel
     {
         SetUserVariables();
         PageNumber = queryPage;
-        Author = _service.GetAuthorByName(authorName);
+        var authorDTO = _service.GetAuthorByName(authorName);
+        Author = AuthorMapper.toDomain(authorDTO)
         TotalPages = PageAmount(_service.GetCheepByName(authorName));
         Cheeps = _service.GetCheepsFromAuthorByName(authorName, queryPage);
     }
@@ -156,7 +158,7 @@ public class Model : PageModel
         {
             CheepId = 0,
             Text = Message,
-            Author = author,
+            Author = AuthorMapper.toDomain(author),
             TimeStamp = DateTimeOffset.Now.DateTime,
             Images = imageUrls
         };
@@ -190,7 +192,7 @@ public class Model : PageModel
         {
             Text = commentText,
             TimeStamp = DateTime.Now,
-            Author = author,
+            Author = AuthorMapper.toDomain(author),
             CheepId = cheepId
         };
 
