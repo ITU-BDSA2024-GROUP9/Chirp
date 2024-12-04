@@ -34,44 +34,44 @@ namespace Chirp.Razor.Services
             return _repository.CreateCheep(newCheep);
         }
 
-        public bool IsFollowing(Author followerAuthor, Author followedAuthor)
+        public bool IsFollowing(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
         {
             return _repository.IsFollowing(followerAuthor, followedAuthor);
         }
 
-        public List<Author> getFollowedInCheeps(Author follower)
+        public List<AuthorDTO> getFollowedInCheeps(AuthorDTO follower)
         {
             return _repository.getFollowedInCheeps(follower);
         }
 
-        public List<CheepDTO> GetCheepsFromAuthors(List<Author> followedAuthors, string currentUserID, int pageNumber)
+        public List<CheepDTO> GetCheepsFromAuthors(List<AuthorDTO> followedAuthors, string currentUserID, int pageNumber)
         {
             return _repository.GetCheepsFromAuthors(followedAuthors, currentUserID, pageNumber);
         }
 
 
-        public void Follow(Author followerAuthor, Author followedAuthor)
+        public void Follow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
         {
             _repository.Follow(followerAuthor, followedAuthor);
         }
 
-        public void Unfollow(Author followerAuthor, Author followedAuthor)
+        public void Unfollow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
         {
             _repository.Unfollow(followerAuthor, followedAuthor);
         }
 
 
-        public Author? GetAuthorByID(string authorId)
+        public AuthorDTO? GetAuthorByID(string authorId)
         {
             return _repository.GetAuthorByID(authorId);
         }
 
-        public Author? GetAuthorByName(string authorName)
+        public AuthorDTO? GetAuthorByName(string authorName)
         {
             return _repository.GetAuthorByName(authorName);
         }
 
-        public Author? GetAuthorByEmail(string email)
+        public AuthorDTO? GetAuthorByEmail(string email)
         {
             return _repository.GetAuthorByEmail(email);
         }
@@ -91,7 +91,12 @@ namespace Chirp.Razor.Services
             return _repository.GetCheepCountByName(authorName);
         }
 
-        public int GetCheepCountByAuthors(List<Author> followedAuthors, string currentUserId)
+        public Author ToDomain(AuthorDTO author)
+        {
+            return _repository.ToDomain(author);
+        }
+
+        public int GetCheepCountByAuthors(List<AuthorDTO> followedAuthors, string currentUserId)
         {
             return _repository.GetCheepCountByAuthors(followedAuthors, currentUserId);
         }
