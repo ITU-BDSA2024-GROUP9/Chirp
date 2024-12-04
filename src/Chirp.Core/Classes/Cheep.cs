@@ -8,7 +8,7 @@ public class Cheep
     [StringLength(160)]
     public required string Text { get; set; }
     public required DateTime TimeStamp { get; set; }
-    public required Author Author { get; set; }
+    public required AuthorDTO Author { get; set; }
     public required string AuthorId { get; set; }
     public List<string>? Images { get; set; }
 }
