@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Razor.Tests", "test\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Services", "Chirp.Services\Chirp.Services.csproj", "{C40DB793-FF59-4DF3-9FE2-3F90F0241A27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Repositories", "Chirp.Repositories\Chirp.Repositories.csproj", "{B040DED3-7042-42CD-A0D0-B75088B4B5B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C40DB793-FF59-4DF3-9FE2-3F90F0241A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C40DB793-FF59-4DF3-9FE2-3F90F0241A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C40DB793-FF59-4DF3-9FE2-3F90F0241A27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B040DED3-7042-42CD-A0D0-B75088B4B5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B040DED3-7042-42CD-A0D0-B75088B4B5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B040DED3-7042-42CD-A0D0-B75088B4B5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B040DED3-7042-42CD-A0D0-B75088B4B5B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
