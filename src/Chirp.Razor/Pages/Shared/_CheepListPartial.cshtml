@@ -1,7 +1,8 @@
-@using Chirp.Core.Classes
-@using Chirp.Core.Interfaces
+@using Chirp.Core.Classes;
+@using Chirp.Core.Interfaces;
 @using System.Text;
 @using System.Security.Cryptography;
+@using Chirp.Services.Interfaces;
 @model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, Author? UserAuthor, List<Author> FollowedAuthors)
 @inject ICheepService CheepService
 @{

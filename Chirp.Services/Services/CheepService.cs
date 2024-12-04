@@ -1,8 +1,9 @@
 ﻿using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
+using Chirp.Services.Interfaces;
 using System.ComponentModel.Design;
 
-namespace Chirp.Razor.Services
+namespace Chirp.Services
 {
     public class CheepService : ICheepService
     {

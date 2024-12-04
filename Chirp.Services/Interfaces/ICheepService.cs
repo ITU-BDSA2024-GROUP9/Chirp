@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chirp.Core.Interfaces
+namespace Chirp.Services.Interfaces
 {
     public interface ICheepService//<T> where T : IPost
     {     

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Chirp.Core.Classes;
 using Chirp.Core.Helpers;
 using Chirp.Core.Interfaces;
-using Chirp.Razor.Services;
+using Chirp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Testing;

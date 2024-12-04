@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
 
 namespace Chirp.Core.Helpers;
-
 public class ChirpDBContext : IdentityDbContext<Author>
 {
 	public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)

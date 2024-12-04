@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Chirp.Core.Classes;
 using Chirp.Core.Interfaces;
+using Chirp.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

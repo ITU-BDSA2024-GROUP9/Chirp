@@ -1,19 +1,20 @@
 using Chirp.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Chirp.Core.Helpers;
-using Chirp.Razor.Services;
+using Chirp.Services;
 using Microsoft.EntityFrameworkCore;
 using Chirp.Core.Classes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using AspNet.Security.OAuth.GitHub;
 using Chirp.Razor.Areas.Identity.Data;
+using Chirp.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<ICheepService, Chirp.Razor.Services.CheepService>();
-builder.Services.AddScoped<ICheepRepository, Chirp.Core.Classes.CheepRepository>();
+builder.Services.AddScoped<ICheepService, CheepService>();
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString, b => b.MigrationsAssembly("Chirp.Razor")));
