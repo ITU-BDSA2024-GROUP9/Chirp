@@ -84,8 +84,7 @@ public class Model : PageModel
     {
         SetUserVariables();
         PageNumber = queryPage;
-        var authorDTO = _service.GetAuthorByName(authorName);
-        Author = AuthorMapper.toDomain(authorDTO)
+        Author = _service.GetAuthorByName(authorName);
         TotalPages = PageAmount(_service.GetCheepByName(authorName));
         Cheeps = _service.GetCheepsFromAuthorByName(authorName, queryPage);
     }
