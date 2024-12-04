@@ -25,6 +25,9 @@ public class EndToEndTest : PageTest
     [SetUp]
     public async Task Init()
     {
+        await Context.ClearCookiesAsync();
+        await Context.ClearPermissionsAsync();
+        await Page.Context.NewPageAsync();
         _fixture = new TestDatabaseFixture();
         _context = _fixture.CreateContext();
         _cheepRepo = new CheepRepository(_context);
@@ -38,6 +41,8 @@ public class EndToEndTest : PageTest
         //User registers for the first time and accesses the homepage.
         await Page.GotoAsync("http://localhost:5273/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
+        await Page.GetByPlaceholder("johndoe").ClickAsync();
+        await Page.GetByPlaceholder("johndoe").FillAsync("test");
         await Page.GetByPlaceholder("name@example.com").ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
         await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
@@ -45,15 +50,8 @@ public class EndToEndTest : PageTest
         await Page.GetByLabel("Password", new() { Exact = true }).PressAsync("Tab");
         await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
 
-        //User logs in.
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByPlaceholder("name@example.com").ClickAsync();
-        await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
-        await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
-        await Page.GetByPlaceholder("password").FillAsync("Test1!");
-        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        //User is automatically logged in.
 
         //User posts a cheep.
         await Page.GetByPlaceholder("Type here!").ClickAsync();
@@ -63,7 +61,9 @@ public class EndToEndTest : PageTest
 
         //User goes to their timeline and confirms their cheep is there.
         await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
-        await Page.GetByText("test@mail.com Hello, everyone").ClickAsync();
+        await Page.Locator("div").Filter(new() { HasText = "test · Just now Hello," }).Nth(3).ClickAsync();
+        
+        await Task.Delay(500); // Simple delay
 
         //The database has registered the user as well as the cheep.
         var result = _cheepService.GetAuthorByEmail("test@mail.com");
