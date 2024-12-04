@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
 
-namespace Chirp.Core.Helpers;
-public class ChirpDBContextLegacy(DbContextOptions<ChirpDBContextLegacy> options) : IdentityDbContext<Author>(options)
+namespace Chirp.Repositories.Repositories;
+public class ChirpDBContext(DbContextOptions<ChirpDBContext> options) : IdentityDbContext<Author>(options)
 {
 	public DbSet<Cheep> Cheeps { get; set; }
 	public DbSet<Author> Authors { get; set; }

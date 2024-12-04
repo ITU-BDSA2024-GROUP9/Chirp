@@ -1,6 +1,6 @@
 using Chirp.Core.Classes;
-using Chirp.Core.Helpers;
 using Chirp.Core.Interfaces;
+using Chirp.Repositories.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

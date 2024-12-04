@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Classes\CheepRepository.cs" />
+    <Compile Remove="Helpers\ChirpDBContext.cs" />
+    <Compile Remove="Interfaces\ICheepRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
@@ -20,5 +26,9 @@
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.SQLite" Version="8.0.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Helpers\" />
     </ItemGroup>
 </Project>

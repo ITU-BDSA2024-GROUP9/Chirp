@@ -1,5 +1,5 @@
 ﻿using Chirp.Core.Classes;
-using Chirp.Core.Helpers;
+using Chirp.Repositories.Repositories;
 using Chirp.Services;
 using Chirp.Tests.Helpers;
 

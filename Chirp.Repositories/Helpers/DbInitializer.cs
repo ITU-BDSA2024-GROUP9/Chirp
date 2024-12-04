@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
 using Chirp.Core.Classes;
+using Chirp.Repositories.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class DbInitializer
 {

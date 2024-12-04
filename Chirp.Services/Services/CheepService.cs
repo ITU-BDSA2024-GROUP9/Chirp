@@ -1,5 +1,5 @@
 ﻿using Chirp.Core.Classes;
-using Chirp.Core.Interfaces;
+using Chirp.Repositories.Interfaces;
 using Chirp.Services.Interfaces;
 using System.ComponentModel.Design;
 

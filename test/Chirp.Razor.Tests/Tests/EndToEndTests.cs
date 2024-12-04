@@ -1,5 +1,4 @@
 ﻿using Chirp.Core.Classes;
-using Chirp.Core.Helpers;
 using Chirp.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Playwright.NUnit;
@@ -7,6 +6,7 @@ using Microsoft.Playwright;
 using NUnit.Framework;
 using Chirp.Tests.Helpers;
 using Assert = NUnit.Framework.Assert;
+using Chirp.Repositories.Repositories;
 
 namespace Chirp.Tests.Tests
 {

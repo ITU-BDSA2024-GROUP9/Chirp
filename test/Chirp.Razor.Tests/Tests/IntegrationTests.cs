@@ -1,4 +1,4 @@
-﻿using Chirp.Core.Helpers;
+﻿using Chirp.Repositories.Repositories;
 using Chirp.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
