@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Chirp.Tests.Helpers;
 
-public static class E2EHelper
+public static class E2ETestsHelper
 {
     private static Process? _serverProcess;
 

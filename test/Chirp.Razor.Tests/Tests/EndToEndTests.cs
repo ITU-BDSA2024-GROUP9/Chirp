@@ -6,6 +6,7 @@ using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using Chirp.Tests.Helpers;
+using Assert = NUnit.Framework.Assert;
 
 namespace Chirp.Tests.Tests
 {
@@ -16,7 +17,7 @@ namespace Chirp.Tests.Tests
 
 		// dissable nullable warnings since the fields are initialized in the setup method
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-		private TestDatabaseFixture _fixture;
+		private InMemoryDatabaseHelper _fixture;
 		private CheepRepository _cheepRepo;
 		private ChirpDBContext _context;
 		private CheepService _cheepService;
@@ -25,11 +26,11 @@ namespace Chirp.Tests.Tests
 		[SetUp]
 		public async Task Init()
 		{
-			_fixture = new TestDatabaseFixture();
+			_fixture = new InMemoryDatabaseHelper();
 			_context = _fixture.CreateContext();
 			_cheepRepo = new CheepRepository(_context);
 			_cheepService = new CheepService(_cheepRepo);
-			await E2EHelper.StartServer(); // Starts the server before each test
+			await E2ETestsHelper.StartServer(); // Starts the server before each test
 		}
 
 		[Test]
@@ -107,7 +108,7 @@ namespace Chirp.Tests.Tests
 		[TearDown]
 		public void Cleanup()
 		{
-			E2EHelper.StopServer(); // Stops the server after each test
+			E2ETestsHelper.StopServer(); // Stops the server after each test
 			_context.Dispose();
 			_fixture.Dispose();
 		}
