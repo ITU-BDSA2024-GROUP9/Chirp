@@ -30,7 +30,7 @@ public class CheepRepository : ICheepRepository
 
         var cheep = new Cheep
         {
-            Author = AuthorMapper.toDomain(foundAuthor, _dbContext),
+            Author = ToDomain(foundAuthor),
             AuthorId = foundAuthor.Id,
             Text = newCheep.Text,
             TimeStamp = DateTime.Now,
@@ -91,7 +91,7 @@ public class CheepRepository : ICheepRepository
 
     public List<AuthorDTO> getFollowedInCheeps(AuthorDTO followerDTO)
     {
-        var follower = AuthorMapper.toDomain(followerDTO, _dbContext);
+        var follower = ToDomain(followerDTO);
         var authors = _dbContext.Follows
             .Where(f => f.Follower == follower)
             .Select(f => f.Followed)
@@ -100,7 +100,7 @@ public class CheepRepository : ICheepRepository
             .ToList()!;
         
         
-        return authors.Select(a => AuthorMapper.toDTO(a)).ToList();
+        return authors.Select(a => AuthorMapper.toDTO(a!)).ToList();
     }
     public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
     {
@@ -232,7 +232,7 @@ public class CheepRepository : ICheepRepository
 
     public void CreateAuthor(AuthorDTO newAuthor)
     {
-        _dbContext.Authors.Add(AuthorMapper.toDomain(newAuthor, _dbContext));
+        _dbContext.Authors.Add(ToDomain(newAuthor));
         _dbContext.SaveChanges();
     }
 
