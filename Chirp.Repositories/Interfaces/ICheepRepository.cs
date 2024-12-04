@@ -1,5 +1,7 @@
 using Chirp.Core.Classes;
 
+namespace Chirp.Repositories.Interfaces;
+
 public interface ICheepRepository {
     public int CreateCheep(CheepDTO newCheep);
     public int GetCheepCount();

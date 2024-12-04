@@ -13,7 +13,7 @@ namespace Chirp.Tests.Tests
 		[SetUp]
 		public async Task Init()
 		{
-			await E2EHelper.StartServer(); // Starts the server before each test
+			await ServerHelper.StartServer(); // Starts the server before each test
 		}
 
 		[Test]
@@ -104,7 +104,7 @@ namespace Chirp.Tests.Tests
 		[TearDown]
 		public void Cleanup()
 		{
-			E2EHelper.StopServer(); // Stops the server after each test
+			ServerHelper.StopServer(); // Stops the server after each test
 		}
 
 	}

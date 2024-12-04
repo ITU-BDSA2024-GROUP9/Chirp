@@ -30,7 +30,7 @@ namespace Chirp.Tests.Tests
 			_context = _fixture.CreateContext();
 			_cheepRepo = new CheepRepository(_context);
 			_cheepService = new CheepService(_cheepRepo);
-			await E2ETestsHelper.StartServer(); // Starts the server before each test
+			await ServerHelper.StartServer(); // Starts the server before each test
 		}
 
 		[Test]
@@ -108,7 +108,7 @@ namespace Chirp.Tests.Tests
 		[TearDown]
 		public void Cleanup()
 		{
-			E2ETestsHelper.StopServer(); // Stops the server after each test
+			ServerHelper.StopServer(); // Stops the server after each test
 			_context.Dispose();
 			_fixture.Dispose();
 		}
