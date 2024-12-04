@@ -1,8 +1,13 @@
-@using Chirp.Core.Classes
-@using Chirp.Core.Interfaces
+@using Chirp.Core.Classes;
 @using System.Text;
 @using System.Security.Cryptography;
+<<<<<<< HEAD
 @model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, AuthorDTO? UserAuthor, List<AuthorDTO> FollowedAuthors)
+=======
+@using Chirp.Services.Interfaces;
+@using Chirp.Core.DTO;
+@model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, Author? UserAuthor, List<Author> FollowedAuthors)
+>>>>>>> onion
 @inject ICheepService CheepService
 @{
     var nextPage = Model.PageNumber < Model.TotalPages ? Model.PageNumber + 1 : Model.TotalPages;
