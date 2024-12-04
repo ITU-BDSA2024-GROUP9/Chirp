@@ -1,12 +1,18 @@
 using Chirp.Core.Classes;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
 
-namespace Chirp.Repositories.Repositories;
-public class ChirpDBContext(DbContextOptions<ChirpDBContext> options) : IdentityDbContext<Author>(options)
+namespace Chirp.Core.Helpers;
+
+public class ChirpDBContext : IdentityDbContext<Author>
 {
+	public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
+	{
+	}
+
 	public DbSet<Cheep> Cheeps { get; set; }
 	public DbSet<Author> Authors { get; set; }
 	public DbSet<Follow> Follows { get; set; }
