@@ -204,7 +204,7 @@ public class UnitTests : IDisposable
         {
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = _cheepService.ToDomain(author)
+            Author = author
         };
         
         // Act
@@ -252,7 +252,7 @@ public class UnitTests : IDisposable
         };
         
         // Act
-        _cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
+        _cheepRepo.CreateAuthor(author);
         _cheepService.CreateCheep(cheep);
         var result = _cheepService.GetCheepsFromAuthorByName(author.UserName, 1);
        
@@ -318,7 +318,7 @@ public class UnitTests : IDisposable
             Author = author
         };
         // Act
-        _cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
+        _cheepRepo.CreateAuthor(author);
         var cheepID = _cheepService.CreateCheep(originalCheep);
         var originalResult = _cheepService.GetCheepsFromAuthorByID(author.Id, 1)[0].Text;
         _cheepService.UpdateCheep(updatedCheep, cheepID);
@@ -405,7 +405,7 @@ public class UnitTests : IDisposable
         };
 
         // act
-        _cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
+        _cheepRepo.CreateAuthor(author);
 
         // assert
         var result = _cheepService.GetAuthorByID(id);
