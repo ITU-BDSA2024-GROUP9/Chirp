@@ -12,7 +12,7 @@
         <h2> @Model.Author?.UserName's Timeline </h2>
         @if (Model.Author != null && User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != Model.Author.UserName)
         {
-            @if (!Model.FollowedAuthors?.Contains(Model.Author!) ?? false)
+            @if (!(Model.FollowedAuthors?.Any(f => f.Id == Model.Author.Id) ?? false))
             {
                 <form method="post" asp-page-handler="Follow">
                     <input type="hidden" name="followed" value="@Model.Author.UserName" />

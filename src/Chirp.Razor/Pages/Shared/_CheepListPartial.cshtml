@@ -2,7 +2,7 @@
 @using Chirp.Core.Interfaces
 @using System.Text;
 @using System.Security.Cryptography;
-@model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, Author? UserAuthor, List<Author> FollowedAuthors)
+@model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, AuthorDTO? UserAuthor, List<AuthorDTO> FollowedAuthors)
 @inject ICheepService CheepService
 @{
     var nextPage = Model.PageNumber < Model.TotalPages ? Model.PageNumber + 1 : Model.TotalPages;
