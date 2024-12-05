@@ -1,5 +1,6 @@
-@using Chirp.Core.Classes
-@using Chirp.Core.Interfaces
+@using Chirp.Core.Classes;
+@using Chirp.Services.Interfaces;
+@using Chirp.Core.DTO;
 @using System.Text;
 @using System.Security.Cryptography;
 @model (List<CheepDTO> Cheeps, Range CheepRange, int PageNumber, int TotalPages, AuthorDTO? UserAuthor, List<AuthorDTO> FollowedAuthors)
