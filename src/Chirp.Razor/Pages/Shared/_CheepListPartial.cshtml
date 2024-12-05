@@ -294,5 +294,48 @@ else
             localStorage.removeItem('scrollPosition');
         }
     });
-
 </script>
+<button id="back-to-top" class="template-button" onclick="scrollToTop()">↑ Back to Top</button>
+
+<script>
+    // Show or hide the "Back to Top" button based on the scroll position
+    window.addEventListener('scroll', function () {
+        const scrollTopButton = document.getElementById('back-to-top');
+        if (window.scrollY > 300) { // Show when scrolled 300px or more
+            scrollTopButton.style.display = 'block';
+        } else {
+            scrollTopButton.style.display = 'none';
+        }
+    });
+
+    // Function to scroll to the top when the button is clicked
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Smooth scrolling
+        });
+    }
+</script>
+
+<style>
+    /* Styling for the Back to Top Button */
+    #back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none; /* Hidden by default */
+        z-index: 1000; /* Ensure it's above other elements */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    #back-to-top:hover {
+        background-color: #0056b3;
+    }
+</style>
