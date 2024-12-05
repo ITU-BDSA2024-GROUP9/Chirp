@@ -8,11 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Chirp.Services\Chirp.Services.csproj" />
-    <ProjectReference Include="..\Chirp.Services\Chirp.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Database\chirp.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -37,6 +32,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.1" />
     <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.48.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Chirp.Services\Chirp.Services.csproj" />
     </ItemGroup>
 
 </Project>
