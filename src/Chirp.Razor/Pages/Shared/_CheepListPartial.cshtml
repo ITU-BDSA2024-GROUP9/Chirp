@@ -253,5 +253,89 @@ else
         commentsContainer.style.display = isHidden ? 'block' : 'none';
         const commentCount = commentsContainer.querySelectorAll('.comment').length;
         event.target.textContent = isHidden ? `Hide Comments (${commentCount})` : `Show Comments (${commentCount})`;
+        
+        const pageKey = `comments-${cheepId}-page-${@Model.PageNumber}`;
+        if (isHidden) {
+            localStorage.setItem(pageKey, 'open');
+        } else {
+            localStorage.removeItem(pageKey);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const cheepIds = @Html.Raw(Json.Serialize(Model.Cheeps.Select(c => c.CheepId)));
+        const pageNumber = @Model.PageNumber;
+        cheepIds.forEach(cheepId => {
+            const pageKey = `comments-${cheepId}-page-${pageNumber}`;
+            if (localStorage.getItem(pageKey) === 'open') {
+                const commentsContainer = document.getElementById(`comments-${cheepId}`);
+                if (commentsContainer) {
+                    commentsContainer.style.display = 'block';
+                    const commentCount = commentsContainer.querySelectorAll('.comment').length;
+                    const toggleButton = document.querySelector(`button[onclick="toggleComments(${cheepId})"]`);
+                    if (toggleButton) {
+                        toggleButton.textContent = `Hide Comments (${commentCount})`;
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script>
+    // This is to make sure the scroll position is saved for when the page refreshes
+    window.addEventListener('beforeunload', function() {
+        localStorage.setItem('scrollPosition', window.scrollY);
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const scrollPosition = localStorage.getItem('scrollPosition');
+        if (scrollPosition !== null) {
+            window.scrollTo(0, parseInt(scrollPosition, 10));
+            localStorage.removeItem('scrollPosition');
+        }
+    });
+</script>
+<button id="back-to-top" class="template-button" onclick="scrollToTop()">↑ Back to Top</button>
+
+<script>
+    // Show or hide the "Back to Top" button based on the scroll position
+    window.addEventListener('scroll', function () {
+        const scrollTopButton = document.getElementById('back-to-top');
+        if (window.scrollY > 300) { // Show when scrolled 300px or more
+            scrollTopButton.style.display = 'block';
+        } else {
+            scrollTopButton.style.display = 'none';
+        }
+    });
+
+    // Function to scroll to the top when the button is clicked
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Smooth scrolling
+        });
     }
 </script>
+
+<style>
+    /* Styling for the Back to Top Button */
+    #back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none; /* Hidden by default */
+        z-index: 1000; /* Ensure it's above other elements */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    #back-to-top:hover {
+        background-color: #0056b3;
+    }
+</style>
