@@ -3,17 +3,25 @@
 <html lang="en">
 <head>
     <title>@ViewData["Title"]</title>
-    <link href="/css/lightmode.css" rel="stylesheet" type="text/css" />
+    <link id="themeStyle" href="@Url.Content("~/css/style.css")" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="/favicon/favicon.ico">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.11/dist/jquery.validate.unobtrusive.min.js"></script>
 </head>
+
 <body>
+<div class="modeButton">
+    <button id="toggleMode">Mode</button>
+</div>
 <div class=page>
-    <a href="/" class="header"><h1><img src="/images/icon1.png" alt="Icon1"/>Chirp!</h1></a>
-    <partial name="_LoginPartial" />
-    
+    <a href="/" class="header">
+        <h1>
+            <img src="/images/icon1.png" alt="Icon1"/>Chirp!
+        </h1>
+    </a>
+    <partial name="_LoginPartial"/>
+
 
     <div class=body>
         @RenderBody()
@@ -23,6 +31,7 @@
     </div>
 </div>
 
+<script src="scripts/mode.js"></script> //Script for light/dark mode button logic!
 </body>
 @await RenderSectionAsync("Scripts", required: false)
 </html>
