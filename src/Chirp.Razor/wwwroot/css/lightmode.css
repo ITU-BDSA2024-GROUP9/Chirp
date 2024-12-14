@@ -210,11 +210,15 @@ ul.cheeps .info .details small {
 div.page div.navigation {
     background: #ffffff;
     padding: 10px 0;
-    color: #8899a6;
+    color: black;
     font-size: 14px;
     text-align: center;
     border-radius: 10px;
     border: 1px solid #38444d;
+}
+
+div.col-md-3 ul li a{
+    color: black;
 }
 
 div.page div.navigation a {
@@ -779,3 +783,6 @@ ul.nav li a:hover {
     font-size: 14px;
 }
 
+li a {
+    color: black;
+}
