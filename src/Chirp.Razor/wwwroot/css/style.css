@@ -105,7 +105,7 @@ div.page div.body {
 
 div.page div.footer {
   background: var(--background-color);
-  color: #8899a6;
+  color: var(--text-color);
   padding: 20px 0;
   font-size: 14px;
   text-align: center;
