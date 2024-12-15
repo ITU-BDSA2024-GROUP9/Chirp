@@ -1,15 +1,13 @@
-﻿window.onload = function() {
-    let savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-    document.getElementById('themeStyle').href = savedTheme;
+﻿document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'root';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light_mode');
     }
-}
+});
 
 document.getElementById('toggleMode').addEventListener('click', function () {
-    var link = document.getElementById('themeStyle');
-    var newTheme = link.href.includes('lightmode.css') ? '/css/style.css' : '/css/lightmode.css';
-    
-    link.href = newTheme;
-    
-    localStorage.setItem('theme', newTheme);
+    document.body.classList.toggle('light_mode');
+    const isLightMode = document.body.classList.contains('light_mode');
+    localStorage.setItem('theme', isLightMode ? 'light' : 'root');
+    console.log('Button clicked, theme set to:', isLightMode ? 'light' : 'root');
 });

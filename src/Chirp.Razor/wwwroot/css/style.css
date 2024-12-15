@@ -1,12 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+:root{
+  --background-color: #15202b;
+  --text-color: white;
+}
+
+.light_mode{
+  --background-color: white;
+  --text-color: black;
+}
+
 body {
-  background: #15202b;
+  background: var(--background-color);
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   margin: 0;
   padding: 0;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 a {
@@ -27,12 +37,12 @@ input[type="email"],
 input[type="text"],
 input[type="tel"],
 input[type="password"] {
-  background: #192734;
+  background: var(--background-color);
   border: 1px solid #38444d;
   padding: 12px;
   font-size: 16px;
   border-radius: 4px;
-  color: #ffffff;
+  color: var(--text-color);
   width: 100%;
   box-sizing: border-box;
 }
@@ -59,7 +69,7 @@ input[type="submit"] {
   font-size: 16px;
   font-weight: bold;
   border-radius: 25px;
-  color: #ffffff;
+  color: var(--text-color);
   cursor: pointer;
 }
 
@@ -68,17 +78,17 @@ input[type="submit"]:hover {
 }
 
 div.page {
-  background: #15202b;
+  background: var(--background-color);
   margin: 0 auto;
   max-width: 600px;
   padding: 20px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 div.page > a.header {
   margin: 0;
   padding: 20px 0;
-  color: #ffffff;
+  color: var(--text-color);
   font-weight: bold;
   font-size: 16px;
   text-align: center;
@@ -94,7 +104,7 @@ div.page div.body {
 }
 
 div.page div.footer {
-  background: #192734;
+  background: var(--background-color);
   color: #8899a6;
   padding: 20px 0;
   font-size: 14px;
@@ -150,10 +160,10 @@ div.page ul.cheeps {
 div.page ul.cheeps li {
   margin: 20px 0;
   padding: 15px;
-  background: #192734;
+  background: var(--background-color);
   border: 1px solid #38444d;
   border-radius: 8px;
-  color: #ffffff;
+  color: var(--text-color);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -192,7 +202,7 @@ ul.cheeps .info .details strong > span {
 }
 
 ul.cheeps .info .details a {
-  color: #ffffff;
+  color: var(--text-color);
   text-decoration: none;
 }
 
@@ -208,7 +218,7 @@ ul.cheeps .info .details small {
 }
 
 div.page div.navigation {
-  background: #192734;
+  background: var(--background-color);
   padding: 10px 0;
   color: #8899a6;
   font-size: 14px;
@@ -218,7 +228,7 @@ div.page div.navigation {
 }
 
 div.page div.navigation a {
-  color: #ffffff;
+  color: var(--text-color);
   font-weight: 500;
   margin: 0 15px;
 }
@@ -230,7 +240,7 @@ div.page div.navigation form {
 div.page div.navigation form button {
   background: none;
   border: none;
-  color: #ffffff;
+  color: var(--text-color);
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
@@ -244,18 +254,18 @@ div.page div.navigation form button:hover {
 
 div.page h2 {
   margin: 20px 0;
-  color: #ffffff;
+  color: var(--text-color);
   font-size: 24px;
   font-weight: bold;
 }
 
 div.page div.followstatus {
   border: 1px solid #38444d;
-  background: #192734;
+  background: var(--background-color);
   border-radius: 4px;
   padding: 10px;
   font-size: 14px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 .follow-btn {
@@ -305,14 +315,14 @@ div.error {
 
 div.topics {
   width: 300px;
-  background: #192734;
+  background: var(--background-color);
   border: 1px solid #38444d;
   border-radius: 8px;
   position: fixed;
   top: 80px;
   right: 20px;
   padding: 20px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 ul.topic {
@@ -324,16 +334,16 @@ ul.topic {
 li.topic {
   margin: 10px 0;
   padding: 10px;
-  background: #15202b;
+  background: var(--background-color);
   border: 1px solid #38444d;
   border-radius: 4px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 button {
   background-color: #1DA1F2;
   border: none;
-  color: #ffffff;
+  color: var(--text-color);
   padding: 12px 24px;
   text-align: center;
   cursor: pointer;
@@ -349,7 +359,7 @@ ul.nav {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  background-color: #192734;
+  background: var(--background-color);
   border-bottom: 1px solid #38444d;
 }
 
@@ -359,7 +369,7 @@ ul.nav li {
 
 ul.nav li a {
   display: block;
-  color: #ffffff;
+  color: var(--text-color);
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -378,7 +388,7 @@ ul.nav li a:hover {
 .prev, .next {
   background-color: #1DA1F2;
   border: none;
-  color: #ffffff;
+  color: var(--text-color);
   padding: 12px 24px;
   text-align: center;
   cursor: pointer;
@@ -437,7 +447,7 @@ ul.nav li a:hover {
   display: none;
   position: absolute;
   right: 0;
-  background-color: #192734;
+  background: var(--background-color);
   min-width: 120px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.4);
   border: 1px solid #38444d;
@@ -487,7 +497,7 @@ ul.nav li a:hover {
 }
 
 .comment-toggle:hover {
-  background: #192734;
+  background: var(--background-color);
 }
 
 .comments-container {
@@ -519,12 +529,12 @@ ul.nav li a:hover {
 
 .comment-form input[type="text"] {
   flex: 1;
-  background: #192734;
+  background: var(--background-color);
   border: 1px solid #38444d;
   padding: 8px;
   font-size: 14px;
   border-radius: 15px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 .comment-form button {
@@ -550,7 +560,7 @@ ul.nav li a:hover {
 .cheepbox {
   margin: 20px 0;
   padding: 15px;
-  background: #192734;
+  background: var(--background-color);
   border: 1px solid #38444d;
   border-radius: 8px;
 }
@@ -558,7 +568,7 @@ ul.nav li a:hover {
 .cheepbox h3 {
   margin: 0 0 15px;
   font-size: 18px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 .input-container {
@@ -570,11 +580,11 @@ ul.nav li a:hover {
 
 .input-container input[type="text"] {
   flex: 1;
-  background: #15202b;
+  background: var(--background-color);
   border: 1px solid #38444d;
   padding: 12px;
   border-radius: 20px;
-  color: #ffffff;
+  color: var(--text-color);
   font-size: 16px;
 }
 
@@ -598,7 +608,7 @@ ul.nav li a:hover {
 }
 
 .upload-image-btn:hover {
-  background: rgba(29, 161, 242, 0.1);
+  background: var(--background-color)
 }
 
 #upload-image {
@@ -780,16 +790,15 @@ ul.nav li a:hover {
 }
 
 .modeButton {
-  padding: 20px;             /* Adds space around the button */
+  padding: 20px;          
 }
 
-
 #toggleMode {
-  padding: 10px 20px;      /* Button's padding */
+  padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;          /* Ensure button font size is consistent */
+  font-size: 16px;
 }
