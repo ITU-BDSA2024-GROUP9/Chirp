@@ -35,7 +35,7 @@ namespace SimpleDB.Services
             return GetTMPFilePath("chirp_cli_db.csv");
         }
 
-        private string GetTMPFilePath(string filename)
+        private string GetTMPFilePath(string filename) // it is not ideal to use the tmp path for this since it gets wiped on restart but its fine for testing
         {
             string DataDir = Path.Combine(Path.GetTempPath(), "Data");
             Directory.CreateDirectory(DataDir);
@@ -142,7 +142,7 @@ namespace SimpleDB.Services
             }
         }
 
-        async public Task ArrangeTMPDatabase()
+        async public Task ArrangeTMPDatabase() 
         {
             if (File.Exists(GetTMPFilePath())) return;
             await semaphore.WaitAsync();
