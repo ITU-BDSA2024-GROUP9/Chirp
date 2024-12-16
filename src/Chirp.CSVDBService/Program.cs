@@ -13,6 +13,8 @@ var app = builder.Build();
 
 var Database = app.Services.GetRequiredService<CSVDatabaseService<Cheep>>();
 
+await Database.ArrangeTMPDatabase();
+
 app.MapGet("/cheeps", async () => await Database.Read());
 app.MapPost("/cheep", async (Cheep cheep) => await Database.Store(cheep));
 

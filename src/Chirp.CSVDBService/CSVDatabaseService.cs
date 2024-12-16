@@ -28,7 +28,19 @@ namespace SimpleDB.Services
 
         private string GetFilePath(string filename)
         {
-            return Path.Combine(env.ContentRootPath, "Data", filename);
+            return Path.Combine(Path.GetTempPath(), env.ContentRootPath, "Data", filename);
+        }
+
+        private string GetTMPFilePath()
+        {
+            return GetTMPFilePath("chirp_cli_db.csv");
+        }
+
+        private string GetTMPFilePath(string filename)
+        {
+            string DataDir = Path.Combine(Path.GetTempPath(), "Data");
+            System.IO.Directory.CreateDirectory(DataDir);
+            return Path.Combine(DataDir, filename);
         }
 
         public async Task<List<T>> Read(int? count = null)
@@ -63,7 +75,7 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Append, FileAccess.Write, FileShare.ReadWrite));
+                using var writer = new StreamWriter(new FileStream(GetTMPFilePath(), FileMode.Append, FileAccess.Write, FileShare.ReadWrite));
                 using var csv = new CsvWriter(writer, GetConfig());
                 await csv.NextRecordAsync(); // Next line in the CSV file
                 csv.WriteRecord(record);
@@ -81,7 +93,7 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                using var reader = new StreamReader(new FileStream(GetFilePath(), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite));
+                using var reader = new StreamReader(new FileStream(GetTMPFilePath(), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite));
                 using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
                 var records = csv.GetRecordsAsync<T>();
                 var list = new List<T>();
@@ -94,7 +106,7 @@ namespace SimpleDB.Services
                 }
                 reader.Close();
                 csv.Dispose();
-                using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
+                using var writer = new StreamWriter(new FileStream(GetTMPFilePath(), FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
                 using var csvWriter = new CsvWriter(writer, GetConfig());
                 await csvWriter.WriteRecordsAsync(list);
             }
@@ -122,6 +134,25 @@ namespace SimpleDB.Services
                 var toWrite = await reader.ReadToEndAsync();
                 reader.Close();
                 using var writer = new StreamWriter(new FileStream(GetFilePath(), FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
+                await writer.WriteAsync(toWrite);
+                writer.Close();
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        }
+
+        async public Task ArrangeTMPDatabase()
+        {
+
+            await semaphore.WaitAsync();
+            try
+            {
+                using var reader = new StreamReader(new FileStream(GetFilePath("chirp_cli_db_default.csv"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                var toWrite = await reader.ReadToEndAsync();
+                reader.Close();
+                using var writer = new StreamWriter(new FileStream(GetTMPFilePath(), FileMode.Create, FileAccess.Write, FileShare.ReadWrite));
                 await writer.WriteAsync(toWrite);
                 writer.Close();
             }
