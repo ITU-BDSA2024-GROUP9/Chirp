@@ -39,7 +39,7 @@ namespace SimpleDB.Services
         private string GetTMPFilePath(string filename)
         {
             string DataDir = Path.Combine(Path.GetTempPath(), "Data");
-            System.IO.Directory.CreateDirectory(DataDir);
+            Directory.CreateDirectory(DataDir);
             return Path.Combine(DataDir, filename);
         }
 
@@ -48,7 +48,7 @@ namespace SimpleDB.Services
             await semaphore.WaitAsync();
             try
             {
-                using var reader = new StreamReader(new FileStream(GetFilePath(), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite));
+                using var reader = new StreamReader(new FileStream(GetTMPFilePath(), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite));
                 using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
                 var records = csv.GetRecordsAsync<T>();
