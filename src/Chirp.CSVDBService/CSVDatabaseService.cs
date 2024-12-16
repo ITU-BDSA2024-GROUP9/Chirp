@@ -144,7 +144,7 @@ namespace SimpleDB.Services
 
         async public Task ArrangeTMPDatabase()
         {
-
+            if (File.Exists(GetTMPFilePath())) return;
             await semaphore.WaitAsync();
             try
             {
