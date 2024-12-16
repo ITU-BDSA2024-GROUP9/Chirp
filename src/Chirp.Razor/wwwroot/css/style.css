@@ -790,7 +790,10 @@ ul.nav li a:hover {
 }
 
 .modeButton {
-  padding: 20px;          
+  padding: 20px;    
+  position: fixed;
+  right: 20px; 
+  top: 20px;
 }
 
 #toggleMode {
