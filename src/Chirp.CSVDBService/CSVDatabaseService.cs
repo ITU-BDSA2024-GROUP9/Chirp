@@ -9,11 +9,10 @@ using System.Reflection;
 using CsvHelper.Configuration;
 using Microsoft.CSharp.RuntimeBinder;
 using Chirp.Core.Interfaces;
-using Chirp.CSVDBService.Interfaces;
 
 namespace SimpleDB.Services
 {
-    public sealed class CSVDatabaseService<T> where T : IPost
+    public sealed class CSVDatabaseService<T> : IDatabaseRepository<T> where T : IPost
     {
         private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
         private IWebHostEnvironment env;
