@@ -6,6 +6,10 @@ using Chirp.CSVDBService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // Dependency injection using built-in ASP.NET Core framework
 builder.Services.AddSingleton<CSVDatabaseService<Cheep>>();
 
