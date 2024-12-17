@@ -93,12 +93,12 @@ dotnet run --project src/Chirp.Razor
 
 ## LLMs, ChatGPT, CoPilot, and others (PHILLIP)
 
-For development, we used the following LLMs:
+During the development of our project, we utilized the following Large Language Models (LLMs):
 - Claude
 - Microsoft Co-pilot
 - OpenAI ChatGPT
 
-- Descibe when and how it was applied
+### Application of LLMs in Development
 
 The LLMs listed above was primarily used for idea and concept generation. Each week, we received a list of requirements,
 which we would have to fulfill before the next lecture. In cases where it was very precise what we had to do, the LLMs
