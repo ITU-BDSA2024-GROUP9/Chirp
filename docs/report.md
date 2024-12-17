@@ -21,7 +21,7 @@ OK GOOD
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
 
 ## Architecture of deployed application (OK GOOD MAN)
-![Illustration of the _Chirp!_ deployment](images/Deployed.drawio.svg)
+![Illustration of the _Chirp!_ deployment](images/Deployed.png)
 
 ## User activities (JOHN JOHN)
 
