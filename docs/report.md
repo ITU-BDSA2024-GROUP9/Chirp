@@ -14,8 +14,8 @@ numbersections: true
 
 Here comes a description of our domain model.
 OK GOOD
-
-![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/domain_model.png)
+(you may want to use a magnifying glass lol)
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/include.svg)
 
 ## Architecture — In the small (OK GOOD MAN)
 OK GOOD
@@ -26,6 +26,7 @@ OK GOOD
 ## User activities (JOHN JOHN)
 
 ## Sequence of functionality/calls trough _Chirp!_ (BJØRN)
+In this section we will detail how the flow of messages and data work in our chirp application.
 
 
 # Process
