@@ -1,0 +1,91 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0" version="25.0.3">
+  <diagram name="Page-1" id="kCtklcrkm6dHWwU6mQAH">
+    <mxGraphModel dx="1455" dy="925" grid="1" gridSize="10" guides="0" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-7" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#afd3ee;" vertex="1" parent="1">
+          <mxGeometry x="57.5" y="55" width="675" height="675" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-4" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#73bbf2;" vertex="1" parent="1">
+          <mxGeometry x="140.5" y="135" width="515" height="515" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#2789b9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="215" width="355" height="355" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-2" value="&lt;b&gt;&lt;font color=&quot;#000000&quot;&gt;Chirp.Core&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;font style=&quot;&quot; color=&quot;#000000&quot;&gt;Domain entities&lt;/font&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#6dc6e3;strokeColor=#6D1F00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="300.5" y="295" width="195" height="195" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-5" value="&lt;b&gt;Chirp.Repositories&lt;/b&gt;&lt;div&gt;Repository interface&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="318" y="250" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-6" value="&lt;b&gt;Chirp.Services&lt;/b&gt;&lt;div&gt;Service interface&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="352" y="160" width="92" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-13" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="tpWzpR9rt_-Y9mqQ9tdK-5" target="tpWzpR9rt_-Y9mqQ9tdK-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="270" as="sourcePoint" />
+            <mxPoint x="400" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-15" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;ICheepRepository.cs&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;CheepRepository.cs&lt;/span&gt;&lt;div&gt;ChirpDBContext.cs&lt;/div&gt;&lt;div&gt;DB Helper classes&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="333" y="520" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-16" value="Domain model classes&lt;div&gt;DTO classes&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="330" y="430" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-18" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="tpWzpR9rt_-Y9mqQ9tdK-6" target="tpWzpR9rt_-Y9mqQ9tdK-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="180" as="sourcePoint" />
+            <mxPoint x="400" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-22" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="tpWzpR9rt_-Y9mqQ9tdK-7" target="tpWzpR9rt_-Y9mqQ9tdK-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="60" y="430" as="sourcePoint" />
+            <mxPoint x="110" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-23" value="" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="tpWzpR9rt_-Y9mqQ9tdK-4" target="tpWzpR9rt_-Y9mqQ9tdK-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="680" y="440" as="sourcePoint" />
+            <mxPoint x="730" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-24" value="Chirp.Tests&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;Unit Tests, Integration Tests, End to End Tests&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="270" y="670" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-25" value="CheepService.cs&lt;div&gt;ICheepService.cs&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="342" y="590" width="112" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-26" value="&lt;b&gt;Chirp.Razor&lt;/b&gt;&lt;div&gt;UI layer&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="368" y="80" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-27" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="tpWzpR9rt_-Y9mqQ9tdK-24">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="410" y="680" as="sourcePoint" />
+            <mxPoint x="400" y="649" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-28" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="tpWzpR9rt_-Y9mqQ9tdK-26" target="tpWzpR9rt_-Y9mqQ9tdK-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="410" y="220" as="sourcePoint" />
+            <mxPoint x="460" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-32" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.063;entryY=0.452;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="tpWzpR9rt_-Y9mqQ9tdK-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="420" as="sourcePoint" />
+            <mxPoint x="150" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tpWzpR9rt_-Y9mqQ9tdK-33" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.063;entryY=0.452;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="420" as="sourcePoint" />
+            <mxPoint x="700" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
