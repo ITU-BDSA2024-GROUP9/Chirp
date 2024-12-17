@@ -31,6 +31,23 @@ In this section we will detail how the flow of messages and data work in our chi
 # Process
 
 ## Build, test, release, and deployment (PHILLIP)
+![UML activity diagram](images/Process.drawio.png)
+The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
+Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
+- Build Stage
+The workflow starts by building the application, which includes installing dependencies and compiling the code. If the
+build fails, the workflows stops, and no further actions are performed.
+- Test Stage
+If the build is successful, the workflow will run automated test (unit tests, integration tests, UI tests, and E2E test).
+If any of the tests fail, the workflow will end.
+- Release Stage
+If all the tests succeed, the workflow will check if the commit contains a tag. If a tag is detected, it will automatically
+create a release.
+- Deployment Stage
+After release (Both if tag is present or not), the application will be deployed to production.
+
+This workflow ensures a structured and automated pipeline, that catches failure and only allows stable versions to be
+deployed. This significantly reduces manual effort and increases reliability during development process.
 
 ## Team work (ALEX)
 ![Project board](images/board.png)
