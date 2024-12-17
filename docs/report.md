@@ -25,6 +25,7 @@ OK GOOD
 
 ## User activities (JOHN JOHN)
 
+
 ## Sequence of functionality/calls trough _Chirp!_ (BJØRN)
 In this section we will detail how the flow of messages and data work in our chirp application.
 
@@ -119,9 +120,9 @@ login, posting a cheep, and following/unfollowing a user. The test ensures the U
 together correctly by asserting that data appears as expected in both the interface and the database.
 
 #### UI Testing
-
-
-
+Our UI tests aim to verify that the user interface is functioning as intended. 
+The tests cover core functionality, asserting that a user can register, login, post cheeps, access timelines, etc. as intended. 
+The tests are made using Playwright and use the NUnit test suite, as this allowed the group to use the Playwright test-generation tool.
 #### Integration Testing
 
 Integration tests verify that different components of the Chirp application (e.g. endpoints, database) work together correctly.
