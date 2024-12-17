@@ -109,6 +109,9 @@ each time we had a question. This was extremely useful if we were stuck on somet
 
 - Reflect in which degree the responses of the LLM were helpful
 
-
+The LLMs enabled us to get personalized help with troubleshooting or research, which helped us solve issues and gain
+a greater understanding of the subject, compared to if we had to manually do this via Google. We did not have much success
+with having the LLMs directly helping us with the code, since it more than often did not understand the context fully
+for our Project.
 
 - Discuss briefly how LLMs sped up development
