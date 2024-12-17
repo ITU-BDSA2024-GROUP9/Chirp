@@ -122,8 +122,12 @@ gain necessary information.
 
 ### Impact on the development speed
 
-LLMs are great at giving us personalized help, if we ever got stuck or had any questions. The internet typically has
-people with similar issues, but it is never quite exactly the same. The LLMs helped a tremendous amount speeding up the
-coding, since we did not have to spend a lot of time Google, but instead had a direct go to, which would generate a
-personalized reply.
+The use of LLMs accelerated our development process. By offering immediate, personalized responses to our questions,
+the LLMs allowed to skip prolonged searches through forums or articles. Traditional internet resources often present 
+solutions to similar but not identical problems, whereas the LLMs helped us cut through ambiguity and quickly address our
+specific issues. This efficiency proved especially beneficial in tight deadlines, enabling us to maintain momentum throughout the project.
+
+It’s important to emphasize that the LLMs served purely as tools to enhance our workflow. 
+They supported us in gaining clarity and overcoming challenges but unless directly stated in commit did not perform any of the actual work. 
+The decisions, coding, and implementation were entirely our own, with the LLMs serving as an aid to improve efficiency and understanding.
 
