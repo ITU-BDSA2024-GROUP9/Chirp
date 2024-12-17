@@ -1,0 +1,10 @@
+@startuml
+
+actor       "Unauthorized User" as usr
+participant Client              as client
+participant Azure               as server
+database    Database            as DB
+
+
+
+@enduml
