@@ -102,6 +102,25 @@ dotnet run --project src/Chirp.Razor
 - Default test accounts available
 
 ## How to run test suite locally (PHILLIP AND JONATHAN)
+### Guide on running the test suite
+
+### Brief description of testing
+#### Unit Testing
+
+We have unit tests on the repository and service layers of the application. These tests ensure that the individual components
+of our application (I.e. functions, classes, and methods) behave as expected in isolation. We have achieved approximately
+100% test coverage in these layers, which provides confidence that the processes are working correctly under isolated conditions.
+
+#### End-to-End (E2E) Testing
+
+
+
+#### UI Testing
+
+
+
+#### Integration Testing
+
 
 # Ethics (BJØRN)
 
