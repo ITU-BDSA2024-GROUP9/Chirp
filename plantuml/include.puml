@@ -1,0 +1,81 @@
+@startuml
+package "Chirp Razor" {
+!include ./src/Chirp.Razor/Program.puml
+!include ./src/Chirp.Razor/Pages/Model.puml
+!include ./src/Chirp.Razor/Pages/WipeDB.cshtml.puml
+!include ./src/Chirp.Razor/Pages/Error.cshtml.puml
+!include ./src/Chirp.Razor/Pages/Public.cshtml.puml
+!include ./src/Chirp.Razor/Pages/MyTimeline.cshtml.puml
+!include ./src/Chirp.Razor/Pages/UserTimeline.cshtml.puml
+!include ./src/Chirp.Razor/Areas/Identity/Pages/Account/Logout.cshtml.puml
+!include ./src/Chirp.Razor/Areas/Identity/Pages/Account/Register.cshtml.puml
+!include ./src/Chirp.Razor/Areas/Identity/Pages/Account/ExternalLogin.cshtml.puml
+!include ./src/Chirp.Razor/Areas/Identity/Pages/Account/Login.cshtml.puml
+!include ./src/Chirp.Razor/Areas/Identity/Pages/Account/Manage/ManageNavPages.puml
+!include ./src/Chirp.Razor/obj/Debug/net9.0/Chirp.Razor.RazorAssemblyInfo.puml
+!include ./src/Chirp.Razor/obj/Debug/net9.0/Chirp.Razor.AssemblyInfo.puml
+!include ./src/Chirp.Razor/obj/Debug/net9.0/Chirp.Razor.MvcApplicationPartsAssemblyInfo.puml
+!include ./src/Chirp.Razor/obj/Debug/net9.0/Chirp.Razor.GlobalUsings.g.puml
+!include ./src/Chirp.Razor/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.puml
+!include ./src/Chirp.Razor/obj/Debug/net8.0/Chirp.Razor.RazorAssemblyInfo.puml
+!include ./src/Chirp.Razor/obj/Debug/net8.0/Chirp.Razor.AssemblyInfo.puml
+!include ./src/Chirp.Razor/obj/Debug/net8.0/Chirp.Razor.MvcApplicationPartsAssemblyInfo.puml
+!include ./src/Chirp.Razor/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.puml
+!include ./src/Chirp.Razor/obj/Debug/net8.0/Chirp.Razor.GlobalUsings.g.puml
+}
+
+package "Chirp Core" {
+!include ./src/Chirp.Core/DTO/CommentDTO.puml
+!include ./src/Chirp.Core/DTO/CheepDTO.puml
+!include ./src/Chirp.Core/DTO/AuthorDTO.puml
+!include ./src/Chirp.Core/Classes/Comment.puml
+!include ./src/Chirp.Core/Classes/Author.puml
+!include ./src/Chirp.Core/Classes/Follow.puml
+!include ./src/Chirp.Core/Classes/Cheep.puml
+!include ./src/Chirp.Core/obj/Debug/net9.0/Chirp.Core.GlobalUsings.g.puml
+!include ./src/Chirp.Core/obj/Debug/net9.0/Chirp.Core.AssemblyInfo.puml
+!include ./src/Chirp.Core/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.puml
+!include ./src/Chirp.Core/obj/Debug/net8.0/Chirp.Core.GlobalUsings.g.puml
+!include ./src/Chirp.Core/obj/Debug/net8.0/Chirp.Core.AssemblyInfo.puml
+!include ./src/Chirp.Core/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.puml
+}
+
+package "Chirp Services" {
+!include ./src/Chirp.Services/Interfaces/ICheepService.puml
+!include ./src/Chirp.Services/Services/CheepService.puml
+!include ./src/Chirp.Services/obj/Debug/net8.0/Chirp.Services.AssemblyInfo.puml
+!include ./src/Chirp.Services/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.puml
+!include ./src/Chirp.Services/obj/Debug/net8.0/Chirp.Services.GlobalUsings.g.puml
+}
+
+package "Chirp Repositories" {
+!include ./src/Chirp.Repositories/Interfaces/ICheepRepository.puml
+!include ./src/Chirp.Repositories/Contexts/ChirpDBContext.puml
+!include ./src/Chirp.Repositories/Helpers/DbInitializer.puml
+!include ./src/Chirp.Repositories/Helpers/CheepMapper.puml
+!include ./src/Chirp.Repositories/Helpers/AuthorMapper.puml
+!include ./src/Chirp.Repositories/Helpers/CommentMapper.puml
+!include ./src/Chirp.Repositories/Repositories/CheepRepository.puml
+!include ./src/Chirp.Repositories/obj/Debug/net8.0/Chirp.Repositories.AssemblyInfo.puml
+!include ./src/Chirp.Repositories/obj/Debug/net8.0/Chirp.Repositories.GlobalUsings.g.puml
+!include ./src/Chirp.Repositories/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.puml
+}
+
+Program --> "has" ICheepService
+Program --> "uses" CheepService
+ManageNavPages "spawned from" -->  Program
+CheepService --> "uses" ICheepRepository
+CheepRepository --> "Uses" ChirpDBContext
+ICheepRepository --> "DTO" CheepDTO
+ICheepRepository --> "DTO" AuthorDTO
+ICheepService --> "DTO" CheepDTO
+CheepService --> "DTO" AuthorDTO
+Model --> "Author" AuthorDTO
+Model --> "UserAuthor" AuthorDTO
+ChirpDBContext --> "Cheeps" Cheep
+ChirpDBContext --> "Authors" Author
+ChirpDBContext --> "Follows" Follow
+ChirpDBContext --> "Comments" Comment
+
+
+@enduml

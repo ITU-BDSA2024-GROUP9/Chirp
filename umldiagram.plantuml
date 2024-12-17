@@ -65,6 +65,14 @@ package "Chirp Razor" {
 
 }
 
+package "Chirp Repositories" {
+
+}
+
+package "Chirp Services" {
+    
+}
+
 package "Chirp Core" {
     class ChirpDBContext {
         +Authors: DbSet<Author>

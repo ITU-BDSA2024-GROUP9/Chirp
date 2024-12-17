@@ -1,0 +1,20 @@
+@startuml
+class UnitTests {
+    + UnitTests()
+    + Dispose() : void
+    + TestCreateCheeps(text:string, authorID:string) : void
+    + RetrieveAllDataRelatedToAuthor(ID:string) : void
+    + TestCreateCheepsWithNewAuthor(text:string) : void
+    + TestGetCheeps(id:string) : void
+    + TestThatACheepCanBeUpdated() : void
+    + TestGetCheepsFromAuthorWithID(authorId:string) : void
+    + TestGetCheepsFromAuthorWithName(name:string) : void
+    + TestGetAuthorWithId(id:string, userName:string) : void
+    + TestGetAuthorWithName(id:string, userName:string) : void
+    + TestGetAuthorWithEmail(id:string, email:string) : void
+    + TestCreateAuthor(id:string, newAuthor:string, email:string) : void
+    + TestYouCannotCreateACheepWithAnInvalidAuthor(userName:string, email:string) : void
+    + TestCheepCannotBeLongerThan160Characters(text:string) : void
+}
+IDisposable <|-- UnitTests
+@enduml

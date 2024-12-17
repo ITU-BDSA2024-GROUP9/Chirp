@@ -1,0 +1,5 @@
+@startuml
+class Comments <<partial>> {
+}
+Migration <|-- Comments
+@enduml

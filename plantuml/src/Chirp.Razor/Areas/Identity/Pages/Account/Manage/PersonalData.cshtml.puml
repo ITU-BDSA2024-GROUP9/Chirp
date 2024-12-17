@@ -1,0 +1,6 @@
+@startuml
+class PersonalDataModel {
+    + PersonalDataModel(userManager:UserManager<Author>, logger:ILogger<PersonalDataModel>, service:ICheepService)
+    + <<async>> OnGet(page:int) : Task<IActionResult>
+}
+@enduml

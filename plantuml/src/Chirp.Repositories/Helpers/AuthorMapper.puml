@@ -1,0 +1,6 @@
+@startuml
+class AuthorMapper {
+    + {static} toDTO(author:Author) : AuthorDTO
+    + {static} toDomain(authorDTO:AuthorDTO, dbContext:ChirpDBContext) : Author
+}
+@enduml

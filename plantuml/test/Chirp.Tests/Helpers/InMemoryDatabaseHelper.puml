@@ -1,0 +1,12 @@
+@startuml
+class InMemoryDatabaseHelper {
+    + InMemoryDatabaseHelper()
+    + CreateContext() : ChirpDBContext
+    + Dispose() : void
+}
+class "List`1"<T> {
+}
+IDisposable <|-- InMemoryDatabaseHelper
+InMemoryDatabaseHelper --> "ConnectionString" SqliteConnection
+InMemoryDatabaseHelper --> "Authors<Author>" "List`1"
+@enduml

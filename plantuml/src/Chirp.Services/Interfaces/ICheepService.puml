@@ -1,0 +1,23 @@
+@startuml
+interface ICheepService {
+    + GetCheeps(page:int) : List<CheepDTO>
+    + IsFollowing(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : bool
+    + Follow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + Unfollow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + getFollowedInCheeps(follower:AuthorDTO) : List<AuthorDTO>
+    + GetCheepsFromAuthors(followedAuthors:List<AuthorDTO>, currentUserID:string, pageNumber:int) : List<CheepDTO>
+    + GetCheepsFromAuthorByID(authorId:string, page:int) : List<CheepDTO>
+    + GetCheepsFromAuthorByName(authorName:string, page:int) : List<CheepDTO>
+    + GetCheepCountByAuthors(followedAuthors:List<AuthorDTO>, currentUserId:string) : int
+    + GetCheepByID(cheepId:int) : CheepDTO
+    + GetAuthorByID(authorId:string) : AuthorDTO?
+    + GetAuthorByName(name:string) : AuthorDTO?
+    + GetAuthorByEmail(email:string) : AuthorDTO?
+    + CreateCheep(cheep:CheepDTO) : int
+    + GetCheepCount() : int
+    + GetCheepCountByID(authorId:string) : int
+    + GetCheepByName(authorName:string) : int
+    + UpdateCheep(cheep:CheepDTO, cheepId:int) : void
+    + DeleteCheep(cheepId:int) : void
+}
+@enduml

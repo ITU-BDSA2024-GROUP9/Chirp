@@ -1,0 +1,19 @@
+@startuml
+class ExternalLoginModel {
+    + ExternalLoginModel(signInManager:SignInManager<Author>, userManager:UserManager<Author>, userStore:IUserStore<Author>, logger:ILogger<ExternalLoginModel>, emailSender:IEmailSender)
+    + ProviderDisplayName : string <<get>> <<set>>
+    + ReturnUrl : string <<get>> <<set>>
+    + ErrorMessage : string <<get>> <<set>>
+    + OnGet() : IActionResult
+    + OnPost(provider:string, returnUrl:string) : IActionResult
+    + <<async>> OnGetCallbackAsync(returnUrl:string, remoteError:string) : Task<IActionResult>
+    + <<async>> OnPostConfirmationAsync(returnUrl:string) : Task<IActionResult>
+}
+class InputModel {
+    + UserName : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+}
+PageModel <|-- ExternalLoginModel
+ExternalLoginModel --> "Input" InputModel
+ExternalLoginModel +-- InputModel
+@enduml

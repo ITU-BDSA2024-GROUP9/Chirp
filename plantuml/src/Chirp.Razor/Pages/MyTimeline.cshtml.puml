@@ -1,0 +1,8 @@
+@startuml
+class MyTimelineModel {
+    + MyTimelineModel(service:ICheepService)
+    + OnGet(page:int, author:string?) : ActionResult
+    + <<new>> OnPostDeleteCheep(cheepId:int, page:int) : IActionResult
+}
+Model <|-- MyTimelineModel
+@enduml

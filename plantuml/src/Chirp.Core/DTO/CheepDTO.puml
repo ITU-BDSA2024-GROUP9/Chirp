@@ -1,0 +1,8 @@
+@startuml
+class CheepDTO {
+    + CheepId : int <<get>> <<set>>
+    + <<required>> Text : string <<get>> <<set>>
+}
+CheepDTO --> "TimeStamp" DateTime
+CheepDTO --> "Author" Author
+@enduml

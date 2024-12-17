@@ -1,0 +1,9 @@
+@startuml
+class CommentDTO {
+    + CommentId : int <<get>> <<set>>
+    + <<required>> Text : string <<get>> <<set>>
+    + <<required>> CheepId : int <<get>> <<set>>
+}
+CommentDTO --> "TimeStamp" DateTime
+CommentDTO --> "Author" Author
+@enduml

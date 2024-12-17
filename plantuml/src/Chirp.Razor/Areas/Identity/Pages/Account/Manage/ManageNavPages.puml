@@ -1,0 +1,21 @@
+@startuml
+class ManageNavPages <<static>> {
+    + {static} Index : string <<get>>
+    + {static} Email : string <<get>>
+    + {static} ChangePassword : string <<get>>
+    + {static} DownloadPersonalData : string <<get>>
+    + {static} DeletePersonalData : string <<get>>
+    + {static} ExternalLogins : string <<get>>
+    + {static} PersonalData : string <<get>>
+    + {static} TwoFactorAuthentication : string <<get>>
+    + {static} IndexNavClass(viewContext:ViewContext) : string
+    + {static} EmailNavClass(viewContext:ViewContext) : string
+    + {static} ChangePasswordNavClass(viewContext:ViewContext) : string
+    + {static} DownloadPersonalDataNavClass(viewContext:ViewContext) : string
+    + {static} DeletePersonalDataNavClass(viewContext:ViewContext) : string
+    + {static} ExternalLoginsNavClass(viewContext:ViewContext) : string
+    + {static} PersonalDataNavClass(viewContext:ViewContext) : string
+    + {static} TwoFactorAuthenticationNavClass(viewContext:ViewContext) : string
+    + {static} PageNavClass(viewContext:ViewContext, page:string) : string
+}
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class CommentMapper {
+    + {static} toDTO(comment:Comment) : CommentDTO
+    + {static} toDomain(commentDTO:CommentDTO, cheep:CheepDTO) : Comment
+}
+@enduml

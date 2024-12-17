@@ -1,0 +1,5 @@
+@startuml
+class withFollow <<partial>> {
+}
+Migration <|-- withFollow
+@enduml

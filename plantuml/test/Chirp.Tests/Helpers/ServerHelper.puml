@@ -1,0 +1,6 @@
+@startuml
+class ServerHelper <<static>> {
+    + {static} <<async>> StartServer() : Task
+    + {static} StopServer() : void
+}
+@enduml

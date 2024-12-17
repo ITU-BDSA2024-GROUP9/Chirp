@@ -1,0 +1,17 @@
+@startuml
+class LoginModel {
+    + LoginModel(signInManager:SignInManager<Author>, logger:ILogger<LoginModel>, userManager:UserManager<Author>)
+    + ReturnUrl : string <<get>> <<set>>
+    + ErrorMessage : string <<get>> <<set>>
+    + <<async>> OnGetAsync(returnUrl:string) : Task
+    + <<async>> OnPostAsync(returnUrl:string) : Task<IActionResult>
+}
+class InputModel {
+    + EmailOrUsername : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+    + RememberMe : bool <<get>> <<set>>
+}
+PageModel <|-- LoginModel
+LoginModel --> "Input" InputModel
+LoginModel +-- InputModel
+@enduml

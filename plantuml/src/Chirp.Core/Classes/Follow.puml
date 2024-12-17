@@ -1,0 +1,8 @@
+@startuml
+class Follow {
+    + FollowerId : string? <<get>> <<set>>
+    + FollowedId : string? <<get>> <<set>>
+}
+Follow --> "Follower" Author
+Follow --> "Followed" Author
+@enduml

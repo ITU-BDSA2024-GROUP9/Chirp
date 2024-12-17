@@ -1,0 +1,12 @@
+@startuml
+class ChirpDBContext {
+    +DbSet<Cheep> Cheeps
+    +DbSet<Author> Authors 
+    +DbSet<Follow> Follows 
+    +DbSet<Comment> Comments
+}
+class "IdentityDbContext`1"<T> {
+}
+"IdentityDbContext`1" "<Author>" <|-- ChirpDBContext
+
+@enduml

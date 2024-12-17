@@ -1,0 +1,17 @@
+@startuml
+class RegisterModel {
+    + RegisterModel(userManager:UserManager<Author>, userStore:IUserStore<Author>, signInManager:SignInManager<Author>, logger:ILogger<RegisterModel>, emailSender:IEmailSender)
+    + ReturnUrl : string <<get>> <<set>>
+    + <<async>> OnGetAsync(returnUrl:string) : Task
+    + <<async>> OnPostAsync(returnUrl:string) : Task<IActionResult>
+}
+class InputModel {
+    + UserName : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+    + ConfirmPassword : string <<get>> <<set>>
+}
+PageModel <|-- RegisterModel
+RegisterModel --> "Input" InputModel
+RegisterModel +-- InputModel
+@enduml
