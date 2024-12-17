@@ -115,3 +115,9 @@ with having the LLMs directly helping us with the code, since it more than often
 for our Project.
 
 - Discuss briefly how LLMs sped up development
+
+LLMs are great at giving us personalized help, if we ever got stuck or had any questions. The internet typically has
+people with similar issues, but it is never quite exactly the same. The LLMs helped a tremendous amount speeding up the
+coding, since we did not have to spend a lot of time Google, but instead had a direct go to, which would generate a
+personalized reply.
+
