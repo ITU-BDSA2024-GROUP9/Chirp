@@ -113,7 +113,9 @@ of our application (I.e. functions, classes, and methods) behave as expected in 
 
 #### End-to-End (E2E) Testing
 
-
+The E2E test verifies the core user journey in the Chirp application. It simulates user actions such as registration,
+login, posting a cheep, and following/unfollowing a user. The test ensures the UI, service layer, and database work
+together correctly by asserting that data appears as expected in both the interface and the database.
 
 #### UI Testing
 
