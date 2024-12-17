@@ -106,6 +106,12 @@ dotnet run --project src/Chirp.Razor
 ## How to run test suite locally (PHILLIP AND JONATHAN)
 ### Guide on running the test suite
 
+To run all tests for our Chirp project, please follow the steps below:
+
+1. Clone the project from GitHub.
+2. From your terminal, navigate to the test folder located at `/test/Chirp.Tests`.
+3. Run the command `dotnet test` and await the results.
+
 ### Brief description of testing
 #### Unit Testing
 
