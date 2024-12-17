@@ -3,7 +3,7 @@ class Cheep {
     + CheepId : int <<get>> <<set>>
     + <<required>> Text : string <<get>> <<set>>
     + <<required>> AuthorId : string <<get>> <<set>>
+    + TimeStamp : DateTime
 }
-Cheep --> "TimeStamp" DateTime
 Cheep --> "Author" Author
 @enduml

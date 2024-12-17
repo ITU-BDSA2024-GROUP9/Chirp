@@ -1,0 +1,37 @@
+@startuml
+ 
+package "Chirp Core" {
+    class Cheep {
+    + CheepId : int <<get>> <<set>>
+    + <<required>> Text : string <<get>> <<set>>
+    + <<required>> AuthorId : string <<get>> <<set>>
+    + TimeStamp : DateTime
+}
+Cheep "0..n" --- "1..1" Author
+
+class Comment {
+    + CommentId : int <<get>> <<set>>
+    + <<required>> Text : string <<get>> <<set>>
+    + <<required>> AuthorId : string <<get>> <<set>>
+    + <<required>> CheepId : int <<get>> <<set>>
+    + TimeStamp : DateTime
+}
+Comment "0..n" --- "1..1" Author
+Comment "0..n" --- "1..1" Cheep
+
+class Follow {
+    + FollowerId : string? <<get>> <<set>>
+    + FollowedId : string? <<get>> <<set>>
+}
+Follow "0..n" --- "1..1" Author
+Follow "0..n" --- "1..1" Author
+
+class Author {
+    +ICollection<Cheep> Cheeps
+    +ICollection<Follow> Following
+    +ICollection<Follow> Followers
+    +ICollection<Comment> Comments
+}
+IdentityUser <|-- Author
+}
+@enduml
