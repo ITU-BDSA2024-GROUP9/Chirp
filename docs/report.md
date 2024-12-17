@@ -92,3 +92,8 @@ dotnet run --project src/Chirp.Razor
 ## License (BJØRN)
 
 ## LLMs, ChatGPT, CoPilot, and others (PHILLIP)
+
+- Which LLMs were used during development
+- Descibe when and how it was applied
+- Reflect in which degree the responses of the LLM were helpful
+- Discuss briefly how LLMs sped up development
