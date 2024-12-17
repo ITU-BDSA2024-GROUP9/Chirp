@@ -123,6 +123,11 @@ together correctly by asserting that data appears as expected in both the interf
 
 #### Integration Testing
 
+Integration tests verify that different components of the Chirp application (e.g. endpoints, database) work together correctly.
+Using HttpClient and test-specific SQLite database we:
+- Test endpoints like the homepage and user timelines to ensure they return successful responses (HTTP 200).
+- Validate that pages display correct content, such as user-specific timeline and a maximum of 32 posts per page.
+These tests ensure the application functions as expected when components interact.
 
 # Ethics (BJØRN)
 
