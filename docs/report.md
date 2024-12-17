@@ -31,6 +31,23 @@ In this section we will detail how the flow of messages and data work in our chi
 # Process
 
 ## Build, test, release, and deployment (PHILLIP)
+![UML activity diagram](images/Process.drawio.png)
+The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
+Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
+- Build Stage
+The workflow starts by building the application, which includes installing dependencies and compiling the code. If the
+build fails, the workflows stops, and no further actions are performed.
+- Test Stage
+If the build is successful, the workflow will run automated test (unit tests, integration tests, UI tests, and E2E test).
+If any of the tests fail, the workflow will end.
+- Release Stage
+If all the tests succeed, the workflow will check if the commit contains a tag. If a tag is detected, it will automatically
+create a release.
+- Deployment Stage
+After release (Both if tag is present or not), the application will be deployed to production.
+
+This workflow ensures a structured and automated pipeline, that catches failure and only allows stable versions to be
+deployed. This significantly reduces manual effort and increases reliability during development process.
 
 ## Team work (ALEX)
 ![Project board](images/board.png)
@@ -85,6 +102,27 @@ dotnet run --project src/Chirp.Razor
 - Default test accounts available
 
 ## How to run test suite locally (PHILLIP AND JONATHAN)
+### Guide on running the test suite
+
+### Brief description of testing
+#### Unit Testing
+
+We have unit tests on the repository and service layers of the application. These tests ensure that the individual components
+of our application (I.e. functions, classes, and methods) behave as expected in isolation. We have achieved approximately
+100% test coverage in these layers, which provides confidence that the processes are working correctly under isolated conditions.
+
+#### End-to-End (E2E) Testing
+
+The E2E test verifies the core user journey in the Chirp application. It simulates user actions such as registration,
+login, posting a cheep, and following/unfollowing a user. The test ensures the UI, service layer, and database work
+together correctly by asserting that data appears as expected in both the interface and the database.
+
+#### UI Testing
+
+
+
+#### Integration Testing
+
 
 # Ethics (BJØRN)
 
