@@ -52,6 +52,8 @@ using (var scope = app.Services.CreateScope())
 		throw new Exception("Could not get ChirpDBContext from service provider.");
 	}
 
+	await context.Database.EnsureCreatedAsync();
+
 	// Execute the migration from code.
 	try
 	{

@@ -34,9 +34,57 @@ In this section we will detail how the flow of messages and data work in our chi
 ## Build, test, release, and deployment (PHILLIP)
 
 ## Team work (ALEX)
+![Project board](images/board.png)
+The above image shows our project board on GitHub. We have used the project board to keep track of our progress and to assign tasks to each other.
+The board is divided into four columns: Todo, In Progress, Under review, and Done. Each task is represented by a card that can be moved between the columns.
+At the time of writing, we only have one task on the board which is yet to be completed (toggle light/dark mode). We do, however feel it would be nice to have features such as liking posts, so we might add that later.
+
+Feature development workflow:
+
+- Issue created with requirements
+- Branch created from main
+- Development and testing
+- PR created with reviews
+- CI checks run
+- PR merged to main
+- Deployment triggered
 
 ## How to make _Chirp!_ work locally (ALEX)
-hehe
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/ITU-BDSA2024-GROUP9/Chirp.git
+cd Chirp
+```
+
+2. Set up development environment:
+
+```bash
+dotnet restore
+```
+
+3. Configure environment:
+
+Create user secrets for GitHub OAuth
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "GITHUBCLIENTID" "YOUR_CLIENT_ID"
+dotnet user-secrets set "GITHUBCLIENTSECRET" "YOUR_CLIENT_SECRET"
+```
+
+4. Run the application:
+
+
+```bash
+dotnet run --project src/Chirp.Razor
+```
+
+5. Access the application:
+
+- Open browser to https://localhost:5001
+- Default test accounts available
+
 ## How to run test suite locally (PHILLIP AND JONATHAN)
 
 # Ethics (BJØRN)
