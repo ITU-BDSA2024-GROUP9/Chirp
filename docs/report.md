@@ -93,7 +93,22 @@ dotnet run --project src/Chirp.Razor
 
 ## LLMs, ChatGPT, CoPilot, and others (PHILLIP)
 
-- Which LLMs were used during development
+For development, we used the following LLMs:
+- Claude
+- Microsoft Co-pilot
+- OpenAI ChatGPT
+
 - Descibe when and how it was applied
+
+The LLMs listed above was primarily used for idea and concept generation. Each week, we received a list of requirements,
+which we would have to fulfill before the next lecture. In cases where it was very precise what we had to do, the LLMs
+would help us to troubleshoot and or to help us move forward if we got stuck. In other cases where the requirements were
+broader, the LLMs enabled us to quickly gain a lot of knowledge on the area before we would start implementing. In short,
+the LLMs helped us research and troubleshoot much faster than we would have been able to do, if we had to do Google searches
+each time we had a question. This was extremely useful if we were stuck on something very specific.
+
 - Reflect in which degree the responses of the LLM were helpful
+
+
+
 - Discuss briefly how LLMs sped up development
