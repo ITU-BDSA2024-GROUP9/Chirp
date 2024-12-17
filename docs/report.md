@@ -112,10 +112,14 @@ and personalized responses from the LLMs saved us considerable effort.
 
 ### Reflection on the Helpfulness of LLM responses
 
-The LLMs enabled us to get personalized help with troubleshooting or research, which helped us solve issues and gain
-a greater understanding of the subject, compared to if we had to manually do this via Google. We did not have much success
-with having the LLMs directly helping us with the code, since it more than often did not understand the context fully
-for our Project.
+The responses provided by the LLMs were highly beneficial for research and troubleshooting, offering us personalized guidance
+that gave a better understanding of the subject. THis approach proved more effective than manually going through generalized
+search engine results, as the LLMs offered targeted answers specific to our queries. 
+
+However, we found that the LLMs were less effective for directly assisting with coding. While they provided general guidance
+and suggestions, they often struggled to fully grasp the context of our project, making it difficult to rely on them for
+specific code solutions. Despite this limitation, their overall assistance made it easier for us to progress and quickly
+gain necessary information.
 
 - Discuss briefly how LLMs sped up development
 
