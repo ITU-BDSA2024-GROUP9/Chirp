@@ -100,14 +100,17 @@ During the development of our project, we utilized the following Large Language 
 
 ### Application of LLMs in Development
 
-The LLMs listed above was primarily used for idea and concept generation. Each week, we received a list of requirements,
-which we would have to fulfill before the next lecture. In cases where it was very precise what we had to do, the LLMs
-would help us to troubleshoot and or to help us move forward if we got stuck. In other cases where the requirements were
-broader, the LLMs enabled us to quickly gain a lot of knowledge on the area before we would start implementing. In short,
-the LLMs helped us research and troubleshoot much faster than we would have been able to do, if we had to do Google searches
-each time we had a question. This was extremely useful if we were stuck on something very specific.
+The LLMs listed above primarily served as tools for idea and concept generation.
+Each week, we were given a list of requirements to complete before the next lecture. When the requirements were precise
+and clearly defined, the LLMs played a valuable role in helping us troubleshoot issues or overcome roadblocks.
+On the other hand, when requirements were broader or open-ended, the LLMs allowed us to quickly acquire knowledge in the
+relevant areas, enabling us to proceed with implementation more confidently.
 
-- Reflect in which degree the responses of the LLM were helpful
+By Acting as a research and troubleshoot assistant, the LLMs significantly reduced the time we would otherwise have spent
+doing traditional searches online. This was particularly useful for resolving highly specific challenges, where the efficiency
+and personalized responses from the LLMs saved us considerable effort.
+
+### Reflection on the Helpfulness of LLM responses
 
 The LLMs enabled us to get personalized help with troubleshooting or research, which helped us solve issues and gain
 a greater understanding of the subject, compared to if we had to manually do this via Google. We did not have much success
