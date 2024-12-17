@@ -15,6 +15,7 @@ numbersections: true
 Here comes a description of our domain model.
 OK GOOD
 ![Illustration of the _Chirp!_ data model as UML class diagram.](images/domain2.svg)
+![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Onion.drawio.png)
 
 ## Architecture — In the small (OK GOOD MAN)
 OK GOOD
