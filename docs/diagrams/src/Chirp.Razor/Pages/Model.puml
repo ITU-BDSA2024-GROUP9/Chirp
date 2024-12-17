@@ -1,0 +1,20 @@
+@startuml
+class Model {
+    + Message : string <<get>> <<set>> = ""
+    + PageNumber : int <<get>> <<set>>
+    + TotalPages : int <<get>> <<set>>
+    + Model(service:ICheepService)
+    + PaginateCheeps(queryPage:int) : void
+    + GetAllCheepsFromThisAuthor() : void
+    + OnPostFollow(followed:string) : IActionResult
+    + OnPostUnfollow(unfollowed:string) : IActionResult
+    + PaginateCheepsByName(queryPage:int, authorName:string) : void
+    + PaginateCheepsByFollowers(queryPage:int, authorName:string) : void
+    + IsFollower(userid:string, author_userid:string) : string
+    + OnPostCreateCheep() : IActionResult
+    + OnPostAddComment(cheepId:int, commentText:string) : IActionResult
+    + OnPostDeleteComment(commentId:int, page:int) : IActionResult
+}
+
+PageModel <|-- Model
+@enduml

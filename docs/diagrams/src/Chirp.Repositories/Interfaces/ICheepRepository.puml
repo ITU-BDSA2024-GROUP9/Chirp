@@ -1,0 +1,25 @@
+@startuml
+interface ICheepRepository {
+    + CreateCheep(newCheep:CheepDTO) : int
+    + GetCheepCount() : int
+    + GetCheepCountByID(authorId:string) : int
+    + GetCheepCountByName(authorName:string) : int
+    + GetCheepsFromAuthorByID(authorId:string, page:int) : List<CheepDTO>
+    + GetCheepCountByAuthors(followedAuthors:List<AuthorDTO>, currentUserId:string) : int
+    + IsFollowing(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : bool
+    + Follow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + Unfollow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + getFollowedInCheeps(follower:AuthorDTO) : List<AuthorDTO>
+    + GetCheepsFromAuthors(followedAuthors:List<AuthorDTO>, currentUserID:string, pageNumber:int) : List<CheepDTO>
+    + GetCheepsFromAuthorByName(authorName:string, page:int) : List<CheepDTO>
+    + GetCheeps(page:int) : List<CheepDTO>
+    + GetCheepByID(cheepID:int) : CheepDTO
+    + GetAuthorByID(authorId:string) : AuthorDTO?
+    + GetAuthorByName(authorName:string) : AuthorDTO?
+    + GetAuthorByEmail(email:string) : AuthorDTO?
+    + CreateAuthor(newAuthor:AuthorDTO) : void
+    + UpdateCheep(newCheep:CheepDTO, cheepID:int) : void
+    + DeleteCheep(cheepID:int) : void
+    + ToDomain(authorDTO:AuthorDTO) : Author
+}
+@enduml

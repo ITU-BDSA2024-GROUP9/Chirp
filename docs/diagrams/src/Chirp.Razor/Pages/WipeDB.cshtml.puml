@@ -1,0 +1,7 @@
+@startuml
+class WipeDBModel {
+    + WipeDBModel(context:ChirpDBContext, provider:IServiceProvider)
+    + OnPostWipeDB() : IActionResult
+}
+PageModel <|-- WipeDBModel
+@enduml

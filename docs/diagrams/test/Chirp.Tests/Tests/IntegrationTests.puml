@@ -1,0 +1,15 @@
+@startuml
+class IntegrationTests {
+    + IntegrationTests(fixture:WebApplicationFactory<Program>, testDatabaseFixture:InMemoryDatabaseHelper)
+    + <<async>> Get_EndpointsReturnSuccess(url:string) : Task
+    + <<async>> CanSeePrivateTimelineAzure(author:string) : Task
+    + <<async>> CanSeePublicTimeline() : Task
+    + <<async>> PagesLimitedTo32() : Task
+    + <<async>> CanSeePrivateTimeline(author:string) : Task
+    + <<async>> CanSeePrivateTimelineFromName(author:string) : Task
+}
+class "IClassFixture`1"<T> {
+}
+"IClassFixture`1" "<WebApplicationFactory<Program>>" <|-- IntegrationTests
+"IClassFixture`1" "<InMemoryDatabaseHelper>" <|-- IntegrationTests
+@enduml

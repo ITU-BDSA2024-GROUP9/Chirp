@@ -1,0 +1,9 @@
+@startuml
+class AuthorDTO {
+    +ICollection<Cheep> Cheeps
+    +ICollection<Follow> Following
+    +ICollection<Follow> Followers
+    +ICollection<Comment> Comments
+}
+IdentityUser <|-- AuthorDTO
+@enduml

@@ -1,0 +1,5 @@
+@startuml
+class CheepImages <<partial>> {
+}
+Migration <|-- CheepImages
+@enduml

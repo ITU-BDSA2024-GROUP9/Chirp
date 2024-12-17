@@ -1,0 +1,12 @@
+@startuml
+class EndToEndTests {
+    + <<async>> Init() : Task
+    + <<async>> E2ETest() : Task
+    + Cleanup() : void
+}
+class TestUtils {
+    + {static} UnixTimeStampToDateTimeString(unixTimeStamp:double) : string
+}
+PageTest <|-- EndToEndTests
+EndToEndTests +-- TestUtils
+@enduml

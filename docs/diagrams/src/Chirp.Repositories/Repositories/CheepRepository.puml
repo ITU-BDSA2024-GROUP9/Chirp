@@ -1,0 +1,31 @@
+@startuml
+class CheepRepository {
+    + CheepRepository(dBContext:ChirpDBContext)
+    + CreateCheep(newCheep:CheepDTO) : int
+    + GetCheepCount() : int
+    + GetCheepCountByID(authorId:string) : int
+    + GetCheepCountByName(authorName:string) : int
+    + GetCheepCountByAuthors(followedAuthors:List<AuthorDTO>, currentUserId:string) : int
+    + GetCheeps(page:int) : List<CheepDTO>
+    + getFollowedInCheeps(followerDTO:AuthorDTO) : List<AuthorDTO>
+    + GetCheepsFromAuthorByName(authorName:string, page:int) : List<CheepDTO>
+    + GetCheepsFromAuthors(followedAuthors:List<AuthorDTO>, currentUserID:string, pageNumber:int) : List<CheepDTO>
+    + IsFollowing(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : bool
+    + Follow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + Unfollow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + GetCheepsFromAuthorByID(authorID:string, page:int) : List<CheepDTO>
+    + GetCheepByID(cheepID:int) : CheepDTO
+    + DeleteCheep(cheepID:int) : void
+    + GetAuthorByID(authorId:string) : AuthorDTO?
+    + GetAuthorByName(authorName:string) : AuthorDTO?
+    + GetAuthorByEmail(email:string) : AuthorDTO?
+    + ToDomain(author:AuthorDTO) : Author
+    + CreateAuthor(newAuthor:AuthorDTO) : void
+    + UpdateCheep(newCheep:CheepDTO, cheepID:int) : void
+    + GetCommentsForCheep(cheepId:int) : List<CommentDTO>
+    + GetCommentCountForCheep(cheepId:int) : int
+    + AddComment(comment:CommentDTO) : void
+    + DeleteComment(commentId:int) : void
+}
+ICheepRepository <|-- CheepRepository
+@enduml

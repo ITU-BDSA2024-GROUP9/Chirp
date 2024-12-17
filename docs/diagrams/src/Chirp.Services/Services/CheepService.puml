@@ -1,0 +1,30 @@
+@startuml
+class CheepService {
+    + CheepService(repository:ICheepRepository)
+    + GetCheeps(page:int) : List<CheepDTO>
+    + GetCheepsFromAuthorByID(authorId:string, page:int) : List<CheepDTO>
+    + GetCheepsFromAuthorByName(authorName:string, page:int) : List<CheepDTO>
+    + CreateCheep(newCheep:CheepDTO) : int
+    + IsFollowing(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : bool
+    + getFollowedInCheeps(follower:AuthorDTO) : List<AuthorDTO>
+    + GetCheepsFromAuthors(followedAuthors:List<AuthorDTO>, currentUserID:string, pageNumber:int) : List<CheepDTO>
+    + Follow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + Unfollow(followerAuthor:AuthorDTO, followedAuthor:AuthorDTO) : void
+    + GetAuthorByID(authorId:string) : AuthorDTO?
+    + GetAuthorByName(authorName:string) : AuthorDTO?
+    + GetAuthorByEmail(email:string) : AuthorDTO?
+    + GetCheepCount() : int
+    + GetCheepCountByID(authorId:string) : int
+    + GetCheepByName(authorName:string) : int
+    + ToDomain(author:AuthorDTO) : Author
+    + GetCheepCountByAuthors(followedAuthors:List<AuthorDTO>, currentUserId:string) : int
+    + UpdateCheep(newCheep:CheepDTO, cheepID:int) : void
+    + DeleteCheep(cheepId:int) : void
+    + GetCheepByID(cheepId:int) : CheepDTO
+    + GetCommentsForCheep(cheepId:int) : List<CommentDTO>
+    + GetCommentCountForCheep(cheepId:int) : int
+    + AddComment(comment:CommentDTO) : void
+    + DeleteComment(commentId:int) : void
+}
+ICheepService <|-- CheepService
+@enduml

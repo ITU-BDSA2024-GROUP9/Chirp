@@ -1,0 +1,11 @@
+@startuml
+class UITests {
+    + <<async>> Init() : Task
+    + <<async>> TestRegisterAndLogin() : Task
+    + <<async>> TestAccessUserTimelineAsAnonymousUser() : Task
+    + <<async>> UserRegistersAndAccessesUserTimeline() : Task
+    + <<async>> UserRegistersAndPostsCheepAndAccessesPrivateTimeline() : Task
+    + Cleanup() : void
+}
+PageTest <|-- UITests
+@enduml

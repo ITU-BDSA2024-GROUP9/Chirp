@@ -1,0 +1,11 @@
+@startuml
+class Comment {
+    + CommentId : int <<get>> <<set>>
+    + <<required>> Text : string <<get>> <<set>>
+    + <<required>> AuthorId : string <<get>> <<set>>
+    + <<required>> CheepId : int <<get>> <<set>>
+    + TimeStamp : DateTime
+}
+Comment --> "Author" Author
+Comment --> "Cheep" Cheep
+@enduml

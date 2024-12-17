@@ -1,0 +1,22 @@
+@startuml
+
+actor       "Unauthorized User" as usr
+participant Client              as client
+participant Server              as server
+
+entity      "ASP Identity"        as asp
+database    Database            as DB
+
+usr -> client : goes to chirp homepage
+client -> server : HTTP get request /
+server -> asp : check for authentication
+asp -> server : authentication status [false]
+server -> DB : query for chirps
+DB -> server : chirps
+server -> server : render html
+server -> client : return html
+client -> usr : displays front page
+
+
+
+@enduml

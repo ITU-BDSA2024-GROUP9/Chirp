@@ -1,0 +1,6 @@
+@startuml
+class CheepMapper {
+    + {static} toDTO(cheep:Cheep) : CheepDTO
+    + {static} toDomain(cheepDTO:CheepDTO) : Cheep
+}
+@enduml

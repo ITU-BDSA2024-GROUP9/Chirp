@@ -1,0 +1,9 @@
+@startuml
+class ErrorModel {
+    + RequestId : string? <<get>> <<set>>
+    + ShowRequestId : bool <<get>>
+    + ErrorModel(logger:ILogger<ErrorModel>)
+    + OnGet() : void
+}
+PageModel <|-- ErrorModel
+@enduml

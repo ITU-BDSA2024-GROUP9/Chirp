@@ -1,0 +1,9 @@
+@startuml
+class PublicModel {
+    + PublicModel(service:ICheepService)
+    + OnGet(page:int) : ActionResult
+    + OnGetLoadMoreCheeps() : PartialViewResult
+    + <<new>> OnPostDeleteCheep(cheepId:int, page:int) : IActionResult
+}
+Model <|-- PublicModel
+@enduml

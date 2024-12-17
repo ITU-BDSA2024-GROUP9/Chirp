@@ -1,0 +1,7 @@
+@startuml
+class DbInitializer <<static>> {
+    + {static} <<async>> SetAuthorPasswords(authors:List<Author>, serviceProvider:IServiceProvider) : void
+    + {static} SeedDatabase(chirpContext:ChirpDBContext) : List<Author>
+    + {static} WipeDatabase(context:ChirpDBContext) : void
+}
+@enduml
