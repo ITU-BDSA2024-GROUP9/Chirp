@@ -2,7 +2,7 @@
 class CheepDTO {
     + CheepId : int <<get>> <<set>>
     + <<required>> Text : string <<get>> <<set>>
+    + TimeStamp : DateTime
 }
-CheepDTO --> "TimeStamp" DateTime
 CheepDTO --> "Author" Author
 @enduml
