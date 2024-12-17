@@ -91,3 +91,43 @@ dotnet run --project src/Chirp.Razor
 ## License (BJØRN)
 
 ## LLMs, ChatGPT, CoPilot, and others (PHILLIP)
+
+During the development of our project, we utilized the following Large Language Models (LLMs):
+- Claude
+- Microsoft Co-pilot
+- OpenAI ChatGPT
+
+### Application of LLMs in Development
+
+The LLMs listed above primarily served as tools for idea and concept generation.
+Each week, we were given a list of requirements to complete before the next lecture. When the requirements were precise
+and clearly defined, the LLMs played a valuable role in helping us troubleshoot issues or overcome roadblocks.
+On the other hand, when requirements were broader or open-ended, the LLMs allowed us to quickly acquire knowledge in the
+relevant areas, enabling us to proceed with implementation more confidently.
+
+By Acting as a research and troubleshoot assistant, the LLMs significantly reduced the time we would otherwise have spent
+doing traditional searches online. This was particularly useful for resolving highly specific challenges, where the efficiency
+and personalized responses from the LLMs saved us considerable effort.
+
+### Reflection on the Helpfulness of LLM responses
+
+The responses provided by the LLMs were highly beneficial for research and troubleshooting, offering us personalized guidance
+that gave a better understanding of the subject. THis approach proved more effective than manually going through generalized
+search engine results, as the LLMs offered targeted answers specific to our queries. 
+
+However, we found that the LLMs were less effective for directly assisting with coding. While they provided general guidance
+and suggestions, they often struggled to fully grasp the context of our project, making it difficult to rely on them for
+specific code solutions. Despite this limitation, their overall assistance made it easier for us to progress and quickly
+gain necessary information.
+
+### Impact on the development speed
+
+The use of LLMs accelerated our development process. By offering immediate, personalized responses to our questions,
+the LLMs allowed to skip prolonged searches through forums or articles. Traditional internet resources often present 
+solutions to similar but not identical problems, whereas the LLMs helped us cut through ambiguity and quickly address our
+specific issues. This efficiency proved especially beneficial in tight deadlines, enabling us to maintain momentum throughout the project.
+
+It’s important to emphasize that the LLMs served purely as tools to enhance our workflow. 
+They supported us in gaining clarity and overcoming challenges but unless directly stated in commit did not perform any of the actual work. 
+The decisions, coding, and implementation were entirely our own, with the LLMs serving as an aid to improve efficiency and understanding.
+
