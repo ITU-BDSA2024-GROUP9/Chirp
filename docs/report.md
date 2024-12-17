@@ -120,7 +120,7 @@ and suggestions, they often struggled to fully grasp the context of our project,
 specific code solutions. Despite this limitation, their overall assistance made it easier for us to progress and quickly
 gain necessary information.
 
-- Discuss briefly how LLMs sped up development
+### Impact on the development speed
 
 LLMs are great at giving us personalized help, if we ever got stuck or had any questions. The internet typically has
 people with similar issues, but it is never quite exactly the same. The LLMs helped a tremendous amount speeding up the
