@@ -82,7 +82,7 @@ dotnet run --project src/Chirp.Razor
 
 5. Access the application:
 
-- Open browser to https://localhost:5001
+- Open browser to https://localhost:5273
 - Default test accounts available
 
 ## How to run test suite locally (PHILLIP AND JONATHAN)
