@@ -42,7 +42,7 @@ The app is hosted on the azure app service server which clients access through t
 ### 1. A Non-Authorized User Accessing the Website for the First Time
 
 Upon entering the URL for our website, the user will be directed to our site.
-![Unauthorized_user_timeline.png](images/useractivities/Unauthorized-public-timeline.png)
+![Unauthorized_user_timeline.png](images/useractivities/Unauthorized-public-timeline.png)<br>
 
 Here, they are presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
 
