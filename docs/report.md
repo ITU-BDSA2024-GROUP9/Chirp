@@ -51,15 +51,30 @@ Following another user is done by accessing the private timeline of the user and
 
 An authorized user can also manage their account by clicking the “About Me” tab in the navigation bar. They can set up a profile picture by clicking the “Gravatar” tab and linking their Gravatar profile. They can change their password, email, and username (unless linking up with GitHub, then the username will be the same as on their GitHub profile). They can change their password in the password tab. Finally, they can click the “About Me” tab to see their personal data. Here, they can download a JSON file containing all knowledge the Chirp application has about them. They are also granted an overview of people they are following and cheeps they have posted, which they can view from the website.
 
-If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
+If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application. 
+<!-- should we explain how delete me is implemented?  -->
 
 
 ## Sequence of functionality/calls trough _Chirp!_
-In this section we will detail how the flow of messages and data work in our chirp application. Specifically for a user that is unauthorized. 
+In this section we will detail how the flow of messages and data work in our chirp application. Specifically for an unauthorized user that is trying to access the root of our application.
 
 ![Illustration of an HTTPS request that is sent by an unauthorized user to the root endpoint](images/sequence.svg)
 
+Key Points in the Diagram:
 
+**Authentication Checks**
+We ensure that unauthorized users cannot access certain features (e.g., the cheep box or comment forms).
+
+**Efficient Data Handling**
+The sequence highlights how data is fetched, transformed into DTOs, and then used to render the page.
+
+**Component Modularity**
+The use of multiple components (Partials, Layout, etc.) to build the page ensures separation of concerns and maintainability.
+
+**Data Flow**
+Each type of call contributes to the flow of data from the database to the client.
+
+The final outcome is a public homepage that adapts its content based on the user's authentication status, showing only the components and features intended for unauthorized users.
 
 # Process
 
