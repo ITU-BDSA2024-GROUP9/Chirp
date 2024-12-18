@@ -32,7 +32,7 @@ public ->X box
 public -> cheeps : get cheep list partial
 cheeps -> asp : check for authentication
 asp -> cheeps : authentication status [false]
-cheeps -> DB : query for chirps
+cheeps -> DB : paginate cheeps [page 0]
 DB -> cheeps : return DTOs [page 0]
 cheeps -> public : return [no post or comment form]
 
