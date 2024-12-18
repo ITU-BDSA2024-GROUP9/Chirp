@@ -299,5 +299,59 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.Throws<ArgumentException>(() => _cheepService.CreateCheep(cheep));
 		}
+
+		[Xunit.Theory]
+		[InlineData("11")]
+		public void TestGettingCheepCountByTheID(string id)
+		{
+			// Arrange
+			// Act
+			var count = _cheepRepo.GetCheepCountByID(id);
+			// Assert
+			Assert.Equal(1, count);
+		}
+		
+		[Xunit.Theory]
+		[InlineData("Test", "Test@test.dk")]
+		public void TestGettingCheepCountByAuthors(string authorName, string authorEmail)
+		{
+			// Arrange
+			var author = new Author()
+			{
+				UserName = authorName,
+				Email = authorEmail,
+				Cheeps = new List<Cheep>()
+			};
+
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
+
+			var cheep1 = new CheepDTO()
+			{
+				Text = "First cheep",
+				TimeStamp = DateTime.Now,
+				Author = author
+			};
+
+			var cheep2 = new CheepDTO()
+			{
+				Text = "Second cheep",
+				TimeStamp = DateTime.Now,
+				Author = author
+			};
+
+			_cheepService.CreateCheep(cheep1);
+			_cheepService.CreateCheep(cheep2);
+
+			var followedAuthors = new List<AuthorDTO>
+			{
+				new AuthorDTO { Id = author.Id, Cheeps = new List<Cheep>() }
+			};
+
+			// Act
+			var count = _cheepRepo.GetCheepCountByAuthors(followedAuthors, author.Id);
+
+			// Assert
+			Assert.Equal(2, count);
+		}
 	}
 }
