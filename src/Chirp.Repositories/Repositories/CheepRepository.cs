@@ -312,7 +312,12 @@ public class CheepRepository : ICheepRepository
 		return author == null ? null : AuthorMapper.toDTO(author);
 	}
 	
-	
+	/// <summary>
+	/// Used for getting an author object by its email
+	/// </summary>
+	/// <param name="email"></param>
+	/// <returns>The author with the specified name</returns>
+	/// <exception cref="ArgumentException"></exception>
 	public AuthorDTO? GetAuthorByEmail(string email)
 	{
 		var author = _dbContext.Authors
