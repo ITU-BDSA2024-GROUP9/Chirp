@@ -47,16 +47,35 @@ namespace Chirp.Services
 			return _repository.GetCheepsFromAuthorByName(authorName, page);
 		}
 
+		/// <summary>
+		/// Creates a new Cheep and associates it with an existing Author.
+		/// </summary>
+		/// <param name="newCheep">The CheepDTO object containing the details of the new Cheep to be created.</param>
+		/// <returns>The ID of the newly created Cheep.</returns>
+		/// <exception cref="ArgumentException">
+		/// Thrown when the Cheep text is longer than 160 characters or when the Author is not found.
+		/// </exception>
 		public int CreateCheep(CheepDTO newCheep)
 		{
 			return _repository.CreateCheep(newCheep);
 		}
-
+		
+		/// <summary>
+		/// Used for checking if an author is following another author
+		/// </summary>
+		/// <param name="followerAuthor"></param>
+		/// <param name="followedAuthor"></param>
+		/// <returns>True or false depending on if the author is following the other author</returns>
 		public bool IsFollowing(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 		{
 			return _repository.IsFollowing(followerAuthor, followedAuthor);
 		}
-
+		
+		/// <summary>
+		/// Used for getting a list of the authors an author is following
+		/// </summary>
+		/// <param name="followerDTO"></param>
+		/// <returns>a list of the authors an author is following</returns>
 		public List<AuthorDTO> getFollowedInCheeps(AuthorDTO follower)
 		{
 			return _repository.getFollowedInCheeps(follower);
