@@ -1,28 +1,45 @@
 @startuml
- 
+
+title Unauthorized User To Root Sequence Diagram 
+
 actor       "Unauthorized User"  as usr
-participant "Client (browser)"   as client
+participant "Client (Browser)"   as client
 participant Server               as server
-entity      "public page"        as public
-entity      "_layout"            as layout
-entity      "login partial"      as login
-entity      "cheep box partial"  as box
-entity      "cheep list partial" as cheeps
+Boundary    "Public Page"        as public
+Boundary    "_layout"            as layout
+Boundary    "Login Partial"      as login
+Boundary    "Cheep Box Partial"  as box
+Boundary    "Cheep List Partial" as cheeps
+Control     "Public Model"       as mod
 entity      "ASP Identity"       as asp
+Control     "CheepService"       as CS
+entity      "CheepRepository"    as CR
+entity      "ChirpDBContext"     as CDB
 database    Database             as DB
 
 usr -> client : goes to chirp homepage
 client -> server : HTTP get request /
 note right of server : Router knows "/" is mapped to public page
 server -> public : get public page
+public -> mod : OnGet triggered
+mod -> mod : paginate cheeps(page 0)
+mod -> CS : GetCheeps(page 0)
+CS -> CR : GetCheeps(page 0)
+CR -> CDB : Query Cheeps [efcore]
+CDB -> DB : Query Cheeps [sql]
+DB -> CDB : return DTOs
+CDB -> CR : return DTOs
+CR -> CS : return DTOs
+CS -> mod : return DTOs
+note right of mod : DTOs are stored in a list
 
 public -> layout : get layout
 layout -> login : get login partial
 note right of login : Checking for authentication status using SignInManager and User
 login -> asp : check for authentication
 asp -> login : authentication status [false]
-login -> layout : return login partial [logged out]
-layout -> public : return layout
+login -> layout : return login partial html [logged out]
+layout -> public : return layout html
 
 public -> asp : check for authentication
 asp -> public : authentication status [false]
@@ -30,15 +47,20 @@ note right of public : User is not logged in so we don't show the cheep box part
 public ->X box 
 
 public -> cheeps : get cheep list partial
-cheeps -> asp : check for authentication
-asp -> cheeps : authentication status [false]
-cheeps -> DB : paginate cheeps [page 0]
-DB -> cheeps : return DTOs [page 0]
-cheeps -> public : return [no post or comment form]
+cheeps -> mod : Get DTOs
+mod -> cheeps : return DTOs
+loop foreach cheep DTO
+    cheeps -> cheeps : render cheep
+    cheeps -> asp : check for authentication
+    asp -> cheeps : authentication status [false]
+    cheeps ->X cheeps : don't show comment form
+end
 
-public -> server : return public page
-server -> server : render html
-server -> client : return html
+cheeps -> public : return cheep partial html
+
+public -> server : return public page html
+note right of server : Public page is now rendered and the server returns html contents to client
+server -> client : HTTP 200 OK
 client -> usr : displays front page
 
 
