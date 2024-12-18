@@ -191,7 +191,12 @@ public class CheepRepository : ICheepRepository
 	{
 		return followerAuthor.Following.Any(f => f.FollowedId == followedAuthor.Id);
 	}
-
+	
+	/// <summary>
+	/// Used for following another user
+	/// </summary>
+	/// <param name="followerAuthor"></param>
+	/// <param name="followedAuthor"></param>
 	public void Follow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 	{
 		var existingFollow = _dbContext.Follows
