@@ -219,6 +219,13 @@ public class CheepRepository : ICheepRepository
 		_dbContext.Follows.Add(followEntry);
 		_dbContext.SaveChanges();
 	}
+	
+	/// <summary>
+	/// Used for unfollowing another user
+	/// </summary>
+	/// <param name="followerAuthor"></param>
+	/// <param name="followedAuthor"></param>
+	/// <exception cref="ArgumentException"></exception>
 	public void Unfollow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 	{
 		var followEntry = _dbContext.Follows
