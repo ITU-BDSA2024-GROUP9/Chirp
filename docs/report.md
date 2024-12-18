@@ -28,24 +28,28 @@ OK GOOD
 
 ## 1. A Non-Authorized User Accessing the Website for the First Time
 
-Upon entering the URL for our website, the user will be directed to our site. Here, they are presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
+Upon entering the URL for our website, the user will be directed to our site.
+![Unauthorized_user_timeline.png](images%2Fuseractivities%2FUnauthorized_user_timeline.png)
+Here, they are presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
 
 Below the navigation bar, the public timeline starts. Here, cheeps from all users are displayed from newest to oldest. The unauthorized user can click on “Show Comments”, which will display all comments from newest to oldest. They can also click on authors or commenters to access their private timelines. Here, their individual cheeps are displayed, also from newest to oldest. If the user scrolls to the bottom of a private or public timeline, more cheeps will dynamically be loaded in.
 
 If a user likes what they see, they can click on the “Register” tab and be redirected to our signup page. Here, a user can register normally with a username, email, and password (which they must confirm). They can also register with GitHub, which will redirect them to authorize with GitHub. Upon registering with either method, the user is automatically logged in and can set up their profile.
-
+![Register.png](images%2Fuseractivities%2FRegister.png)
+![Login.png](images%2Fuseractivities%2FLogin.png)
 ## 2. Authorized Users
 
 Upon logging in, the user is able to post cheeps, follow other users, access their own timeline, and manage their account. The cheep post box is placed just below the navigation bar and is displayed on both private and public timelines. It contains a text field allowing the user to type 160 characters per cheep. The user can also add images by clicking the image icon, which will prompt the user to select a FORMAT XX image from their filesystem. When the user is done composing their cheep, they simply click the share button to send the cheep.
-
+![Cheep.png](images%2Fuseractivities%2FCheep.png)
 A user can comment on any cheep, including their own, by clicking "Show Comments" and then writing a comment containing up to 160 characters.
-
+![Comment.png](images%2Fuseractivities%2FComment.png)
 Following another user is done by accessing the private timeline of the user and pressing the “Follow” button. This will add past and future posts to the follower’s private timeline.
-
+![Follow.png](images%2Fuseractivities%2FFollow.png)
 An authorized user can also manage their account by clicking the “About Me” tab in the navigation bar. They can set up a profile picture by clicking the “Gravatar” tab and linking their Gravatar profile. They can change their password, email, and username (unless linking up with GitHub, then the username will be the same as on their GitHub profile). They can change their password in the password tab. Finally, they can click the “About Me” tab to see their personal data. Here, they can download a JSON file containing all knowledge the Chirp application has about them. They are also granted an overview of people they are following and cheeps they have posted, which they can view from the website.
+![About me.png](images%2Fuseractivities%2FAbout%20me.png)
 
-If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
-
+If they want to delete their profile, they simply press the “Forget Me” button, which, after confirming, removes all their data – but also their profile – from the website and application.
+![Forget me.png](images%2Fuseractivities%2FForget%20me.png)
 
 ## Sequence of functionality/calls trough _Chirp!_ (BJØRN)
 In this section we will detail how the flow of messages and data work in our chirp application.
