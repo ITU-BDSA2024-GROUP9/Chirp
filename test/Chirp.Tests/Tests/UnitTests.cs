@@ -552,5 +552,38 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.Throws<ArgumentException>(() => _cheepRepo.GetCheepByID(cheepID));
 		}
+		
+		[Fact]
+		public void TestMappingFromCheepDTOToCheep()
+		{
+			// Arrange
+			var author = new Author
+			{
+				Id = "author1",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var cheepDTO = new CheepDTO
+			{
+				CheepId = 1,
+				Text = "Test cheep",
+				TimeStamp = DateTime.Now,
+				Author = author
+			};
+
+			// Act
+			var cheep = CheepMapper.toDomain(cheepDTO);
+
+			// Assert
+			Assert.NotNull(cheep);
+			Assert.Equal(cheepDTO.CheepId, cheep.CheepId);
+			Assert.Equal(cheepDTO.Text, cheep.Text);
+			Assert.Equal(cheepDTO.TimeStamp, cheep.TimeStamp);
+			Assert.Equal(cheepDTO.Author.Id, cheep.Author.Id);
+			Assert.Equal(cheepDTO.Author.UserName, cheep.Author.UserName);
+			Assert.Equal(cheepDTO.Author.Email, cheep.Author.Email);
+		}
 	}
 }
