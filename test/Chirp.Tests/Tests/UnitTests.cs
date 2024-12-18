@@ -306,7 +306,7 @@ namespace Chirp.Tests.Tests
 		{
 			// Arrange
 			// Act
-			var count = _cheepRepo.GetCheepCountByID(id);
+			var count = _cheepService.GetCheepCountByID(id);
 			// Assert
 			Assert.Equal(1, count);
 		}
@@ -375,7 +375,7 @@ namespace Chirp.Tests.Tests
 			};
 
 			// Act
-			var count = _cheepRepo.GetCheepCountByAuthors(followedAuthors, currentUser.Id);
+			var count = _cheepService.GetCheepCountByAuthors(followedAuthors, currentUser.Id);
 
 			// Assert
 			Assert.Equal(3, count);
@@ -412,11 +412,11 @@ namespace Chirp.Tests.Tests
 			_cheepRepo.CreateAuthor(followed1);
 			_cheepRepo.CreateAuthor(followed2);
 
-			_cheepRepo.Follow(follower, followed1);
-			_cheepRepo.Follow(follower, followed2);
+			_cheepService.Follow(follower, followed1);
+			_cheepService.Follow(follower, followed2);
 
 			// Act
-			var followedAuthors = _cheepRepo.getFollowedInCheeps(follower);
+			var followedAuthors = _cheepService.getFollowedInCheeps(follower);
 
 			// Assert
 			Assert.Contains(followedAuthors, a => a.Id == followed1.Id);
@@ -487,7 +487,7 @@ namespace Chirp.Tests.Tests
 			};
 
 			// Act
-			var cheeps = _cheepRepo.GetCheepsFromAuthors(followedAuthors, currentUser.Id, 1);
+			var cheeps = _cheepService.GetCheepsFromAuthors(followedAuthors, currentUser.Id, 1);
 
 			// Assert
 			Assert.Equal(3, cheeps.Count);
@@ -518,10 +518,10 @@ namespace Chirp.Tests.Tests
 				
 			};
 
-			_cheepRepo.Follow(follower, followed);
+			_cheepService.Follow(follower, followed);
 
 			// Act
-			var isFollowing = _cheepRepo.IsFollowing(follower, followed);
+			var isFollowing = _cheepService.IsFollowing(follower, followed);
 
 			// Assert
 			Assert.True(isFollowing);
@@ -534,7 +534,7 @@ namespace Chirp.Tests.Tests
 			// Arrange
 			
 			// Act
-			var cheep = _cheepRepo.GetCheepByID(cheepID);
+			var cheep = _cheepService.GetCheepByID(cheepID);
 			// Assert
 			Assert.Equal(cheepID, cheep.CheepId);
 			Assert.Equal(text, cheep.Text);
@@ -547,7 +547,7 @@ namespace Chirp.Tests.Tests
 			// Arrange
 			
 			// Act
-			_cheepRepo.DeleteCheep(cheepID);
+			_cheepService.DeleteCheep(cheepID);
 			
 			// Assert
 			Assert.Throws<ArgumentException>(() => _cheepRepo.GetCheepByID(cheepID));
@@ -673,11 +673,11 @@ namespace Chirp.Tests.Tests
 				Cheeps = new List<Cheep>()
 			};
 			
-			_cheepRepo.Follow(follower, followed);
+			_cheepService.Follow(follower, followed);
 
 			// Act
-			_cheepRepo.Unfollow(follower, followed);
-			var isFollowing = _cheepRepo.IsFollowing(follower, followed);
+			_cheepService.Unfollow(follower, followed);
+			var isFollowing = _cheepService.IsFollowing(follower, followed);
 
 			// Assert
 			Assert.False(isFollowing);
