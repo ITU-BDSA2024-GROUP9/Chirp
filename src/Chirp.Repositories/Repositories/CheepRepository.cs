@@ -285,7 +285,12 @@ public class CheepRepository : ICheepRepository
 			_dbContext.SaveChanges();
 		}
 	}
-
+	
+	/// <summary>
+	/// Used for getting an author object by its ID
+	/// </summary>
+	/// <param name="authorId"></param>
+	/// <returns>The author with the specified ID</returns>
 	public AuthorDTO? GetAuthorByID(string authorId)
 	{
 		var author = _dbContext.Authors
