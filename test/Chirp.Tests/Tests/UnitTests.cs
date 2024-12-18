@@ -652,5 +652,36 @@ namespace Chirp.Tests.Tests
 			Assert.Equal(cheepDTO.Author.UserName, cheep.Author.UserName);
 			Assert.Equal(cheepDTO.Author.Email, cheep.Author.Email);
 		}
+		
+		[Fact]
+		public void TestUnfollow_RemovesFollowRelationship()
+		{
+			// Arrange
+			var follower = new AuthorDTO
+			{
+				Id = "10000",
+				UserName = "Follower",
+				Email = "follower@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed = new AuthorDTO
+			{
+				Id = "9999",
+				UserName = "Followed",
+				Email = "followed@test.com",
+				Cheeps = new List<Cheep>()
+			};
+			
+			_cheepRepo.Follow(follower, followed);
+
+			// Act
+			_cheepRepo.Unfollow(follower, followed);
+			var isFollowing = _cheepRepo.IsFollowing(follower, followed);
+
+			// Assert
+			Assert.False(isFollowing);
+		}
+	
 	}
 }
