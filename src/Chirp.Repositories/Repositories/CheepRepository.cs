@@ -180,7 +180,13 @@ public class CheepRepository : ICheepRepository
 			.ToList();
 		return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
 	}
-
+	
+	/// <summary>
+	/// Used for checking if an author is following another author
+	/// </summary>
+	/// <param name="followerAuthor"></param>
+	/// <param name="followedAuthor"></param>
+	/// <returns>True or false depending on if the author is following the other author</returns>
 	public bool IsFollowing(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 	{
 		return followerAuthor.Following.Any(f => f.FollowedId == followedAuthor.Id);
