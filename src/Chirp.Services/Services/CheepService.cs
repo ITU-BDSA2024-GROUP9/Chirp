@@ -225,6 +225,11 @@ namespace Chirp.Services
 			return _repository.GetCheepByID(cheepId);
 		}
 
+		/// <summary>
+		/// Used for getting all the comments from a cheep
+		/// </summary>
+		/// <param name="cheepId"></param>
+		/// <returns>A list of comment DTO from the cheep</returns>
 		public List<CommentDTO> GetCommentsForCheep(int cheepId)
 		{
 			return _repository.GetCommentsForCheep(cheepId);
