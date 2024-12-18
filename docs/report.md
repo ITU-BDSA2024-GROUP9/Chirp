@@ -55,11 +55,11 @@ Upon logging in, the user is able to post cheeps, follow other users, access the
 ![Cheep.png](images/useractivities/Cheep.png)
 A user can comment on any cheep, including their own, by clicking "Show Comments" and then writing a comment containing up to 160 characters.
 ![Comment.png](images/useractivities/Comment.png)
-Following another user is done by accessing the private timeline of the user and pressing the “Follow” button. This will add past and future posts to the follower’s private timeline.
-![Follow.png](images/useractivities/Follow.png)
+Following another user is done by accessing the private timeline of the user and pressing the “Follow” button. This will add past and future posts to the follower’s private timeline.<br>
+![Follow.png](images/useractivities/Follow.png)<br>
 An authorized user can also manage their account by clicking the “About Me” tab in the navigation bar. They can set up a profile picture by clicking the “Gravatar” tab and linking their Gravatar profile. They can change their password, email, and username (unless linking up with GitHub, then the username will be the same as on their GitHub profile). They can change their password in the password tab. Finally, they can click the “About Me” tab to see their personal data. Here, they can download a JSON file containing all knowledge the Chirp application has about them. They are also granted an overview of people they are following and cheeps they have posted, which they can view from the website.
 ![About me.png](images/useractivities/About me.png)
-If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
+If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application. <br>
 ![Forget me.png](images/useractivities/Forget me.png)
 ## Sequence of functionality/calls trough _Chirp!_
 In this section we will detail how the flow of messages and data work in our chirp application. Specifically for an unauthorized user that is trying to access the root of our application.
