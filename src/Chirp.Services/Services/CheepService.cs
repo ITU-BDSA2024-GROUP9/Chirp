@@ -124,11 +124,22 @@ namespace Chirp.Services
 			return _repository.GetAuthorByID(authorId);
 		}
 
+		/// <summary>
+		/// Used for getting an author object by its name
+		/// </summary>
+		/// <param name="authorName"></param>
+		/// <returns>The author with the specified name</returns>
 		public AuthorDTO? GetAuthorByName(string authorName)
 		{
 			return _repository.GetAuthorByName(authorName);
 		}
 
+		/// <summary>
+		/// Used for getting an author object by its email
+		/// </summary>
+		/// <param name="email"></param>
+		/// <returns>The author with the specified name</returns>
+		/// <exception cref="ArgumentException"></exception>
 		public AuthorDTO? GetAuthorByEmail(string email)
 		{
 			return _repository.GetAuthorByEmail(email);
