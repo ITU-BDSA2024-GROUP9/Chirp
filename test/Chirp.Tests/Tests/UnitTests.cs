@@ -423,5 +423,77 @@ namespace Chirp.Tests.Tests
 			Assert.Contains(followedAuthors, a => a.Id == followed2.Id);
 			Assert.Equal(2, followedAuthors.Count);
 		}
+		[Fact]
+		public void TestGetCheepsFromAuthors()
+		{
+			// Arrange
+			var author1 = new Author()
+			{
+				Id = "author1",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var author2 = new Author()
+			{
+				Id = "author2",
+				UserName = "Author Two",
+				Email = "author2@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var currentUser = new Author()
+			{
+				Id = "currentUserId",
+				UserName = "Current User",
+				Email = "currentuser@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author1));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author2));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(currentUser));
+
+			var cheep1 = new CheepDTO()
+			{
+				Text = "First cheep",
+				TimeStamp = DateTime.Now,
+				Author = author1
+			};
+
+			var cheep2 = new CheepDTO()
+			{
+				Text = "Second cheep",
+				TimeStamp = DateTime.Now,
+				Author = author2
+			};
+
+			var cheep3 = new CheepDTO()
+			{
+				Text = "Third cheep",
+				TimeStamp = DateTime.Now,
+				Author = currentUser
+			};
+
+			_cheepService.CreateCheep(cheep1);
+			_cheepService.CreateCheep(cheep2);
+			_cheepService.CreateCheep(cheep3);
+
+			var followedAuthors = new List<AuthorDTO>
+			{
+				new AuthorDTO { Id = author1.Id, Cheeps = new List<Cheep>() },
+				new AuthorDTO { Id = author2.Id, Cheeps = new List<Cheep>() }
+			};
+
+			// Act
+			var cheeps = _cheepRepo.GetCheepsFromAuthors(followedAuthors, currentUser.Id, 1);
+
+			// Assert
+			Assert.Equal(3, cheeps.Count);
+			Assert.Contains(cheeps, c => c.Text == "First cheep");
+			Assert.Contains(cheeps, c => c.Text == "Second cheep");
+			Assert.Contains(cheeps, c => c.Text == "Third cheep");
+		}
 	}
 }
