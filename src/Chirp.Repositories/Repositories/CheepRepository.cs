@@ -5,10 +5,17 @@ using Chirp.Core.DTO;
 using Chirp.Repositories.Helpers;
 using Chirp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-
+/// <summary>
+/// Repository class for managing Cheep entities in the database.
+/// </summary>
 public class CheepRepository : ICheepRepository
 {
 	private readonly ChirpDBContext _dbContext;
+	
+	/// <summary>
+	/// Initializes a new instance of the <see cref="CheepRepository"/> class.
+	/// </summary>
+	/// <param name="dBContext">The database context to be used by the repository.</param>
 	public CheepRepository(ChirpDBContext dBContext)
 	{
 		_dbContext = dBContext;
