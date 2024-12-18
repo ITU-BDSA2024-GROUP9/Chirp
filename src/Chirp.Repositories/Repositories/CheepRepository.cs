@@ -325,7 +325,12 @@ public class CheepRepository : ICheepRepository
 			.FirstOrDefault(a => a.Email == email);
 		return author == null ? throw new ArgumentException("Author not found!") : AuthorMapper.toDTO(author);
 	}
-
+	
+	/// <summary>
+	/// Converts a DTO author to the domain object
+	/// </summary>
+	/// <param name="author"></param>
+	/// <returns>The domain object</returns>
 	public Author ToDomain(AuthorDTO author)
 	{
 		return AuthorMapper.toDomain(author, _dbContext);
