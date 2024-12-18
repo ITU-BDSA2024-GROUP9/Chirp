@@ -3,7 +3,7 @@ title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 9
 author:
 - "Alexander Rossau <ross@itu.dk>"
-- "Ayushmaan Bordoloi" <aybo@itu.dk>
+- "Ayushmaan Bordoloi <aybo@itu.dk>"
 - "Bjørn Møgelhøj <bjom@itu.dk>"
 - "Phillip Nikolai Rasmussen <phir@itu.dk>"
 - "Jonathan Rønnow Klarlund <jork@itu.dk>"
@@ -15,18 +15,21 @@ numbersections: true
 
 ## Domain model
 
-Here comes a description of our domain model.
-OK GOOD
+The domain model of _Chirp!_ is illustrated in the UML class diagram below. The model consists of four main entities: Author, Cheep, Comment, and Follow. The Author entity represents a user of the application and contains information such as the user's username, email, and password. The Cheep entity represents a post made by a user and contains information such as the cheep's content, the user who posted it, and the time it was posted. The Comment entity represents a comment made on a cheep and contains information such as the comment's content, the user who posted it, and the time it was posted. The Follow entity represents a follow relationship between two users and contains information such as the follower and followee.
 ![Illustration of the _Chirp!_ data model as UML class diagram.](images/domain2.svg)
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Domain.Model.png)
 
-## Architecture — In the small (OK GOOD MAN)
+## Architecture — In the small
+
+The architecture of _Chirp!_ is based on the Onion Architecture. The Onion Architecture is a layered architecture that emphasizes separation of concerns and dependency inversion. The Onion Architecture consists of four layers: the Domain Model, Application Services, Infrastructure, and User Interface. The Domain Model layer contains the core business logic of the application and is independent of the other layers. The Application Services layer contains the application-specific logic and orchestrates the interaction between the Domain Model and Infrastructure layers. The Infrastructure layer contains the implementation details of the application, such as the database and external services. The User Interface layer contains the presentation logic of the application and interacts with the Application Services layer to display the data to the user and receive input from the user.
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
 
-## Architecture of deployed application (OK GOOD MAN)
+## Architecture of deployed application
+
+The architecture of the deployed _Chirp!_ application is illustrated in the diagram below. The application is deployed on Azure App Service and uses Azure SQL Database for data storage. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. The application server interacts with the database to retrieve and store data. The application server also interacts with external services such as GitHub for authentication and Gravatar for profile pictures. The application server is hosted on Azure App Service, which provides scalability, high availability, and security for the application.
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
 
-## User activities (JOHN JOHN)
+## User activities
 # User Interaction on the Chirp Website
 
 ## 1. A Non-Authorized User Accessing the Website for the First Time
@@ -50,13 +53,13 @@ An authorized user can also manage their account by clicking the “About Me” 
 If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
 
 
-## Sequence of functionality/calls trough _Chirp!_ (BJØRN)
+## Sequence of functionality/calls trough _Chirp!_
 In this section we will detail how the flow of messages and data work in our chirp application.
 
 
 # Process
 
-## Build, test, release, and deployment (PHILLIP)
+## Build, test, release, and deployment
 ![UML activity diagram](images/Process.drawio.png)
 The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
 Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
@@ -75,7 +78,7 @@ After release (Both if tag is present or not), the application will be deployed 
 This workflow ensures a structured and automated pipeline, that catches failure and only allows stable versions to be
 deployed. This significantly reduces manual effort and increases reliability during development process.
 
-## Team work (ALEX)
+## Team work
 ![Project board](images/board.png)
 The above image shows our project board on GitHub. We have used the project board to keep track of our progress and to assign tasks to each other.
 The board is divided into four columns: Todo, In Progress, Under review, and Done. Each task is represented by a card that can be moved between the columns.
@@ -91,7 +94,7 @@ Feature development workflow:
 - PR merged to main
 - Deployment triggered
 
-## How to make _Chirp!_ work locally (ALEX)
+## How to make _Chirp!_ work locally
 
 1. Clone the repository:
 
@@ -127,7 +130,7 @@ dotnet run --project src/Chirp.Razor
 - Open browser to https://localhost:5273
 - Default test accounts available
 
-## How to run test suite locally (PHILLIP AND JONATHAN)
+## How to run test suite locally
 ### Guide on running the test suite
 
 To run all tests for our Chirp project, please follow the steps below:
@@ -165,7 +168,7 @@ These tests ensure the application functions as expected when components interac
 
 ## License (BJØRN)
 
-## LLMs, ChatGPT, CoPilot, and others (PHILLIP)
+## LLMs, ChatGPT, CoPilot, and others
 
 During the development of our project, we utilized the following Large Language Models (LLMs):
 - Claude
