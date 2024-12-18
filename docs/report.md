@@ -3,7 +3,7 @@ title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 9
 author:
 - "Alexander Rossau <ross@itu.dk>"
-- "Ayushmaan Bordoloi <aybo@itu.dk>"
+- "Ayushmaan Bordoloi" <aybo@itu.dk>
 - "Bjørn Møgelhøj <bjom@itu.dk>"
 - "Phillip Nikolai Rasmussen <phir@itu.dk>"
 - "Jonathan Rønnow Klarlund <jork@itu.dk>"
@@ -19,43 +19,47 @@ Below is a uml diagram of the entire chirp application:
 
 The domain model of Chirp! is illustrated in the UML class diagram below. The model consists of four main entities: Author, Cheep, Comment, and Follow. The Cheep entity represents a post and contains information such as the cheep's content, time posted and the Author who posted it. The Comment entity represents a comment made on a cheep and contains information such as which Cheep the comment was made on.
 The Author entity represents a user of the application which can have up-to many Cheeps, Comments, Followers and users they are Following. Furthermore, we use ASP.NET Identity with the Author entity inheriting the IndentityUser class which contains information such as the username, email, and password. The Follow entity represents a follow relationship between two Author entities. An Author has a list of Follow entities for their followers and the people they are following so this is represented in the UML as two bi-directional one to many relationships.
+
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Domain.Model.png)
 
 ## Architecture — In the small
 
 The architecture of Chirp! is based on the Onion Architecture. The Onion Architecture is a layered architecture that emphasizes separation of concerns and dependency inversion. We implement this by having the different layers encapsulated within their own .csproj projects. Our core layer contained our Domain model and DTO classes which were independent of the other layers with no external references. The next layer was our Repository Interface layer containing logic to interact with the database and had a reference to the core layer. The Service interface layer contains business logic interfacing with the repositories. Finally, our outer layers consisted of the User Interface layer which contains the presentation logic of the application and interacts with the Service Interface layer to display the data to the user and receive input from the user. Our tests work on different layers in addition to the UI tests that test the UI which is why the illustration shows the outer layer being split between UI and tests with tests referencing the UI too.
 We kept a more rigorous separation by not using the single Chirp.Infrastructure project to contain both our repository layer and services layer because code in the same project with different namespaces can still reference each other. For example, a Chirp.Repositories class could've referenced a Chirp.Services class which would violate the onion architecture. By having separate projects, it prevents these violations from arising while also providing better encapsulation of the different layers.
+
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
 
 ## Architecture of deployed application
 
 The architecture of the deployed _Chirp!_ application is illustrated in the diagram below. The application is deployed on Azure App Service and uses Azure SQL Database for data storage. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. The application server interacts with the database to retrieve and store data. The application server also interacts with external services such as GitHub for authentication and Gravatar for profile pictures. The application server is hosted on Azure App Service, which provides scalability, high availability, and security for the application.
+
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
-The app is hosted on the azure app service server which clients access through their web browser 
 
 ## User activities
 ### 1. A Non-Authorized User Accessing the Website for the First Time
 
-Upon entering the URL for our website, the user will be directed to our site. Here, they are presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
+Upon entering the URL for our website, the user will be directed to our site.
+![Unauthorized_user_timeline.png](images/useractivities/Unauthorized-public-timeline.png)<br>
+
+Here, they are presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
 
 Below the navigation bar, the public timeline starts. Here, cheeps from all users are displayed from newest to oldest. The unauthorized user can click on “Show Comments”, which will display all comments from newest to oldest. They can also click on authors or commenters to access their private timelines. Here, their individual cheeps are displayed, also from newest to oldest. If the user scrolls to the bottom of a private or public timeline, more cheeps will dynamically be loaded in.
 
 If a user likes what they see, they can click on the “Register” tab and be redirected to our signup page. Here, a user can register normally with a username, email, and password (which they must confirm). They can also register with GitHub, which will redirect them to authorize with GitHub. Upon registering with either method, the user is automatically logged in and can set up their profile.
-
+![Register.png](images/useractivities/Register.png)
+![Login.png](images/useractivities/Login.png)
 ### 2. Authorized Users
 
 Upon logging in, the user is able to post cheeps, follow other users, access their own timeline, and manage their account. The cheep post box is placed just below the navigation bar and is displayed on both private and public timelines. It contains a text field allowing the user to type 160 characters per cheep. The user can also add images by clicking the image icon, which will prompt the user to select a FORMAT XX image from their filesystem. When the user is done composing their cheep, they simply click the share button to send the cheep.
-
+![Cheep.png](images/useractivities/Cheep.png)
 A user can comment on any cheep, including their own, by clicking "Show Comments" and then writing a comment containing up to 160 characters.
-
+![Comment.png](images/useractivities/Comment.png)
 Following another user is done by accessing the private timeline of the user and pressing the “Follow” button. This will add past and future posts to the follower’s private timeline.
-
+![Follow.png](images/useractivities/Follow.png)
 An authorized user can also manage their account by clicking the “About Me” tab in the navigation bar. They can set up a profile picture by clicking the “Gravatar” tab and linking their Gravatar profile. They can change their password, email, and username (unless linking up with GitHub, then the username will be the same as on their GitHub profile). They can change their password in the password tab. Finally, they can click the “About Me” tab to see their personal data. Here, they can download a JSON file containing all knowledge the Chirp application has about them. They are also granted an overview of people they are following and cheeps they have posted, which they can view from the website.
-
-If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application. 
-<!-- should we explain how delete me is implemented?  -->
-
-
+![About me.png](images/useractivities/About me.png)
+If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
+![Forget me.png](images/useractivities/Forget me.png)
 ## Sequence of functionality/calls trough _Chirp!_
 In this section we will detail how the flow of messages and data work in our chirp application. Specifically for an unauthorized user that is trying to access the root of our application.
 
@@ -81,6 +85,7 @@ The final outcome is a public homepage that adapts its content based on the user
 
 ## Build, test, release, and deployment
 ![UML activity diagram](images/Process.drawio.png)
+
 The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
 Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
 - Build Stage
@@ -100,6 +105,7 @@ deployed. This significantly reduces manual effort and increases reliability dur
 
 ## Team work
 ![Project board](images/board.png)
+
 The above image shows our project board on GitHub. We have used the project board to keep track of our progress and to assign tasks to each other.
 The board is divided into four columns: Todo, In Progress, Under review, and Done. Each task is represented by a card that can be moved between the columns.
 At the time of writing, we only have one task on the board which is yet to be completed (toggle light/dark mode). We do, however feel it would be nice to have features such as liking posts, so we might add that later.
