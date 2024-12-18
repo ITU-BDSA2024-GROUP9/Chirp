@@ -14,7 +14,12 @@ namespace Chirp.Services
 		{
 			_repository = repository;
 		}
-
+		
+		/// <summary>
+		/// Used for getting all the cheeps from a specific page
+		/// </summary>
+		/// <param name="page"></param>
+		/// <returns>A list of cheep DTO from the specific page</returns>
 		public List<CheepDTO> GetCheeps(int page)
 		{
 			return _repository.GetCheeps(page);
