@@ -257,7 +257,13 @@ public class CheepRepository : ICheepRepository
 			.ToList();
 		return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
 	}
-
+	
+	/// <summary>
+	/// Used for getting a cheep by its ID
+	/// </summary>
+	/// <param name="cheepID"></param>
+	/// <returns>The cheep with the ID</returns>
+	/// <exception cref="ArgumentException"></exception>
 	public CheepDTO GetCheepByID(int cheepID)
 	{
 		var cheep = _dbContext.Cheeps
