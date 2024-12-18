@@ -235,6 +235,11 @@ namespace Chirp.Services
 			return _repository.GetCommentsForCheep(cheepId);
 		}
 
+		/// <summary>
+		/// Used for getting the amount of comments for a single cheep
+		/// </summary>
+		/// <param name="cheepId"></param>
+		/// <returns>The amount of comments on the specified cheep</returns>
 		public int GetCommentCountForCheep(int cheepId)
 		{
 			return _repository.GetCommentsForCheep(cheepId).Count;
