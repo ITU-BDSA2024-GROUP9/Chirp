@@ -33,8 +33,7 @@ We kept a more rigorous separation by not using the single Chirp.Infrastructure 
 
 ## Architecture of deployed application
 
-The architecture of the deployed _Chirp!_ application is illustrated in the diagram below. The application is deployed on Azure App Service and uses Azure SQL Database for data storage. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. The application server interacts with the database to retrieve and store data. The application server also interacts with external services such as GitHub for authentication and Gravatar for profile pictures. The application server is hosted on Azure App Service, which provides scalability, high availability, and security for the application.
-
+The architecture of the deployed Chirp! application is illustrated in the diagram below. The application is deployed to Azure App Service server via GitHub actions ci/cd pipeline. The application uses an SQLite .db file as the database stored on the server. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. The application server interacts with the database to retrieve and store data. The application server also interacts with external services such as GitHub for OAuth authentication and Gravatar API for profile pictures using HTTP requests to communicate between the external services.
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
 
 ## User activities
