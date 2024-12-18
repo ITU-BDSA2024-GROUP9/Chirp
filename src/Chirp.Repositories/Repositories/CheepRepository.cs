@@ -105,7 +105,12 @@ public class CheepRepository : ICheepRepository
 			.Include(c => c.Author)
 			.Count(c => authorIds.Contains(c.Author.Id));
 	}
-
+	
+	/// <summary>
+	/// Used for getting all the cheeps from a specific page
+	/// </summary>
+	/// <param name="page"></param>
+	/// <returns>A list of cheep DTO from the specific page</returns>
 	public List<CheepDTO> GetCheeps(int page)
 	{
 		var cheeps = _dbContext.Cheeps
