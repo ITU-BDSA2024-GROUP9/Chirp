@@ -345,7 +345,12 @@ public class CheepRepository : ICheepRepository
 		_dbContext.Authors.Add(ToDomain(newAuthor));
 		_dbContext.SaveChanges();
 	}
-
+	
+	/// <summary>
+	/// Used for updating a cheep
+	/// </summary>
+	/// <param name="newCheep"></param>
+	/// <param name="cheepID"></param>
 	public void UpdateCheep(CheepDTO newCheep, int cheepID)
 	{
 		var cheep = _dbContext.Cheeps.Find(cheepID);
@@ -355,7 +360,12 @@ public class CheepRepository : ICheepRepository
 			_dbContext.SaveChanges();
 		}
 	}
-
+	
+	/// <summary>
+	/// Used for getting all the comments from a cheep
+	/// </summary>
+	/// <param name="cheepId"></param>
+	/// <returns>A list of comment DTO from the cheep</returns>
 	public List<CommentDTO> GetCommentsForCheep(int cheepId)
 	{
 		var comments = _dbContext.Comments
