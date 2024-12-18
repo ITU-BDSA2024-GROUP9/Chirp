@@ -385,7 +385,12 @@ public class CheepRepository : ICheepRepository
 	{
 		return _dbContext.Comments.Count(c => c.CheepId == cheepId);
 	}
-
+	
+	/// <summary>
+	/// Used for adding a comment to a cheep
+	/// </summary>
+	/// <param name="comment"></param>
+	/// <exception cref="ArgumentException"></exception>
 	public void AddComment(CommentDTO comment)
 	{
 		var cheep = _dbContext.Cheeps.Find(comment.CheepId);
