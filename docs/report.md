@@ -168,10 +168,7 @@ Using HttpClient and test-specific SQLite database we:
 - Validate that pages display correct content, such as user-specific timeline and a maximum of 32 posts per page.
 These tests ensure the application functions as expected when components interact.
 
-# Ethics (BJØRN)
-
-- telemetry [didnt opt out]
-
+# Ethics
 ## License
 For our Chirp application, we have chosen to release the project under The Unlicense.
 
