@@ -19,18 +19,23 @@ Below is a uml diagram of the entire chirp application:
 
 The domain model of Chirp! is illustrated in the UML class diagram below. The model consists of four main entities: Author, Cheep, Comment, and Follow. The Cheep entity represents a post and contains information such as the cheep's content, time posted and the Author who posted it. The Comment entity represents a comment made on a cheep and contains information such as which Cheep the comment was made on.
 The Author entity represents a user of the application which can have up-to many Cheeps, Comments, Followers and users they are Following. Furthermore, we use ASP.NET Identity with the Author entity inheriting the IndentityUser class which contains information such as the username, email, and password. The Follow entity represents a follow relationship between two Author entities. An Author has a list of Follow entities for their followers and the people they are following so this is represented in the UML as two bi-directional one to many relationships.
+
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Domain.Model.png)
 
 ## Architecture — In the small
 
 The architecture of _Chirp!_ is based on the Onion Architecture. The Onion Architecture is a layered architecture that emphasizes separation of concerns and dependency inversion. The Onion Architecture consists of four layers: the Domain Model, Application Services, Infrastructure, and User Interface. The Domain Model layer contains the core business logic of the application and is independent of the other layers. The Application Services layer contains the application-specific logic and orchestrates the interaction between the Domain Model and Infrastructure layers. The Infrastructure layer contains the implementation details of the application, such as the database and external services. The User Interface layer contains the presentation logic of the application and interacts with the Application Services layer to display the data to the user and receive input from the user.
+
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
+
 The onion architecture is used in our application. Seperation of concerns is done via having the different layers encapsulated within their own .csproj projets. We then connected them by linking the relevent .csproj files with each other. For example Chirp.Core needs no references to other projects so no dependencies are added however other projects in outer layers depend on it like Chirp.Repositories. We kept a more rigorous seperation by not using the single Chirp.Infrastructure project because code in the same project with different name spaces can still reference each other. For example a Chirp.Repositories class could've referenced a Chirp.Services class which would violate the onion architecture. By having seperate projects it prevents these violations from appearing.
 
 ## Architecture of deployed application
 
 The architecture of the deployed _Chirp!_ application is illustrated in the diagram below. The application is deployed on Azure App Service and uses Azure SQL Database for data storage. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. The application server interacts with the database to retrieve and store data. The application server also interacts with external services such as GitHub for authentication and Gravatar for profile pictures. The application server is hosted on Azure App Service, which provides scalability, high availability, and security for the application.
+
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
+
 The app is hosted on the azure app service server which clients access through their web browser 
 
 ## User activities
@@ -81,6 +86,7 @@ The final outcome is a public homepage that adapts its content based on the user
 
 ## Build, test, release, and deployment
 ![UML activity diagram](images/Process.drawio.png)
+
 The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
 Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
 - Build Stage
@@ -100,6 +106,7 @@ deployed. This significantly reduces manual effort and increases reliability dur
 
 ## Team work
 ![Project board](images/board.png)
+
 The above image shows our project board on GitHub. We have used the project board to keep track of our progress and to assign tasks to each other.
 The board is divided into four columns: Todo, In Progress, Under review, and Done. Each task is represented by a card that can be moved between the columns.
 At the time of writing, we only have one task on the board which is yet to be completed (toggle light/dark mode). We do, however feel it would be nice to have features such as liking posts, so we might add that later.
