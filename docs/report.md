@@ -13,7 +13,7 @@ numbersections: true
 
 # Design and Architecture of _Chirp!_
 Below is a uml diagram of the entire chirp application:
-![Illustration of _Chirp!_ as UML class diagram.](images/include.svg)
+![Illustration of _Chirp!_ as UML class diagram. (Base generated using https://marketplace.visualstudio.com/items?itemName=pierre3.csharp-to-plantuml)](images/include.svg)
 
 ## Domain model
 
