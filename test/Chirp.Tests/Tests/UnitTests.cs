@@ -380,5 +380,48 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.Equal(3, count);
 		}
+		[Fact]
+		public void TestGetFollowedInCheeps()
+		{
+			// Arrange
+			var follower = new AuthorDTO()
+			{
+				Id = "followerId",
+				UserName = "Follower",
+				Email = "follower@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed1 = new AuthorDTO()
+			{
+				Id = "followed1Id",
+				UserName = "Followed One",
+				Email = "followed1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed2 = new AuthorDTO()
+			{
+				Id = "followed2Id",
+				UserName = "Followed Two",
+				Email = "followed2@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			_cheepRepo.CreateAuthor(follower);
+			_cheepRepo.CreateAuthor(followed1);
+			_cheepRepo.CreateAuthor(followed2);
+
+			_cheepRepo.Follow(follower, followed1);
+			_cheepRepo.Follow(follower, followed2);
+
+			// Act
+			var followedAuthors = _cheepRepo.getFollowedInCheeps(follower);
+
+			// Assert
+			Assert.Contains(followedAuthors, a => a.Id == followed1.Id);
+			Assert.Contains(followedAuthors, a => a.Id == followed2.Id);
+			Assert.Equal(2, followedAuthors.Count);
+		}
 	}
 }
