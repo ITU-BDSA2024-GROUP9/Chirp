@@ -59,7 +59,12 @@ public class CheepRepository : ICheepRepository
 	{
 		return _dbContext.Cheeps.Count();
 	}
-
+	
+	/// <summary>
+	/// Used for getting the amount of cheeps by an author when you know the authorID
+	/// </summary>
+	/// <param name="authorId"></param>
+	/// <returns>Amount of cheeps as an int</returns>
 	public int GetCheepCountByID(string authorId)
 	{
 		return _dbContext.Cheeps
