@@ -245,11 +245,20 @@ namespace Chirp.Services
 			return _repository.GetCommentsForCheep(cheepId).Count;
 		}
 
+		/// <summary>
+		/// Used for adding a comment to a cheep
+		/// </summary>
+		/// <param name="comment"></param>
+		/// <exception cref="ArgumentException"></exception>
 		public void AddComment(CommentDTO comment)
 		{
 			_repository.AddComment(comment);
 		}
-
+		
+		/// <summary>
+		/// Deletes a specific comment using its ID
+		/// </summary>
+		/// <param name="commentId"></param>
 		public void DeleteComment(int commentId)
 		{
 			_repository.DeleteComment(commentId);
