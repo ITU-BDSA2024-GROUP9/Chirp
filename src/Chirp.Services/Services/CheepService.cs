@@ -92,13 +92,23 @@ namespace Chirp.Services
 		{
 			return _repository.GetCheepsFromAuthors(followedAuthors, currentUserID, pageNumber);
 		}
-
-
+		
+		/// <summary>
+		/// Used for following another user
+		/// </summary>
+		/// <param name="followerAuthor"></param>
+		/// <param name="followedAuthor"></param>
 		public void Follow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 		{
 			_repository.Follow(followerAuthor, followedAuthor);
 		}
 
+		/// <summary>
+		/// Used for unfollowing another user
+		/// </summary>
+		/// <param name="followerAuthor"></param>
+		/// <param name="followedAuthor"></param>
+		/// <exception cref="ArgumentException"></exception>
 		public void Unfollow(AuthorDTO followerAuthor, AuthorDTO followedAuthor)
 		{
 			_repository.Unfollow(followerAuthor, followedAuthor);
