@@ -299,5 +299,389 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.Throws<ArgumentException>(() => _cheepService.CreateCheep(cheep));
 		}
+
+		[Xunit.Theory]
+		[InlineData("11")]
+		public void TestGettingCheepCountByTheID(string id)
+		{
+			// Arrange
+			// Act
+			var count = _cheepService.GetCheepCountByID(id);
+			// Assert
+			Assert.Equal(1, count);
+		}
+
+		[Fact]
+		public void TestGetCheepCountByAuthors()
+		{
+			// Arrange
+			var author1 = new Author()
+			{
+				Id = "author1",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var author2 = new Author()
+			{
+				Id = "author2",
+				UserName = "Author Two",
+				Email = "author2@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var currentUser = new Author()
+			{
+				Id = "currentUserId",
+				UserName = "Current User",
+				Email = "currentuser@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author1));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author2));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(currentUser));
+
+			var cheep1 = new CheepDTO()
+			{
+				Text = "First cheep",
+				TimeStamp = DateTime.Now,
+				Author = author1
+			};
+
+			var cheep2 = new CheepDTO()
+			{
+				Text = "Second cheep",
+				TimeStamp = DateTime.Now,
+				Author = author2
+			};
+
+			var cheep3 = new CheepDTO()
+			{
+				Text = "Third cheep",
+				TimeStamp = DateTime.Now,
+				Author = currentUser
+			};
+
+			_cheepService.CreateCheep(cheep1);
+			_cheepService.CreateCheep(cheep2);
+			_cheepService.CreateCheep(cheep3);
+
+			var followedAuthors = new List<AuthorDTO>
+			{
+				new AuthorDTO { Id = author1.Id, Cheeps = new List<Cheep>() },
+				new AuthorDTO { Id = author2.Id, Cheeps = new List<Cheep>() }
+			};
+
+			// Act
+			var count = _cheepService.GetCheepCountByAuthors(followedAuthors, currentUser.Id);
+
+			// Assert
+			Assert.Equal(3, count);
+		}
+		[Fact]
+		public void TestGetFollowedInCheeps()
+		{
+			// Arrange
+			var follower = new AuthorDTO()
+			{
+				Id = "followerId",
+				UserName = "Follower",
+				Email = "follower@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed1 = new AuthorDTO()
+			{
+				Id = "followed1Id",
+				UserName = "Followed One",
+				Email = "followed1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed2 = new AuthorDTO()
+			{
+				Id = "followed2Id",
+				UserName = "Followed Two",
+				Email = "followed2@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			_cheepRepo.CreateAuthor(follower);
+			_cheepRepo.CreateAuthor(followed1);
+			_cheepRepo.CreateAuthor(followed2);
+
+			_cheepService.Follow(follower, followed1);
+			_cheepService.Follow(follower, followed2);
+
+			// Act
+			var followedAuthors = _cheepService.getFollowedInCheeps(follower);
+
+			// Assert
+			Assert.Contains(followedAuthors, a => a.Id == followed1.Id);
+			Assert.Contains(followedAuthors, a => a.Id == followed2.Id);
+			Assert.Equal(2, followedAuthors.Count);
+		}
+		[Fact]
+		public void TestGetCheepsFromAuthors()
+		{
+			// Arrange
+			var author1 = new Author()
+			{
+				Id = "author1",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var author2 = new Author()
+			{
+				Id = "author2",
+				UserName = "Author Two",
+				Email = "author2@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var currentUser = new Author()
+			{
+				Id = "currentUserId",
+				UserName = "Current User",
+				Email = "currentuser@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author1));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author2));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(currentUser));
+
+			var cheep1 = new CheepDTO()
+			{
+				Text = "First cheep",
+				TimeStamp = DateTime.Now,
+				Author = author1
+			};
+
+			var cheep2 = new CheepDTO()
+			{
+				Text = "Second cheep",
+				TimeStamp = DateTime.Now,
+				Author = author2
+			};
+
+			var cheep3 = new CheepDTO()
+			{
+				Text = "Third cheep",
+				TimeStamp = DateTime.Now,
+				Author = currentUser
+			};
+
+			_cheepService.CreateCheep(cheep1);
+			_cheepService.CreateCheep(cheep2);
+			_cheepService.CreateCheep(cheep3);
+
+			var followedAuthors = new List<AuthorDTO>
+			{
+				new AuthorDTO { Id = author1.Id, Cheeps = new List<Cheep>() },
+				new AuthorDTO { Id = author2.Id, Cheeps = new List<Cheep>() }
+			};
+
+			// Act
+			var cheeps = _cheepService.GetCheepsFromAuthors(followedAuthors, currentUser.Id, 1);
+
+			// Assert
+			Assert.Equal(3, cheeps.Count);
+			Assert.Contains(cheeps, c => c.Text == "First cheep");
+			Assert.Contains(cheeps, c => c.Text == "Second cheep");
+			Assert.Contains(cheeps, c => c.Text == "Third cheep");
+		}
+		
+		[Fact]
+		public void TestIsFollowing()
+		{
+			// Arrange
+			var follower = new AuthorDTO
+			{
+				Id = "999",
+				UserName = "Follower",
+				Email = "follower@test.com",
+				Following = new List<Follow>(),
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed = new AuthorDTO
+			{
+				Id = "1000",
+				UserName = "Followed",
+				Email = "followed@test.com",
+				Cheeps = new List<Cheep>()
+				
+			};
+
+			_cheepService.Follow(follower, followed);
+
+			// Act
+			var isFollowing = _cheepService.IsFollowing(follower, followed);
+
+			// Assert
+			Assert.True(isFollowing);
+		}
+		
+		[Xunit.Theory]
+		[InlineData(5, "At last we came back!")]
+		public void TestGetCheepByID(int cheepID, string text)
+		{
+			// Arrange
+			
+			// Act
+			var cheep = _cheepService.GetCheepByID(cheepID);
+			// Assert
+			Assert.Equal(cheepID, cheep.CheepId);
+			Assert.Equal(text, cheep.Text);
+		}
+		
+		[Xunit.Theory]
+		[InlineData(5, "At last we came back!")]
+		public void TestDeleteCheepByID(int cheepID, string text)
+		{
+			// Arrange
+			
+			// Act
+			_cheepService.DeleteCheep(cheepID);
+			
+			// Assert
+			Assert.Throws<ArgumentException>(() => _cheepRepo.GetCheepByID(cheepID));
+		}
+		
+		[Fact]
+		public void TestMappingFromCheepDTOToCheep()
+		{
+			// Arrange
+			var author = new Author
+			{
+				Id = "author1",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var cheepDTO = new CheepDTO
+			{
+				CheepId = 10000,
+				Text = "Test cheep",
+				TimeStamp = DateTime.Now,
+				Author = author
+			};
+
+			// Act
+			var cheep = CheepMapper.toDomain(cheepDTO);
+
+			// Assert
+			Assert.NotNull(cheep);
+			Assert.Equal(cheepDTO.CheepId, cheep.CheepId);
+			Assert.Equal(cheepDTO.Text, cheep.Text);
+			Assert.Equal(cheepDTO.TimeStamp, cheep.TimeStamp);
+			Assert.Equal(cheepDTO.Author.Id, cheep.Author.Id);
+			Assert.Equal(cheepDTO.Author.UserName, cheep.Author.UserName);
+			Assert.Equal(cheepDTO.Author.Email, cheep.Author.Email);
+		}
+		
+		[Fact]
+		public void TestMappingFromDomainToCheepDTO()
+		{
+			// Arrange
+			var author = new Author
+			{
+				Id = "100",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var cheep = new Cheep
+			{
+				CheepId = 10000,
+				Text = "Test cheep",
+				TimeStamp = DateTime.Now,
+				Author = author,
+				AuthorId = author.Id
+			};
+
+			// Act
+			var cheepDTO = CheepMapper.toDTO(cheep);
+
+			// Assert
+			Assert.NotNull(cheepDTO);
+			Assert.Equal(cheep.CheepId, cheepDTO.CheepId);
+			Assert.Equal(cheep.Text, cheepDTO.Text);
+			Assert.Equal(cheep.TimeStamp, cheepDTO.TimeStamp);
+			Assert.Equal(cheep.Author.Id, cheepDTO.Author.Id);
+			Assert.Equal(cheep.Author.UserName, cheepDTO.Author.UserName);
+			Assert.Equal(cheep.Author.Email, cheepDTO.Author.Email);
+		}
+		
+		[Fact]
+		public void TestMappingFromCheepDTOToDomain()
+		{
+			// Arrange
+			var author = new Author
+			{
+				Id = "1000",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var cheepDTO = new CheepDTO
+			{
+				CheepId = 10000,
+				Text = "Test cheep",
+				TimeStamp = DateTime.Now,
+				Author = author
+			};
+
+			// Act
+			var cheep = CheepMapper.toDomain(cheepDTO);
+
+			// Assert
+			Assert.NotNull(cheep);
+			Assert.Equal(cheepDTO.CheepId, cheep.CheepId);
+			Assert.Equal(cheepDTO.Text, cheep.Text);
+			Assert.Equal(cheepDTO.TimeStamp, cheep.TimeStamp);
+			Assert.Equal(cheepDTO.Author.Id, cheep.Author.Id);
+			Assert.Equal(cheepDTO.Author.UserName, cheep.Author.UserName);
+			Assert.Equal(cheepDTO.Author.Email, cheep.Author.Email);
+		}
+		
+		[Fact]
+		public void TestUnfollow_RemovesFollowRelationship()
+		{
+			// Arrange
+			var follower = new AuthorDTO
+			{
+				Id = "10000",
+				UserName = "Follower",
+				Email = "follower@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed = new AuthorDTO
+			{
+				Id = "9999",
+				UserName = "Followed",
+				Email = "followed@test.com",
+				Cheeps = new List<Cheep>()
+			};
+			
+			_cheepService.Follow(follower, followed);
+
+			// Act
+			_cheepService.Unfollow(follower, followed);
+			var isFollowing = _cheepService.IsFollowing(follower, followed);
+
+			// Assert
+			Assert.False(isFollowing);
+		}
+	
 	}
 }
