@@ -1,18 +1,42 @@
 @startuml
-
-actor       "Unauthorized User" as usr
-participant Client              as client
-participant Server              as server
-
-entity      "ASP Identity"        as asp
-database    Database            as DB
+ 
+actor       "Unauthorized User"  as usr
+participant "Client (browser)"   as client
+participant Server               as server
+entity      "public page"        as public
+entity      "_layout"            as layout
+entity      "login partial"      as login
+entity      "cheep box partial"  as box
+entity      "cheep list partial" as cheeps
+entity      "ASP Identity"       as asp
+database    Database             as DB
 
 usr -> client : goes to chirp homepage
 client -> server : HTTP get request /
-server -> asp : check for authentication
-asp -> server : authentication status [false]
-server -> DB : query for chirps
-DB -> server : chirps
+note right of server : Router knows "/" is mapped to public page
+server -> public : get public page
+
+public -> layout : get layout
+layout -> login : get login partial
+note right of login : Checking for authentication status using SignInManager and User
+login -> asp : check for authentication
+asp -> login : authentication status [false]
+login -> layout : return login partial [logged out]
+layout -> public : return layout
+
+public -> asp : check for authentication
+asp -> public : authentication status [false]
+note right of public : User is not logged in so we don't show the cheep box partial
+public ->X box 
+
+public -> cheeps : get cheep list partial
+cheeps -> asp : check for authentication
+asp -> cheeps : authentication status [false]
+cheeps -> DB : paginate cheeps [page 0]
+DB -> cheeps : return DTOs [page 0]
+cheeps -> public : return [no post or comment form]
+
+public -> server : return public page
 server -> server : render html
 server -> client : return html
 client -> usr : displays front page

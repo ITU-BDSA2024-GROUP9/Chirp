@@ -3,8 +3,11 @@ title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 9
 author:
 - "Alexander Rossau <ross@itu.dk>"
-- "Ayushmaan Bordoloi" <aybo@itu.dk>
+- "Ayushmaan Bordoloi <aybo@itu.dk>"
 - "Bjørn Møgelhøj <bjom@itu.dk>"
+- "Phillip Nikolai Rasmussen <phir@itu.dk>"
+- "Jonathan Rønnow Klarlund <jork@itu.dk>"
+
 numbersections: true
 ---
 
@@ -12,28 +15,51 @@ numbersections: true
 
 ## Domain model
 
-Here comes a description of our domain model.
-OK GOOD
+The domain model of _Chirp!_ is illustrated in the UML class diagram below. The model consists of four main entities: Author, Cheep, Comment, and Follow. The Author entity represents a user of the application and contains information such as the user's username, email, and password. The Cheep entity represents a post made by a user and contains information such as the cheep's content, the user who posted it, and the time it was posted. The Comment entity represents a comment made on a cheep and contains information such as the comment's content, the user who posted it, and the time it was posted. The Follow entity represents a follow relationship between two users and contains information such as the follower and followee.
 ![Illustration of the _Chirp!_ data model as UML class diagram.](images/domain2.svg)
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Domain.Model.png)
 
-## Architecture — In the small (OK GOOD MAN)
+## Architecture — In the small
+
+The architecture of _Chirp!_ is based on the Onion Architecture. The Onion Architecture is a layered architecture that emphasizes separation of concerns and dependency inversion. The Onion Architecture consists of four layers: the Domain Model, Application Services, Infrastructure, and User Interface. The Domain Model layer contains the core business logic of the application and is independent of the other layers. The Application Services layer contains the application-specific logic and orchestrates the interaction between the Domain Model and Infrastructure layers. The Infrastructure layer contains the implementation details of the application, such as the database and external services. The User Interface layer contains the presentation logic of the application and interacts with the Application Services layer to display the data to the user and receive input from the user.
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
 The onion architecture is used in our application. 
 
-## Architecture of deployed application (OK GOOD MAN)
+## Architecture of deployed application
+
+The architecture of the deployed _Chirp!_ application is illustrated in the diagram below. The application is deployed on Azure App Service and uses Azure SQL Database for data storage. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. The application server interacts with the database to retrieve and store data. The application server also interacts with external services such as GitHub for authentication and Gravatar for profile pictures. The application server is hosted on Azure App Service, which provides scalability, high availability, and security for the application.
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
 The app is hosted on the azure app service server which clients access through their web browser 
 
-## User activities (JOHN JOHN)
+## User activities
+## 1. A Non-Authorized User Accessing the Website for the First Time
 
-## Sequence of functionality/calls trough _Chirp!_ (BJØRN)
+Upon entering the URL for our website, the user will be directed to our site. Here, they are presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
+
+Below the navigation bar, the public timeline starts. Here, cheeps from all users are displayed from newest to oldest. The unauthorized user can click on “Show Comments”, which will display all comments from newest to oldest. They can also click on authors or commenters to access their private timelines. Here, their individual cheeps are displayed, also from newest to oldest. If the user scrolls to the bottom of a private or public timeline, more cheeps will dynamically be loaded in.
+
+If a user likes what they see, they can click on the “Register” tab and be redirected to our signup page. Here, a user can register normally with a username, email, and password (which they must confirm). They can also register with GitHub, which will redirect them to authorize with GitHub. Upon registering with either method, the user is automatically logged in and can set up their profile.
+
+## 2. Authorized Users
+
+Upon logging in, the user is able to post cheeps, follow other users, access their own timeline, and manage their account. The cheep post box is placed just below the navigation bar and is displayed on both private and public timelines. It contains a text field allowing the user to type 160 characters per cheep. The user can also add images by clicking the image icon, which will prompt the user to select a FORMAT XX image from their filesystem. When the user is done composing their cheep, they simply click the share button to send the cheep.
+
+A user can comment on any cheep, including their own, by clicking "Show Comments" and then writing a comment containing up to 160 characters.
+
+Following another user is done by accessing the private timeline of the user and pressing the “Follow” button. This will add past and future posts to the follower’s private timeline.
+
+An authorized user can also manage their account by clicking the “About Me” tab in the navigation bar. They can set up a profile picture by clicking the “Gravatar” tab and linking their Gravatar profile. They can change their password, email, and username (unless linking up with GitHub, then the username will be the same as on their GitHub profile). They can change their password in the password tab. Finally, they can click the “About Me” tab to see their personal data. Here, they can download a JSON file containing all knowledge the Chirp application has about them. They are also granted an overview of people they are following and cheeps they have posted, which they can view from the website.
+
+If they want to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
+
+
+## Sequence of functionality/calls trough _Chirp!_
 In this section we will detail how the flow of messages and data work in our chirp application.
 
 
 # Process
 
-## Build, test, release, and deployment (PHILLIP)
+## Build, test, release, and deployment
 ![UML activity diagram](images/Process.drawio.png)
 The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
 Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
@@ -52,7 +78,7 @@ After release (Both if tag is present or not), the application will be deployed 
 This workflow ensures a structured and automated pipeline, that catches failure and only allows stable versions to be
 deployed. This significantly reduces manual effort and increases reliability during development process.
 
-## Team work (ALEX)
+## Team work
 ![Project board](images/board.png)
 The above image shows our project board on GitHub. We have used the project board to keep track of our progress and to assign tasks to each other.
 The board is divided into four columns: Todo, In Progress, Under review, and Done. Each task is represented by a card that can be moved between the columns.
@@ -68,7 +94,7 @@ Feature development workflow:
 - PR merged to main
 - Deployment triggered
 
-## How to make _Chirp!_ work locally (ALEX)
+## How to make _Chirp!_ work locally
 
 1. Clone the repository:
 
@@ -104,8 +130,14 @@ dotnet run --project src/Chirp.Razor
 - Open browser to https://localhost:5273
 - Default test accounts available
 
-## How to run test suite locally (PHILLIP AND JONATHAN)
+## How to run test suite locally
 ### Guide on running the test suite
+
+To run all tests for our Chirp project, please follow the steps below:
+
+1. Clone the project from GitHub.
+2. From your terminal, navigate to the test folder located at `/test/Chirp.Tests`.
+3. Run the command `dotnet test` and await the results.
 
 ### Brief description of testing
 #### Unit Testing
@@ -121,9 +153,9 @@ login, posting a cheep, and following/unfollowing a user. The test ensures the U
 together correctly by asserting that data appears as expected in both the interface and the database.
 
 #### UI Testing
-
-
-
+Our UI tests aim to verify that the user interface is functioning as intended. 
+The tests cover core functionality, asserting that a user can register, login, post cheeps, access timelines, etc. as intended. 
+The tests are made using Playwright and use the NUnit test suite, as this allowed the group to use the Playwright test-generation tool.
 #### Integration Testing
 
 Integration tests verify that different components of the Chirp application (e.g. endpoints, database) work together correctly.
@@ -136,7 +168,7 @@ These tests ensure the application functions as expected when components interac
 
 ## License (BJØRN)
 
-## LLMs, ChatGPT, CoPilot, and others (PHILLIP)
+## LLMs, ChatGPT, CoPilot, and others
 
 During the development of our project, we utilized the following Large Language Models (LLMs):
 - Claude
