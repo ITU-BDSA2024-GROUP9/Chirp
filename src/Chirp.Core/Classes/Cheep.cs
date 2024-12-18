@@ -1,6 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Core.Classes;
+/// <summary>
+/// Represents a Cheep and contains key information about a given cheep, such as its unnique ID, text, datestamp, etc.
+/// </summary>
 public class Cheep
 {
 	public int CheepId { get; set; }

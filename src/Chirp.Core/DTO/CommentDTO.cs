@@ -1,7 +1,9 @@
 using Chirp.Core.Classes;
 
 namespace Chirp.Core.DTO;
-
+/// <summary>
+/// Represents a Data Transfer Object (DTO) for the Comment entity
+/// </summary>
 public class CommentDTO
 {
 	public int CommentId { get; set; }

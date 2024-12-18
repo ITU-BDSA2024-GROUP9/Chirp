@@ -1,5 +1,10 @@
 namespace Chirp.Core.Classes;
 
+
+/// <summary>
+/// Used to represent a user comment
+/// </summary>
+
 public class Comment
 {
 	public int CommentId { get; set; }

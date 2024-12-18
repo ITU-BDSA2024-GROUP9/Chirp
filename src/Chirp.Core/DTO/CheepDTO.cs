@@ -2,7 +2,9 @@ using Chirp.Core.Classes;
 using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Core.DTO;
-
+/// <summary>
+/// Represents a Data Transfer Object (DTO) for the Cheep entity
+/// </summary>
 public class CheepDTO
 {
 	public int CheepId { get; set; }
