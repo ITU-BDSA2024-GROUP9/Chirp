@@ -17,7 +17,8 @@ Below is a uml diagram of the entire chirp application:
 
 ## Domain model
 
-The domain model of _Chirp!_ is illustrated in the UML class diagram below. The model consists of four main entities: Author, Cheep, Comment, and Follow. The Author entity represents a user of the application and contains information such as the user's username, email, and password. The Cheep entity represents a post made by a user and contains information such as the cheep's content, the user who posted it, and the time it was posted. The Comment entity represents a comment made on a cheep and contains information such as the comment's content, the user who posted it, and the time it was posted. The Follow entity represents a follow relationship between two users and contains information such as the follower and followee.
+The domain model of Chirp! is illustrated in the UML class diagram below. The model consists of four main entities: Author, Cheep, Comment, and Follow. The Cheep entity represents a post and contains information such as the cheep's content, time posted and the Author who posted it. The Comment entity represents a comment made on a cheep and contains information such as which Cheep the comment was made on.
+The Author entity represents a user of the application which can have up-to many Cheeps, Comments, Followers and users they are Following. Furthermore, we use ASP.NET Identity with the Author entity inheriting the IndentityUser class which contains information such as the username, email, and password. The Follow entity represents a follow relationship between two Author entities. An Author has a list of Follow entities for their followers and the people they are following so this is represented in the UML as two bi-directional one to many relationships.
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Domain.Model.png)
 
 ## Architecture — In the small
