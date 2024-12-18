@@ -140,6 +140,13 @@ public class CheepRepository : ICheepRepository
 
 		return authors.Select(a => AuthorMapper.toDTO(a!)).ToList();
 	}
+	
+	/// <summary>
+	/// Used for getting the cheeps by a specific author using the author's name for lookup
+	/// </summary>
+	/// <param name="authorName"></param>
+	/// <param name="page"></param>
+	/// <returns>A list of cheeps made by the specified author</returns>
 	public List<CheepDTO> GetCheepsFromAuthorByName(string authorName, int page)
 	{
 		var cheeps = _dbContext.Cheeps
