@@ -166,7 +166,9 @@ These tests ensure the application functions as expected when components interac
 
 # Ethics (BJØRN)
 
-## License (BJØRN)
+- telemetry [didnt opt out]
+
+## License
 For our Chirp application, we have chosen to release the project under The Unlicense.
 
 The Unlicense is a public domain dedication that allows anyone to use, modify, and distribute the work we have created, freely and without restriction. This permission extends to all purposes, whether private or commercial. Essentially, we have surrendered our code to the public domain, making it accessible to everyone without requiring attribution or compliance with traditional licensing terms.
