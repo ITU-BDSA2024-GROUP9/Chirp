@@ -50,7 +50,11 @@ public class CheepRepository : ICheepRepository
 		_dbContext.SaveChanges();
 		return cheep.CheepId;
 	}
-
+	
+	/// <summary>
+	/// Used for getting the amount of cheeps in the database
+	/// </summary>
+	/// <returns>Amount of cheeps as an int</returns>
 	public int GetCheepCount()
 	{
 		return _dbContext.Cheeps.Count();
