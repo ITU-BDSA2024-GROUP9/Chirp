@@ -567,7 +567,7 @@ namespace Chirp.Tests.Tests
 
 			var cheepDTO = new CheepDTO
 			{
-				CheepId = 1,
+				CheepId = 10000,
 				Text = "Test cheep",
 				TimeStamp = DateTime.Now,
 				Author = author
@@ -584,6 +584,40 @@ namespace Chirp.Tests.Tests
 			Assert.Equal(cheepDTO.Author.Id, cheep.Author.Id);
 			Assert.Equal(cheepDTO.Author.UserName, cheep.Author.UserName);
 			Assert.Equal(cheepDTO.Author.Email, cheep.Author.Email);
+		}
+		
+		[Fact]
+		public void TestMappingFromDomainToCheepDTO()
+		{
+			// Arrange
+			var author = new Author
+			{
+				Id = "100",
+				UserName = "Author One",
+				Email = "author1@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var cheep = new Cheep
+			{
+				CheepId = 10000,
+				Text = "Test cheep",
+				TimeStamp = DateTime.Now,
+				Author = author,
+				AuthorId = author.Id
+			};
+
+			// Act
+			var cheepDTO = CheepMapper.toDTO(cheep);
+
+			// Assert
+			Assert.NotNull(cheepDTO);
+			Assert.Equal(cheep.CheepId, cheepDTO.CheepId);
+			Assert.Equal(cheep.Text, cheepDTO.Text);
+			Assert.Equal(cheep.TimeStamp, cheepDTO.TimeStamp);
+			Assert.Equal(cheep.Author.Id, cheepDTO.Author.Id);
+			Assert.Equal(cheep.Author.UserName, cheepDTO.Author.UserName);
+			Assert.Equal(cheep.Author.Email, cheepDTO.Author.Email);
 		}
 	}
 }
