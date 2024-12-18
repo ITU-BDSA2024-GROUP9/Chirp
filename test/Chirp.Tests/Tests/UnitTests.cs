@@ -310,48 +310,75 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.Equal(1, count);
 		}
-		
-		[Xunit.Theory]
-		[InlineData("Test", "Test@test.dk")]
-		public void TestGettingCheepCountByAuthors(string authorName, string authorEmail)
+
+		[Fact]
+		public void TestGetCheepCountByAuthors()
 		{
 			// Arrange
-			var author = new Author()
+			var author1 = new Author()
 			{
-				UserName = authorName,
-				Email = authorEmail,
+				Id = "author1",
+				UserName = "Author One",
+				Email = "author1@test.com",
 				Cheeps = new List<Cheep>()
 			};
 
-			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
+			var author2 = new Author()
+			{
+				Id = "author2",
+				UserName = "Author Two",
+				Email = "author2@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			var currentUser = new Author()
+			{
+				Id = "currentUserId",
+				UserName = "Current User",
+				Email = "currentuser@test.com",
+				Cheeps = new List<Cheep>()
+			};
+
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author1));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author2));
+			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(currentUser));
 
 			var cheep1 = new CheepDTO()
 			{
 				Text = "First cheep",
 				TimeStamp = DateTime.Now,
-				Author = author
+				Author = author1
 			};
 
 			var cheep2 = new CheepDTO()
 			{
 				Text = "Second cheep",
 				TimeStamp = DateTime.Now,
-				Author = author
+				Author = author2
+			};
+
+			var cheep3 = new CheepDTO()
+			{
+				Text = "Third cheep",
+				TimeStamp = DateTime.Now,
+				Author = currentUser
 			};
 
 			_cheepService.CreateCheep(cheep1);
 			_cheepService.CreateCheep(cheep2);
+			_cheepService.CreateCheep(cheep3);
 
 			var followedAuthors = new List<AuthorDTO>
 			{
-				new AuthorDTO { Id = author.Id, Cheeps = new List<Cheep>() }
+				new AuthorDTO { Id = author1.Id, Cheeps = new List<Cheep>() },
+				new AuthorDTO { Id = author2.Id, Cheeps = new List<Cheep>() }
 			};
 
 			// Act
-			var count = _cheepRepo.GetCheepCountByAuthors(followedAuthors, author.Id);
+			var count = _cheepRepo.GetCheepCountByAuthors(followedAuthors, currentUser.Id);
 
 			// Assert
-			Assert.Equal(2, count);
+			Assert.Equal(3, count);
 		}
 	}
 }
