@@ -19,9 +19,11 @@ OK GOOD
 
 ## Architecture — In the small (OK GOOD MAN)
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
+The onion architecture is used in our application. 
 
 ## Architecture of deployed application (OK GOOD MAN)
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
+The app is hosted on the azure app service server which clients access through their web browser 
 
 ## User activities (JOHN JOHN)
 
