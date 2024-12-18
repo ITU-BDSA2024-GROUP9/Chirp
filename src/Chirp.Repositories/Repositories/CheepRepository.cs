@@ -335,7 +335,11 @@ public class CheepRepository : ICheepRepository
 	{
 		return AuthorMapper.toDomain(author, _dbContext);
 	}
-
+	
+	/// <summary>
+	/// Used for creating a new author from an author DTO object
+	/// </summary>
+	/// <param name="newAuthor"></param>
 	public void CreateAuthor(AuthorDTO newAuthor)
 	{
 		_dbContext.Authors.Add(ToDomain(newAuthor));
