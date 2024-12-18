@@ -71,7 +71,12 @@ public class CheepRepository : ICheepRepository
 			.Include(c => c.Author)
 			.Count(c => c.Author.Id == authorId);
 	}
-
+	
+	/// <summary>
+	/// Used for getting the amount of cheeps by an author when you have the name of the author
+	/// </summary>
+	/// <param name="authorName"></param>
+	/// <returns>Amount of cheeps as an int</returns>
 	public int GetCheepCountByName(string authorName)
 	{
 		return _dbContext.Cheeps
