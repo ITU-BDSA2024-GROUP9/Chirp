@@ -174,11 +174,22 @@ namespace Chirp.Services
 			return _repository.GetCheepCountByName(authorName);
 		}
 
+		/// <summary>
+		/// Converts a DTO author to the domain object
+		/// </summary>
+		/// <param name="author"></param>
+		/// <returns>The domain object</returns>
 		public Author ToDomain(AuthorDTO author)
 		{
 			return _repository.ToDomain(author);
 		}
-
+		
+		/// <summary>
+		/// Used for getting the amount of cheeps by a list of authors when you have the author ID of the current user
+		/// </summary>
+		/// <param name="followedAuthors"></param>
+		/// <param name="currentUserId"></param>
+		/// <returns>Amount of cheeps combined for all the authors in the list + the current users amount</returns>
 		public int GetCheepCountByAuthors(List<AuthorDTO> followedAuthors, string currentUserId)
 		{
 			return _repository.GetCheepCountByAuthors(followedAuthors, currentUserId);
