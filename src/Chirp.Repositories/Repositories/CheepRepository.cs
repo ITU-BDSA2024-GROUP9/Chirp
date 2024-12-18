@@ -271,7 +271,11 @@ public class CheepRepository : ICheepRepository
 			.FirstOrDefault(c => c.CheepId == cheepID);
 		return cheep == null ? throw new ArgumentException("Cheep not found.") : CheepMapper.toDTO(cheep);
 	}
-
+	
+	/// <summary>
+	/// Used for deleting a cheep by its ID
+	/// </summary>
+	/// <param name="cheepID"></param>
 	public void DeleteCheep(int cheepID)
 	{
 		var cheep = _dbContext.Cheeps.Find(cheepID);
