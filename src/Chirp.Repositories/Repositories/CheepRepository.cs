@@ -121,7 +121,12 @@ public class CheepRepository : ICheepRepository
 			.ToList();
 		return cheeps.Select(c => CheepMapper.toDTO(c)).ToList();
 	}
-
+	
+	/// <summary>
+	/// Used for getting a list of the authors an author is following
+	/// </summary>
+	/// <param name="followerDTO"></param>
+	/// <returns>a list of the authors an author is following</returns>
 	public List<AuthorDTO> getFollowedInCheeps(AuthorDTO followerDTO)
 	{
 		var follower = ToDomain(followerDTO);
