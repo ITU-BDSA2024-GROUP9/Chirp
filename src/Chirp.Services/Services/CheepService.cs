@@ -24,7 +24,13 @@ namespace Chirp.Services
 		{
 			return _repository.GetCheeps(page);
 		}
-
+		
+		/// <summary>
+		/// Used for getting the all the cheeps from an author, by looking up their ID
+		/// </summary>
+		/// <param name="authorID"></param>
+		/// <param name="page"></param>
+		/// <returns>A list of cheeps from the specified user</returns>
 		public List<CheepDTO> GetCheepsFromAuthorByID(string authorId, int page)
 		{
 			return _repository.GetCheepsFromAuthorByID(authorId, page);
