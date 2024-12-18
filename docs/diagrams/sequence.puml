@@ -1,20 +1,77 @@
 @startuml
 
-actor       "Unauthorized User" as usr
-participant Client              as client
-participant Server              as server
+title Unauthorized User To Root Sequence Diagram 
 
-entity      "ASP Identity"        as asp
-database    Database            as DB
+actor       "Unauthorized User"  as usr
+box         "http calls"         #WhiteSmoke
+participant "Client (Browser)"   as client
+end box
+box         "http and c# calls"  #WhiteSmoke
+participant Server               as server
+end box
+box         "c# calls"           #WhiteSmoke
+Boundary    "Public Page"        as public
+Boundary    "_layout"            as layout
+Boundary    "Login Partial"      as login
+Boundary    "Cheep Box Partial"  as box
+Boundary    "Cheep List Partial" as cheeps
+Control     "Public Model"       as mod
+entity      "ASP Identity"       as asp
+Control     "CheepService"       as CS
+entity      "CheepRepository"    as CR
+end box
+box         "c# and SQL calls"   #WhiteSmoke
+entity      "ChirpDBContext"     as CDB
+end box
+box         "SQL calls"          #WhiteSmoke
+database    Database             as DB
+end box
 
 usr -> client : goes to chirp homepage
-client -> server : HTTP get request /
-server -> asp : check for authentication
-asp -> server : authentication status [false]
-server -> DB : query for chirps
-DB -> server : chirps
-server -> server : render html
-server -> client : return html
+client -> server : HTTPS get request /
+note right of server : Page router knows "/" is mapped to public page
+server -> public : get public page
+public -> mod : OnGet triggered
+mod -> mod : paginate cheeps(page 0)
+mod -> CS : GetCheeps(page 0)
+CS -> CR : GetCheeps(page 0)
+CR -> CDB : Query Cheeps [efcore]
+CDB -> DB : Query Cheeps [sql]
+DB -> CDB : return Cheeps
+CDB -> CR : return Cheeps
+CR -> CR : Map Cheeps to CheepDTOs
+CR -> CS : return CheepDTOs
+CS -> mod : return CheepDTOs
+note right of mod : DTOs are stored in a list
+
+public -> layout : get layout
+layout -> login : get login partial
+note right of login : Checking for authentication status using SignInManager and User
+login -> asp : check for authentication
+asp -> login : authentication status [false]
+login -> layout : return login partial html [logged out]
+layout -> public : return layout html
+
+public -> asp : check for authentication
+asp -> public : authentication status [false]
+note right of public : User is not logged in so we don't show the cheep box partial
+public ->X box 
+
+public -> cheeps : get cheep list partial
+cheeps -> mod : Get DTOs
+mod -> cheeps : return DTOs
+loop foreach cheep DTO
+    cheeps -> cheeps : render cheep
+    cheeps -> asp : check for authentication
+    asp -> cheeps : authentication status [false]
+    cheeps ->X cheeps : don't show comment form
+end
+
+cheeps -> public : return cheep partial html
+
+public -> server : return public page html
+note right of server : Public page is now rendered and the server returns html contents to client
+server -> client : HTTPS 200 OK
 client -> usr : displays front page
 
 
