@@ -13,7 +13,15 @@ public class CheepRepository : ICheepRepository
 	{
 		_dbContext = dBContext;
 	}
-
+	
+	/// <summary>
+	/// Creates a new Cheep and associates it with an existing Author.
+	/// </summary>
+	/// <param name="newCheep">The CheepDTO object containing the details of the new Cheep to be created.</param>
+	/// <returns>The ID of the newly created Cheep.</returns>
+	/// <exception cref="ArgumentException">
+	/// Thrown when the Cheep text is longer than 160 characters or when the Author is not found.
+	/// </exception>
 	public int CreateCheep(CheepDTO newCheep)
 	{
 		if (newCheep.Text.Length > 160)
