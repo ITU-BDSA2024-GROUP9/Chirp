@@ -194,17 +194,32 @@ namespace Chirp.Services
 		{
 			return _repository.GetCheepCountByAuthors(followedAuthors, currentUserId);
 		}
-
+		
+		/// <summary>
+		/// Used for updating a cheep
+		/// </summary>
+		/// <param name="newCheep"></param>
+		/// <param name="cheepID"></param>
 		public void UpdateCheep(CheepDTO newCheep, int cheepID)
 		{
 			_repository.UpdateCheep(newCheep, cheepID);
 		}
 
+		/// <summary>
+		/// Used for deleting a cheep by its ID
+		/// </summary>
+		/// <param name="cheepID"></param>
 		public void DeleteCheep(int cheepId)
 		{
 			_repository.DeleteCheep(cheepId);
 		}
-
+		
+		/// <summary>
+		/// Used for getting a cheep by its ID
+		/// </summary>
+		/// <param name="cheepID"></param>
+		/// <returns>The cheep with the ID</returns>
+		/// <exception cref="ArgumentException"></exception>
 		public CheepDTO GetCheepByID(int cheepId)
 		{
 			return _repository.GetCheepByID(cheepId);
