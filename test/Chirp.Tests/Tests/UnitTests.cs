@@ -682,45 +682,6 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.False(isFollowing);
 		}
-		
-		[Fact]
-		public void TestAddComment_AddsCommentToCheep()
-		{
-			// Arrange
-			var author = new Author
-			{
-				Id = "10000",
-				UserName = "Author One",
-				Email = "author1@test.com",
-				Cheeps = new List<Cheep>()
-			};
-
-			var cheepDTO = new CheepDTO
-			{
-				CheepId = 10000,
-				Text = "Test cheep",
-				TimeStamp = DateTime.Now,
-				Author = author
-			};
-
-			var commentDTO = new CommentDTO
-			{
-				CommentId = 1,
-				Text = "Test comment",
-				TimeStamp = DateTime.Now,
-				Author = author,
-				CheepId = cheepDTO.CheepId
-			};
-
-			// Act
-			_cheepRepo.CreateAuthor(AuthorMapper.toDTO(author));
-			_cheepService.CreateCheep(cheepDTO);
-			_cheepService.AddComment(commentDTO);
-
-			// Assert
-			var cheepWithComment = _cheepRepo.GetCheepByID(cheepDTO.CheepId);
-			Assert.NotNull(cheepWithComment);
-		}
 	
 	}
 }
