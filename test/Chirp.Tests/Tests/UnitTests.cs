@@ -495,5 +495,36 @@ namespace Chirp.Tests.Tests
 			Assert.Contains(cheeps, c => c.Text == "Second cheep");
 			Assert.Contains(cheeps, c => c.Text == "Third cheep");
 		}
+		
+		[Fact]
+		public void TestIsFollowing()
+		{
+			// Arrange
+			var follower = new AuthorDTO
+			{
+				Id = "followerId",
+				UserName = "Follower",
+				Email = "follower@test.com",
+				Following = new List<Follow>(),
+				Cheeps = new List<Cheep>()
+			};
+
+			var followed = new AuthorDTO
+			{
+				Id = "followedId",
+				UserName = "Followed",
+				Email = "followed@test.com",
+				Cheeps = new List<Cheep>()
+				
+			};
+
+			_cheepRepo.Follow(follower, followed);
+
+			// Act
+			var isFollowing = _cheepRepo.IsFollowing(follower, followed);
+
+			// Assert
+			Assert.True(isFollowing);
+		}
 	}
 }
