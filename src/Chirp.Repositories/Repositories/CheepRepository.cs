@@ -298,7 +298,12 @@ public class CheepRepository : ICheepRepository
 			.FirstOrDefault(a => a.Id == authorId);
 		return author == null ? null : AuthorMapper.toDTO(author);
 	}
-
+	
+	/// <summary>
+	/// Used for getting an author object by its name
+	/// </summary>
+	/// <param name="authorName"></param>
+	/// <returns>The author with the specified name</returns>
 	public AuthorDTO? GetAuthorByName(string authorName)
 	{
 		var author = _dbContext.Authors
@@ -306,7 +311,8 @@ public class CheepRepository : ICheepRepository
 			.FirstOrDefault(a => EF.Functions.Collate(a.UserName, "NOCASE") == authorName);
 		return author == null ? null : AuthorMapper.toDTO(author);
 	}
-
+	
+	
 	public AuthorDTO? GetAuthorByEmail(string email)
 	{
 		var author = _dbContext.Authors
