@@ -83,7 +83,13 @@ public class CheepRepository : ICheepRepository
 			.Include(c => c.Author)
 			.Count(c => EF.Functions.Collate(c.Author.UserName, "NOCASE") == authorName);
 	}
-
+	
+	/// <summary>
+	/// Used for getting the amount of cheeps by a list of authors when you have the author ID of the current user
+	/// </summary>
+	/// <param name="followedAuthors"></param>
+	/// <param name="currentUserId"></param>
+	/// <returns>Amount of cheeps combined for all the authors in the list + the current users amount</returns>
 	public int GetCheepCountByAuthors(List<AuthorDTO> followedAuthors, string currentUserId)
 	{
 		followedAuthors ??= [];
