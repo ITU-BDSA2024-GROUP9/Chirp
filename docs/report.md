@@ -5,6 +5,7 @@ author:
 - "Alexander Rossau <ross@itu.dk>"
 - "Ayushmaan Bordoloi" <aybo@itu.dk>
 - "Bjørn Møgelhøj <bjom@itu.dk>"
+- "Phillip Nikolai Rasmussen <bjom@itu.dk>"
 numbersections: true
 ---
 
