@@ -114,7 +114,11 @@ namespace Chirp.Services
 			_repository.Unfollow(followerAuthor, followedAuthor);
 		}
 
-
+		/// <summary>
+		/// Used for getting an author object by its ID
+		/// </summary>
+		/// <param name="authorId"></param>
+		/// <returns>The author with the specified ID</returns>
 		public AuthorDTO? GetAuthorByID(string authorId)
 		{
 			return _repository.GetAuthorByID(authorId);
