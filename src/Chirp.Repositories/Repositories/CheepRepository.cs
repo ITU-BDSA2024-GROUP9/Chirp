@@ -291,7 +291,10 @@ public class CheepRepository : ICheepRepository
 		_dbContext.SaveChanges();
 	}
 
-
+	/// <summary>
+	/// Deletes a specific comment using its ID
+	/// </summary>
+	/// <param name="commentId"></param>
 	public void DeleteComment(int commentId)
 	{
 		var comment = _dbContext.Comments.Find(commentId);
