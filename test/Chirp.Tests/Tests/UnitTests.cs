@@ -526,6 +526,7 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.True(isFollowing);
 		}
+		
 		[Xunit.Theory]
 		[InlineData(5, "At last we came back!")]
 		public void TestGetCheepByID(int cheepID, string text)
@@ -537,6 +538,19 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.Equal(cheepID, cheep.CheepId);
 			Assert.Equal(text, cheep.Text);
+		}
+		
+		[Xunit.Theory]
+		[InlineData(5, "At last we came back!")]
+		public void TestDeleteCheepByID(int cheepID, string text)
+		{
+			// Arrange
+			
+			// Act
+			_cheepRepo.DeleteCheep(cheepID);
+			
+			// Assert
+			Assert.Throws<ArgumentException>(() => _cheepRepo.GetCheepByID(cheepID));
 		}
 	}
 }
