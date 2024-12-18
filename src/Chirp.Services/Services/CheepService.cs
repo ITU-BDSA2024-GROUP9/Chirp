@@ -144,12 +144,21 @@ namespace Chirp.Services
 		{
 			return _repository.GetAuthorByEmail(email);
 		}
-
+		
+		/// <summary>
+		/// Used for getting the amount of cheeps in the database
+		/// </summary>
+		/// <returns>Amount of cheeps as an int</returns>
 		public int GetCheepCount()
 		{
 			return _repository.GetCheepCount();
 		}
-
+		
+		/// <summary>
+		/// Used for getting the amount of cheeps by an author when you know the authorID
+		/// </summary>
+		/// <param name="authorId"></param>
+		/// <returns>Amount of cheeps as an int</returns>
 		public int GetCheepCountByID(string authorId)
 		{
 			return _repository.GetCheepCountByID(authorId);
