@@ -32,7 +32,7 @@ The architecture of the deployed _Chirp!_ application is illustrated in the diag
 The app is hosted on the azure app service server which clients access through their web browser 
 
 ## User activities
-## 1. A Non-Authorized User Accessing the Website for the First Time
+### 1. A Non-Authorized User Accessing the Website for the First Time
 
 Upon entering the URL for our website, the user will be directed to our site. Here, they are presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
 
@@ -40,7 +40,7 @@ Below the navigation bar, the public timeline starts. Here, cheeps from all user
 
 If a user likes what they see, they can click on the “Register” tab and be redirected to our signup page. Here, a user can register normally with a username, email, and password (which they must confirm). They can also register with GitHub, which will redirect them to authorize with GitHub. Upon registering with either method, the user is automatically logged in and can set up their profile.
 
-## 2. Authorized Users
+### 2. Authorized Users
 
 Upon logging in, the user is able to post cheeps, follow other users, access their own timeline, and manage their account. The cheep post box is placed just below the navigation bar and is displayed on both private and public timelines. It contains a text field allowing the user to type 160 characters per cheep. The user can also add images by clicking the image icon, which will prompt the user to select a FORMAT XX image from their filesystem. When the user is done composing their cheep, they simply click the share button to send the cheep.
 
@@ -167,6 +167,13 @@ These tests ensure the application functions as expected when components interac
 # Ethics (BJØRN)
 
 ## License (BJØRN)
+For our Chirp application, we have chosen to release the project under The Unlicense.
+
+The Unlicense is a public domain dedication that allows anyone to use, modify, and distribute the work we have created, freely and without restriction. This permission extends to all purposes, whether private or commercial. Essentially, we have surrendered our code to the public domain, making it accessible to everyone without requiring attribution or compliance with traditional licensing terms.
+
+We selected The Unlicense because this project was developed primarily for learning purposes. As such, we believe it is not necessary to protect it with a more formal or restrictive license. By choosing this approach, we hope others can freely learn from, build upon, or adapt our work without any barriers. Perhaps our project can even help the next generation of ITU students.
+
+See https://unlicense.org/ for more details about the license.
 
 ## LLMs, ChatGPT, CoPilot, and others
 
