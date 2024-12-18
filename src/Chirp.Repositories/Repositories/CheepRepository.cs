@@ -375,7 +375,12 @@ public class CheepRepository : ICheepRepository
 			.ToList();
 		return comments.Select(c => CommentMapper.toDTO(c)).ToList();
 	}
-
+	
+	/// <summary>
+	/// Used for getting the amount of comments for a single cheep
+	/// </summary>
+	/// <param name="cheepId"></param>
+	/// <returns>The amount of comments on the specified cheep</returns>
 	public int GetCommentCountForCheep(int cheepId)
 	{
 		return _dbContext.Comments.Count(c => c.CheepId == cheepId);
