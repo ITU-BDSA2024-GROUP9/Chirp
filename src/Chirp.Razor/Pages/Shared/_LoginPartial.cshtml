@@ -12,6 +12,7 @@
 			<a href="/">Public Timeline</a> |
 			<a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">About Me</a>
 			<a asp-area="Identity" asp-page="/Account/Logout" >Logout [@(User.Identity?.Name!)]</a>
+			<a id="toggleMode" href="#">Theme</a>
 		</div>
 	}
 	else
@@ -20,6 +21,7 @@
 			<a href="/">Home</a> |
 			<a asp-area="Identity" asp-page="/Account/Register" >Register</a>
 			<a asp-area="Identity" asp-page="/Account/Login" >Login</a>
+			<a id="toggleMode" href="#">Theme</a>
 		</div>
 	}
 </div>
