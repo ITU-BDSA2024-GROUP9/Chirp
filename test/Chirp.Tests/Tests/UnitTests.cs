@@ -502,7 +502,7 @@ namespace Chirp.Tests.Tests
 			// Arrange
 			var follower = new AuthorDTO
 			{
-				Id = "followerId",
+				Id = "999",
 				UserName = "Follower",
 				Email = "follower@test.com",
 				Following = new List<Follow>(),
@@ -511,7 +511,7 @@ namespace Chirp.Tests.Tests
 
 			var followed = new AuthorDTO
 			{
-				Id = "followedId",
+				Id = "1000",
 				UserName = "Followed",
 				Email = "followed@test.com",
 				Cheeps = new List<Cheep>()
@@ -525,6 +525,16 @@ namespace Chirp.Tests.Tests
 
 			// Assert
 			Assert.True(isFollowing);
+		}
+		
+		[Fact]
+		public void TestGetCheepByID()
+		{
+			// Arrange
+			
+			// Act
+			
+			// Assert
 		}
 	}
 }
