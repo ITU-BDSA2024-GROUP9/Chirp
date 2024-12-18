@@ -3,8 +3,13 @@
 title Unauthorized User To Root Sequence Diagram 
 
 actor       "Unauthorized User"  as usr
+box         "http calls"         #WhiteSmoke
 participant "Client (Browser)"   as client
+end box
+box         "http and c# calls"  #WhiteSmoke
 participant Server               as server
+end box
+box         "c# calls"           #WhiteSmoke
 Boundary    "Public Page"        as public
 Boundary    "_layout"            as layout
 Boundary    "Login Partial"      as login
@@ -14,12 +19,17 @@ Control     "Public Model"       as mod
 entity      "ASP Identity"       as asp
 Control     "CheepService"       as CS
 entity      "CheepRepository"    as CR
+end box
+box         "c# and SQL calls"   #WhiteSmoke
 entity      "ChirpDBContext"     as CDB
+end box
+box         "SQL calls"          #WhiteSmoke
 database    Database             as DB
+end box
 
 usr -> client : goes to chirp homepage
-client -> server : HTTP get request /
-note right of server : Router knows "/" is mapped to public page
+client -> server : HTTPS get request /
+note right of server : Page router knows "/" is mapped to public page
 server -> public : get public page
 public -> mod : OnGet triggered
 mod -> mod : paginate cheeps(page 0)
@@ -27,10 +37,11 @@ mod -> CS : GetCheeps(page 0)
 CS -> CR : GetCheeps(page 0)
 CR -> CDB : Query Cheeps [efcore]
 CDB -> DB : Query Cheeps [sql]
-DB -> CDB : return DTOs
-CDB -> CR : return DTOs
-CR -> CS : return DTOs
-CS -> mod : return DTOs
+DB -> CDB : return Cheeps
+CDB -> CR : return Cheeps
+CR -> CR : Map Cheeps to CheepDTOs
+CR -> CS : return CheepDTOs
+CS -> mod : return CheepDTOs
 note right of mod : DTOs are stored in a list
 
 public -> layout : get layout
@@ -60,7 +71,7 @@ cheeps -> public : return cheep partial html
 
 public -> server : return public page html
 note right of server : Public page is now rendered and the server returns html contents to client
-server -> client : HTTP 200 OK
+server -> client : HTTPS 200 OK
 client -> usr : displays front page
 
 

@@ -12,11 +12,12 @@ numbersections: true
 ---
 
 # Design and Architecture of _Chirp!_
+Below is a uml diagram of the entire chirp application:
+![Illustration of _Chirp!_ as UML class diagram.](images/include.svg)
 
 ## Domain model
 
 The domain model of _Chirp!_ is illustrated in the UML class diagram below. The model consists of four main entities: Author, Cheep, Comment, and Follow. The Author entity represents a user of the application and contains information such as the user's username, email, and password. The Cheep entity represents a post made by a user and contains information such as the cheep's content, the user who posted it, and the time it was posted. The Comment entity represents a comment made on a cheep and contains information such as the comment's content, the user who posted it, and the time it was posted. The Follow entity represents a follow relationship between two users and contains information such as the follower and followee.
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/domain2.svg)
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Domain.Model.png)
 
 ## Architecture — In the small
@@ -54,7 +55,10 @@ If they want to delete their profile, they simply press the “Forget Me” butt
 
 
 ## Sequence of functionality/calls trough _Chirp!_
-In this section we will detail how the flow of messages and data work in our chirp application.
+In this section we will detail how the flow of messages and data work in our chirp application. Specifically for a user that is unauthorized. 
+
+![Illustration of an HTTPS request that is sent by an unauthorized user to the root endpoint](images/sequence.svg)
+
 
 
 # Process
