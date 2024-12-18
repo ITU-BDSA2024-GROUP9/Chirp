@@ -526,15 +526,17 @@ namespace Chirp.Tests.Tests
 			// Assert
 			Assert.True(isFollowing);
 		}
-		
-		[Fact]
-		public void TestGetCheepByID()
+		[Xunit.Theory]
+		[InlineData(5, "At last we came back!")]
+		public void TestGetCheepByID(int cheepID, string text)
 		{
 			// Arrange
 			
 			// Act
-			
+			var cheep = _cheepRepo.GetCheepByID(cheepID);
 			// Assert
+			Assert.Equal(cheepID, cheep.CheepId);
+			Assert.Equal(text, cheep.Text);
 		}
 	}
 }
