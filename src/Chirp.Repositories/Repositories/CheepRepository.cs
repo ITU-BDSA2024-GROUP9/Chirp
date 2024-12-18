@@ -240,8 +240,12 @@ public class CheepRepository : ICheepRepository
 		_dbContext.SaveChanges();
 	}
 
-
-
+	/// <summary>
+	/// Used for getting the all the cheeps from an author, by looking up their ID
+	/// </summary>
+	/// <param name="authorID"></param>
+	/// <param name="page"></param>
+	/// <returns>A list of cheeps from the specified user</returns>
 	public List<CheepDTO> GetCheepsFromAuthorByID(string authorID, int page)
 	{
 		var cheeps = _dbContext.Cheeps
