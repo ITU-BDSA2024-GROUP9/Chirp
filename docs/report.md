@@ -40,22 +40,25 @@ The architecture of the deployed Chirp! application is illustrated in the diagra
 ### 1. A Non-Authorized User Accessing the Website for the First Time
 
 Upon entering the URL for our website, the user is presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
-
+<br>![Unauthorized-public-timeline.png](images/useractivities/Unauthorized-public-timeline.png)<br>
 Below the navigation bar, the public timeline starts. Here, cheeps from all users are displayed from newest to oldest. The unauthorized user can click on “Show Comments”, which will display all comments from newest to oldest. They can also click on authors or commenters to access their private timelines. Here, their individual cheeps are displayed, also from newest to oldest. If the user scrolls to the bottom of a private or public timeline, more cheeps will dynamically be loaded in.
 
 If a user likes what they see, they can click on the “Register” tab and be redirected to our signup page. Here, a user can register normally with a username, email, and password (which they must confirm). They can also register with GitHub, which will redirect them to authorize with GitHub. Upon registering with either method, the user is automatically logged in and can set up their profile.
-
+<br>![Register.png](images/useractivities/Register.png)<br>
+After signing up, the user can login in the "Login" tab in the navigation bar.
+<br>![Login.png](images/useractivities/Login.png)<br>
 ### 2. Authorized Users
 
 Upon logging in, the user is able to post cheeps, follow other users, access their own timeline, and manage their account. The cheep post box is placed just below the navigation bar and is displayed on both private and public timelines. It contains a text field allowing the user to type 160 characters per cheep. The user can also add images by clicking the image icon, which will prompt the user to select an image from their filesystem. When the user is done composing their cheep, they simply click the share button to send the cheep.
-
+![Cheep.png](images/useractivities/Cheep.png)
 A user can comment on any cheep, including their own, by clicking "Show Comments" and then writing a comment containing up to 160 characters.
-
+![Comment.png](images/useractivities/Comment.png)
 Following another user is done by accessing the private timeline of the user and pressing the “Follow” button. This will add past and future posts to the follower’s private timeline.
-
+![Follow.png](images/useractivities/Follow.png)
 An authorized user can also manage their account by clicking the “About Me” tab in the navigation bar. They can set up a profile picture by clicking the “Gravatar” tab and linking their Gravatar profile. They can change their password, email, and username (unless linking up with GitHub, then the username will be the same as on their GitHub profile). They can change their password in the password tab. Finally, they can click the “About Me” tab to see their personal data. Here, they can download a JSON file containing all knowledge the Chirp application has about them. They are also granted an overview of people they are following and cheeps they have posted, which they can view from the website.
-
+![About-me.png](images/useractivities/About-me.png)
 If the user wants to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
+![Forget-me.png](images/useractivities/Forget-me.png)
 ## Sequence of functionality/calls trough _Chirp!_
 In this section we will detail how the flow of messages and data work in our chirp application. Specifically for an unauthorized user that is trying to access the root of our application.
 
