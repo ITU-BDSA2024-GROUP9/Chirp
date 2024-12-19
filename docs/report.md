@@ -33,6 +33,8 @@ The domain model of Chirp! is illustrated in the UML class diagram below. The mo
 
 The Author entity represents a user of the application which can have up-to many Cheeps, Comments, Followers and users they are Following. Furthermore, we use ASP.NET Identity with the Author entity inheriting the IndentityUser class which contains information such as the username, email, and password. The Follow entity represents a follow relationship between two Author entities. An Author has a list of Follow entities for their followers and the people they are following so this is represented in the UML as two bi-directional one to many relationships.
 
+See figure 2 for an illustration of the domain model.
+
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/domain2.svg)
 
 ## Architecture — In the small
@@ -41,11 +43,16 @@ The architecture of Chirp! is based on the Onion Architecture. The Onion Archite
 
 We kept a more rigorous separation by not using the single Chirp.Infrastructure project to contain both our repository layer and services layer, because code in the same project with different namespaces can still reference each other. For example, a Chirp.Repositories class could've referenced a Chirp.Services class which would violate the onion architecture. By having separate projects, it prevents these violations from arising while also providing better encapsulation of the different layers.
 
+See figure 3 for an illustration of the onion architecture.
+
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
 
 ## Architecture of deployed application
 
 The architecture of the deployed Chirp! application is illustrated in the diagram below. The application is deployed to Azure App Service server via GitHub actions ci/cd pipeline and uses an SQLite .db file as the database stored on the server. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. Additionally, the application server interacts with the database to retrieve and store data, and interacts with external services such as GitHub for OAuth authentication, while using Gravatar API for profile pictures.
+
+See figure 4 for an illustration of the deployed application architecture.
+
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
 
 ## User activities
