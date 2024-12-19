@@ -9,6 +9,11 @@ author:
 - "Jonathan Rønnow Klarlund <jork@itu.dk>"
 
 numbersections: true
+papersize: a4
+geometry:
+- left=30mm
+- right=30mm
+toc: true
 ---
 
 # Design and Architecture of _Chirp!_
@@ -21,7 +26,7 @@ The domain model of Chirp! is illustrated in the UML class diagram below. The mo
 
 The Author entity represents a user of the application which can have up-to many Cheeps, Comments, Followers and users they are Following. Furthermore, we use ASP.NET Identity with the Author entity inheriting the IndentityUser class which contains information such as the username, email, and password. The Follow entity represents a follow relationship between two Author entities. An Author has a list of Follow entities for their followers and the people they are following so this is represented in the UML as two bi-directional one to many relationships.
 
-![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/Domain.Model.png)
+![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/domain2.svg)
 
 ## Architecture — In the small
 
