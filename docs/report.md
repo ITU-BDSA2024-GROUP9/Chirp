@@ -20,11 +20,12 @@ colorlinks: true
 \pagebreak
 
 # Design and Architecture of _Chirp!_
+
 Below is a uml diagram of the entire chirp application:
 
 ![Illustration of _Chirp!_ as UML class diagram. (Base generated using https://marketplace.visualstudio.com/items?itemName=pierre3.csharp-to-plantuml)](images/umldiagram.png)
 
-Uml image in HD: https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/include.svg
+Click [here](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/include.svg) for Uml image in HD
 
 ## Domain model
 
@@ -48,6 +49,7 @@ The architecture of the deployed Chirp! application is illustrated in the diagra
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
 
 ## User activities
+
 ### 1. A Non-Authorized User Accessing the Website for the First Time
 
 Upon entering the URL for our website, the user is presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
@@ -87,22 +89,27 @@ If the user wants to delete their profile, they simply press the “Forget Me”
 ![Forget me page](images/useractivities/Forget-me.png)
 
 ## Sequence of functionality/calls trough _Chirp!_
+
 In this section we will detail how the flow of messages and data work in our chirp application. Specifically for an unauthorized user that is trying to access the root of our application.
 
 ![Illustration of an HTTPS request that is sent by an unauthorized user to the root endpoint](images/sequence.svg)
 
-Key Points in the <ins>[Diagram](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/sequence.svg)<ins>:
+Key Points in the [Diagram](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/sequence.svg):
 
 **Authentication Checks**
+
 We ensure that unauthorized users cannot access certain features (e.g., the cheep box or comment forms).
 
 **Efficient Data Handling**
+
 The sequence highlights how data is fetched, transformed into DTOs, and then used to render the page.
 
 **Component Modularity**
+
 The use of multiple components (Partials, Layout, etc.) to build the page ensures separation of concerns and maintainability.
 
 **Data Flow**
+
 Each type of call contributes to the flow of data from the database to the client.
 
 The final outcome is a public homepage that adapts its content based on the user's authentication status, showing only the components and features intended for unauthorized users.
@@ -110,26 +117,36 @@ The final outcome is a public homepage that adapts its content based on the user
 # Process
 
 ## Build, test, release, and deployment
+
 ![UML activity diagram](images/Process.drawio.png)
 
 The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
 Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
-- Build Stage
+
+**Build Stage**
+
 The workflow starts by building the application, which includes installing dependencies and compiling the code. If the
 build fails, the workflows stops, and no further actions are performed.
-- Test Stage
+
+**Test Stage**
+
 If the build is successful, the workflow will run automated test (unit tests, integration tests, UI tests, and E2E test).
 If any of the tests fail, the workflow will end.
-- Release Stage
+
+**Release Stage**
+
 If all the tests succeed, the workflow will check if the commit contains a tag. If a tag is detected, it will automatically
 create a release.
-- Deployment Stage
+
+**Deployment Stage**
+
 After release (Both if tag is present or not), the application will be deployed to production.
 
 This workflow ensures a structured and automated pipeline, that catches failure and only allows stable versions to be
 deployed. This significantly reduces manual effort and increases reliability during development process.
 
 ## Team work
+
 ![Project board](images/board.png)
 
 The above image shows our project board on GitHub. We have used the project board to keep track of our progress and to assign tasks.
@@ -205,18 +222,24 @@ login, posting a cheep, and following/unfollowing a user. The test ensures the U
 together correctly by asserting that data appears as expected in both the interface and the database.
 
 #### UI Testing
+
 Our UI tests aim to verify that the user interface is functioning as intended. 
 The tests cover core functionality, asserting that a user can register, login, post cheeps, access timelines, etc. as intended. 
 The tests are made using Playwright and use the NUnit test suite, as this allowed the group to use the Playwright test-generation tool.
+
 #### Integration Testing
 
 Integration tests verify that different components of the Chirp application (e.g. endpoints, database) work together correctly.
 Using HttpClient and test-specific SQLite database we:
+
 - Test endpoints like the homepage and user timelines to ensure they return successful responses (HTTP 200).
+
 - Validate that pages display correct content, such as user-specific timeline and a maximum of 32 posts per page.
+
 These tests ensure the application functions as expected when components interact.
 
 # Ethics
+
 ## License
 For our Chirp application, we have chosen to release the project under The Unlicense.
 
@@ -229,8 +252,11 @@ See https://unlicense.org/ for more details about the license.
 ## LLMs, ChatGPT, CoPilot, and others
 
 During the development of our project, we utilized the following Large Language Models (LLMs):
+
 - Claude
+
 - Microsoft Co-pilot
+
 - OpenAI ChatGPT
 
 ### Application of LLMs in Development
