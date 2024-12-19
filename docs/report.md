@@ -3,7 +3,7 @@ title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 9
 author:
 - "Alexander Rossau <ross@itu.dk>"
-- "Ayushmaan Bordoloi" <aybo@itu.dk>
+- "Ayushmaan Bordoloi <aybo@itu.dk>"
 - "Bjørn Møgelhøj <bjom@itu.dk>"
 - "Phillip Nikolai Rasmussen <phir@itu.dk>"
 - "Jonathan Rønnow Klarlund <jork@itu.dk>"
