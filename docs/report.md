@@ -21,7 +21,7 @@ Below is a uml diagram of the entire chirp application:
 
 ![Illustration of _Chirp!_ as UML class diagram. (Base generated using https://marketplace.visualstudio.com/items?itemName=pierre3.csharp-to-plantuml)](images/umldiagram.png)
 
-[Uml image in HD](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/include.svg)
+Uml image in HD: https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/include.svg
 
 ## Domain model
 
@@ -88,7 +88,7 @@ In this section we will detail how the flow of messages and data work in our chi
 
 ![Illustration of an HTTPS request that is sent by an unauthorized user to the root endpoint](images/sequence.svg)
 
-Key Points in the [Diagram](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/sequence.svg):
+Key Points in the <ins>[Diagram](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/sequence.svg)<ins>:
 
 **Authentication Checks**
 We ensure that unauthorized users cannot access certain features (e.g., the cheep box or comment forms).
