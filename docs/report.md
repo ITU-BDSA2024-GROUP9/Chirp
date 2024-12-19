@@ -24,6 +24,7 @@ colorlinks: true
 Below is a uml diagram of the entire chirp application:
 
 ![Illustration of _Chirp!_ as UML class diagram. (Base generated using https://marketplace.visualstudio.com/items?itemName=pierre3.csharp-to-plantuml)](images/umldiagram.png)
+Illustration of _Chirp!_ as UML class diagram. (Base generated using csharp-to-plantuml VSCode extension)
 
 Click [here](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/include.svg) for Uml image in HD
 
@@ -33,9 +34,8 @@ The domain model of Chirp! is illustrated in the UML class diagram below. The mo
 
 The Author entity represents a user of the application which can have up-to many Cheeps, Comments, Followers and users they are Following. Furthermore, we use ASP.NET Identity with the Author entity inheriting the IndentityUser class which contains information such as the username, email, and password. The Follow entity represents a follow relationship between two Author entities. An Author has a list of Follow entities for their followers and the people they are following so this is represented in the UML as two bi-directional one to many relationships.
 
-See figure 2 for an illustration of the domain model.
-
 ![Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.](images/domain2.svg)
+Illustration of the _Chirp!_ data model as UML class diagram DRAWIO.
 
 ## Architecture — In the small
 
@@ -43,17 +43,15 @@ The architecture of Chirp! is based on the Onion Architecture. The Onion Archite
 
 We kept a more rigorous separation by not using the single Chirp.Infrastructure project to contain both our repository layer and services layer, because code in the same project with different namespaces can still reference each other. For example, a Chirp.Repositories class could've referenced a Chirp.Services class which would violate the onion architecture. By having separate projects, it prevents these violations from arising while also providing better encapsulation of the different layers.
 
-See figure 3 for an illustration of the onion architecture.
-
 ![Illustration of the _Chirp!_ onion architecture](images/Onion.drawio.png)
+Illustration of the _Chirp!_ onion architecture
 
 ## Architecture of deployed application
 
 The architecture of the deployed Chirp! application is illustrated in the diagram below. The application is deployed to Azure App Service server via GitHub actions ci/cd pipeline and uses an SQLite .db file as the database stored on the server. The application is accessed by users through a web browser, which communicates with the application server over HTTPS. Additionally, the application server interacts with the database to retrieve and store data, and interacts with external services such as GitHub for OAuth authentication, while using Gravatar API for profile pictures.
 
-See figure 4 for an illustration of the deployed application architecture.
-
 ![Illustration of the _Chirp!_ deployment](images/Deployed.png)
+Illustration of the _Chirp!_ deployment
 
 ## User activities
 
@@ -62,44 +60,53 @@ See figure 4 for an illustration of the deployed application architecture.
 Upon entering the URL for our website, the user is presented with the Chirp logo and name. Slightly below that, the user will see a navigation bar containing a “Home” tab – which will redirect them to the public timeline, as well as “Register” and “Login” tabs.
 
 ![Unauthorized public timeline](images/useractivities/Unauthorized-public-timeline.png)
+Unauthorized public timeline
 
 Below the navigation bar, the public timeline starts. Here, cheeps from all users are displayed from newest to oldest. The unauthorized user can click on “Show Comments”, which will display all comments from newest to oldest. They can also click on authors or commenters to access their private timelines. Here, their individual cheeps are displayed, also from newest to oldest. If the user scrolls to the bottom of a private or public timeline, more cheeps will dynamically be loaded in.
 
 If a user likes what they see, they can click on the “Register” tab and be redirected to our signup page. Here, a user can register normally with a username, email, and password (which they must confirm). They can also register with GitHub, which will redirect them to authorize with GitHub. Upon registering with either method, the user is automatically logged in and can set up their profile.
 
 ![Register page](images/useractivities/Register.png)
+Register page
 
 After signing up, the user can login in the "Login" tab in the navigation bar.
 
 ![Login page](images/useractivities/Login.png)
+Login page
 
 ### 2. Authorized Users
 
 Upon logging in, the user is able to post cheeps, follow other users, access their own timeline, and manage their account. The cheep post box is placed just below the navigation bar and is displayed on both private and public timelines. It contains a text field allowing the user to type 160 characters per cheep. The user can also add images by clicking the image icon, which will prompt the user to select an image from their filesystem. When the user is done composing their cheep, they simply click the share button to send the cheep.
 
 ![Cheep box](images/useractivities/Cheep.png)
+Cheep box
 
 A user can comment on any cheep, including their own, by clicking "Show Comments" and then writing a comment containing up to 160 characters.
 
 ![Comment box](images/useractivities/Comment.png)
+Comment box
 
 Following another user is done by accessing the private timeline of the user and pressing the “Follow” button. This will add past and future posts to the follower’s private timeline.
 
 ![Follow button](images/useractivities/Follow.png)
+Follow button
 
 An authorized user can also manage their account by clicking the “About Me” tab in the navigation bar. They can set up a profile picture by clicking the “Gravatar” tab and linking their Gravatar profile. They can change their password, email, and username (unless linking up with GitHub, then the username will be the same as on their GitHub profile). They can change their password in the password tab. Finally, they can click the “About Me” tab to see their personal data. Here, they can download a JSON file containing all knowledge the Chirp application has about them. They are also granted an overview of people they are following and cheeps they have posted, which they can view from the website.
 
 ![About me page](images/useractivities/About-me.png)
+About me page
 
 If the user wants to delete their profile, they simply press the “Forget Me” button, which removes all their data – but also their profile – from the website and application.
 
 ![Forget me page](images/useractivities/Forget-me.png)
+Forget me page
 
 ## Sequence of functionality/calls trough _Chirp!_
 
 In this section we will detail how the flow of messages and data work in our chirp application. Specifically for an unauthorized user that is trying to access the root of our application.
 
 ![Illustration of an HTTPS request that is sent by an unauthorized user to the root endpoint](images/sequence.svg)
+Illustration of an HTTPS request that is sent by an unauthorized user to the root endpoint
 
 Key Points in the [Diagram](https://github.com/ITU-BDSA2024-GROUP9/Chirp/blob/e15431b1cc976af343166b0d297785bb711e7963/docs/images/sequence.svg):
 
@@ -126,6 +133,7 @@ The final outcome is a public homepage that adapts its content based on the user
 ## Build, test, release, and deployment
 
 ![UML activity diagram](images/Process.drawio.png)
+UML activity diagram
 
 The above UML activity diagram shows the process for the application being build, tested, released, and deployed for our
 Chirp application using Github Actions. The process is triggered whenever new code is pushed to the repository.
@@ -155,6 +163,7 @@ deployed. This significantly reduces manual effort and increases reliability dur
 ## Team work
 
 ![Project board](images/board.png)
+Project board
 
 The above image shows our project board on GitHub. We have used the project board to keep track of our progress and to assign tasks.
 The board is divided into four columns: Todo, In Progress, Under review, and Done. Each task is represented by a card that can be moved between the columns.
