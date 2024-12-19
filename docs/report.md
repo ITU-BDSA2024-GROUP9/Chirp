@@ -14,6 +14,7 @@ geometry:
 - left=30mm
 - right=30mm
 toc: true
+colorlinks: true
 ---
 
 \pagebreak
