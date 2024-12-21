@@ -2,6 +2,8 @@
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
+using helpers = Chirp.Tests.Helpers;
+
 
 namespace Chirp.Tests.Tests
 {
@@ -19,21 +21,8 @@ namespace Chirp.Tests.Tests
 		public async Task TestRegisterAndLogin()
 		{
 			await Page.GotoAsync("http://localhost:5273/");
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
-			await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("Test1!");
-			await Page.GetByLabel("Password", new() { Exact = true }).PressAsync("Tab");
-			await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
-			await Page.GetByPlaceholder("password").FillAsync("Test1!");
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+			await Helpers.PlaywrightHelper.RegisterAsync(Page, "test", "test@mail.com", "Test1!");
+			await Helpers.PlaywrightHelper.LoginAsync(Page, "test", "Test1!");
 		}
 
 		[Test]
