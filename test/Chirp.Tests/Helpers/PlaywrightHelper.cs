@@ -24,4 +24,11 @@ public static class PlaywrightHelper
         //await Page.GetByLabel("Confirm Password").ClickAsync();
         await page.GetByLabel("Confirm Password").FillAsync(password);
     }
+
+    public static async Task Cheep(IPage page, string cheep)
+    {
+        await page.GetByPlaceholder("Type here!").FillAsync(cheep);
+        await page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
+    }
+
 }
