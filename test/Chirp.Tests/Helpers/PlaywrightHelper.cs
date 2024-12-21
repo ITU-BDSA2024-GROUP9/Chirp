@@ -30,5 +30,12 @@ public static class PlaywrightHelper
         await page.GetByPlaceholder("Type here!").FillAsync(cheep);
         await page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
     }
+    
+    public static async Task<int?> GetMostRecentCheep(IPage page)
+    {
+        var cheep = page.Locator("li").First;
+        var cheepText = cheep.Locator("div class = info").Locator("details").Locator("p").TextContentAsync();
+        return cheepText.ToString().Length;
+    }
 
 }
