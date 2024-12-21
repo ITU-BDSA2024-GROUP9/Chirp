@@ -11,4 +11,17 @@ public static class PlaywrightHelper
         await page.GetByPlaceholder("password").FillAsync(password);
         await page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
     }
+    
+    public static async Task RegisterAsync(IPage page, string userName, string email, string password)
+    {
+        await page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
+        //await page.GetByPlaceholder("johndoe").ClickAsync();
+        await page.GetByPlaceholder("johndoe").FillAsync(userName);
+        //await Page.GetByPlaceholder("name@example.com").ClickAsync();
+        await page.GetByPlaceholder("name@example.com").FillAsync(email);
+        //await Page.GetByLabel("Password", new() { Exact = true }).ClickAsync();
+        await page.GetByLabel("Password", new() { Exact = true }).FillAsync(password);
+        //await Page.GetByLabel("Confirm Password").ClickAsync();
+        await page.GetByLabel("Confirm Password").FillAsync(password);
+    }
 }
