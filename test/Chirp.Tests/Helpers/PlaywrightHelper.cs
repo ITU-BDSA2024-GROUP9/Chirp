@@ -50,4 +50,9 @@ public static class PlaywrightHelper
         }
         return null;
     }
+
+    public static async Task AccessOwnTimeline(IPage page)
+    {
+        await page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
+    }
 }
