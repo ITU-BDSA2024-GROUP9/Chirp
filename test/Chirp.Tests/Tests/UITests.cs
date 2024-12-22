@@ -20,11 +20,17 @@ namespace Chirp.Tests.Tests
 		}
 
 		[Test]
-		public async Task TestRegisterAndLogin()
+		public async Task TestRegisterAndLoginAndLogout()
 		{
 			await Page.GotoAsync("http://localhost:5273/");
-			await Helpers.PlaywrightHelper.RegisterAsync(Page, "test", "test@mail.com", "Test1!");
-			await Helpers.PlaywrightHelper.LoginAsync(Page, "test", "Test1!");
+			var userName = "test";
+			var email = userName + "@mail.com";
+			var password = "Test1!";
+			await PlaywrightHelper.RegisterAsync(Page, userName, email, password);
+			await PlaywrightHelper.LoginAsync(Page, "test", "Test1!");
+			NUnit.Framework.Assert.True(Page.IsVisibleAsync("text = " + userName).Result);
+			await PlaywrightHelper.LogoutAsync(Page, userName);
+			NUnit.Framework.Assert.False(Page.IsVisibleAsync("text = " + userName).Result);
 		}
 
 		[Test]

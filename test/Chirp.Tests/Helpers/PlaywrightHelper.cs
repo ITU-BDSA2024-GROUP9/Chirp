@@ -7,8 +7,10 @@ public static class PlaywrightHelper
     public static async Task LoginAsync(IPage page, string userName, string password)
     {
         await page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await page.GetByPlaceholder("name@example.com").FillAsync(userName);
+        await page.GetByLabel("Email or Username").FillAsync(userName);
         await page.GetByPlaceholder("password").FillAsync(password);
+        //await page.GetByPlaceholder("name@example.com").FillAsync(userName);
+        //await page.GetByPlaceholder("password").FillAsync(password);
         await page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
     }
     
@@ -23,6 +25,8 @@ public static class PlaywrightHelper
         await page.GetByLabel("Password", new() { Exact = true }).FillAsync(password);
         //await Page.GetByLabel("Confirm Password").ClickAsync();
         await page.GetByLabel("Confirm Password").FillAsync(password);
+        await page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
+
     }
 
     public static async Task Cheep(IPage page, string cheep)
@@ -30,7 +34,15 @@ public static class PlaywrightHelper
         await page.GetByPlaceholder("Type here!").FillAsync(cheep);
         await page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
     }
-    
+
+    public static async Task LogoutAsync(IPage page, string userName)
+    {
+        string roleName = "Logout [" + userName + "]";
+        //await page.GetByRole(AriaRole.Link, new() { Name = roleName }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = "Logout [test]" }).ClickAsync();
+
+    }
+
     public static async Task<int?> GetMostRecentCheep(IPage page)
     {
         var cheep = page.Locator("li").First;
