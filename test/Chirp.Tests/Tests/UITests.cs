@@ -27,7 +27,7 @@ namespace Chirp.Tests.Tests
 			var email = userName + "@mail.com";
 			var password = "Test1!";
 			await PlaywrightHelper.RegisterAsync(Page, userName, email, password);
-			await PlaywrightHelper.LoginAsync(Page, "test", "Test1!");
+			await PlaywrightHelper.LoginAsync(Page, userName, password);
 			NUnit.Framework.Assert.True(Page.IsVisibleAsync("text = " + userName).Result);
 			await PlaywrightHelper.LogoutAsync(Page, userName);
 			NUnit.Framework.Assert.False(Page.IsVisibleAsync("text = " + userName).Result);
@@ -51,36 +51,22 @@ namespace Chirp.Tests.Tests
 			var email = userName + "@mail.com";
 			var password = "Test1!";
 			await PlaywrightHelper.RegisterAsync(Page, userName, email, password);
-			await PlaywrightHelper.LoginAsync(Page, "test", "Test1!");
-			
-			string? cheepText = Page.Locator("li").First.TextContentAsync().Result;
-			string? authorName = cheepText.Split(" ·")[0].Trim();
-			await Page.Locator("li").First.GetByRole(AriaRole.Link).ClickAsync();
-			NUnit.Framework.Assert.True(Page.IsVisibleAsync("text = " + authorName + "'s Timeline").Result);
+			await PlaywrightHelper.LoginAsync(Page, userName, password);
+			var cheepContent = PlaywrightHelper.GetAuthorOfMostRecentCheep(Page);
+			await Page.Locator("li").First.GetByRole(AriaRole.Link).ClickAsync(); //Clicks on the author and should therefore be redirected to author's timeline.
+			NUnit.Framework.Assert.True(Page.IsVisibleAsync("text = " + cheepContent + "'s Timeline").Result);
 		}
 
 		[Test]
 		public async Task UserRegistersAndPostsCheepAndAccessesPrivateTimeline()
 		{
 			await Page.GotoAsync("http://localhost:5273/");
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
-			await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("Test1!");
-			await Page.GetByLabel("Password", new() { Exact = true }).PressAsync("Tab");
-			await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").FillAsync("test");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("ArrowLeft");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("ArrowRight");
-			await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
-			await Page.GetByPlaceholder("password").FillAsync("Test1!");
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+			var userName = "test";
+			var email = userName + "@mail.com";
+			var password = "Test1!";
+			await PlaywrightHelper.RegisterAsync(Page, userName, email, password);
+			await PlaywrightHelper.LoginAsync(Page, userName, password);
+			
 			await Page.GetByPlaceholder("Type here!").ClickAsync();
 			await Page.GetByPlaceholder("Type here!").FillAsync("Hi everyone!");
 			await Page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();

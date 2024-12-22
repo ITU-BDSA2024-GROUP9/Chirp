@@ -9,8 +9,6 @@ public static class PlaywrightHelper
         await page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await page.GetByLabel("Email or Username").FillAsync(userName);
         await page.GetByPlaceholder("password").FillAsync(password);
-        //await page.GetByPlaceholder("name@example.com").FillAsync(userName);
-        //await page.GetByPlaceholder("password").FillAsync(password);
         await page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
     }
     
@@ -43,11 +41,13 @@ public static class PlaywrightHelper
 
     }
 
-    public static async Task<int?> GetMostRecentCheep(IPage page)
+    public static string GetAuthorOfMostRecentCheep(IPage page)
     {
-        var cheep = page.Locator("li").First;
-        var cheepText = cheep.Locator("div class = info").Locator("details").Locator("p").TextContentAsync();
-        return cheepText.ToString().Length;
+        string? cheepText = page.Locator("li").First.TextContentAsync().Result;
+        if (cheepText != null)
+        {
+            return cheepText.Split(" ·")[0].Trim();
+        }
+        return null;
     }
-
 }
