@@ -37,10 +37,11 @@ namespace Chirp.Tests.Tests
 		public async Task TestAccessUserTimelineAsAnonymousUser()
 		{
 			await Page.GotoAsync("http://localhost:5273/");
-			await Page.Locator("body").ClickAsync();
-			await Page.Locator("p").Filter(new() { HasText = "Wendell Ballan At first he" }).GetByRole(AriaRole.Link).ClickAsync();
-			await Page.GetByRole(AriaRole.Button, new() { Name = "→" }).ClickAsync();
-			await Page.GetByText("Wendell Ballan No great and").ClickAsync();
+			string? cheepText = Page.Locator("li").First.TextContentAsync().Result;
+			string? authorName = cheepText.Split(" ·")[0].Trim();
+			Console.WriteLine("authname" + authorName);
+			await Page.Locator("li").First.GetByRole(AriaRole.Link).ClickAsync();
+			NUnit.Framework.Assert.True(Page.IsVisibleAsync("text = " + authorName + "'s Timeline").Result);
 		}
 
 		[Test]
