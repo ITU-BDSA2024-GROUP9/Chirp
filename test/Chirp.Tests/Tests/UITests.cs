@@ -15,6 +15,8 @@ namespace Chirp.Tests.Tests
 		public async Task Init()
 		{
 			await ServerHelper.StartServer(); // Starts the server before each test
+			Page.SetDefaultTimeout(6000); //Reduce the default timeout
+
 		}
 
 		[Test]
