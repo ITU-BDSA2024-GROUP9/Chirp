@@ -29,7 +29,6 @@ namespace Chirp.Tests.Tests
 		{
 			await Page.GotoAsync("http://localhost:5273/");
 			await PlaywrightHelper.RegisterAsync(Page, username, email, password);
-			//await PlaywrightHelper.LoginAsync(Page, userName, password);
 			NUnit.Framework.Assert.True(Page.IsVisibleAsync("text = " + username).Result);
 			await PlaywrightHelper.LogoutAsync(Page, username);
 			NUnit.Framework.Assert.False(Page.IsVisibleAsync("text = " + username).Result);
@@ -51,7 +50,6 @@ namespace Chirp.Tests.Tests
 		{
 			await Page.GotoAsync("http://localhost:5273/");
 			await PlaywrightHelper.RegisterAsync(Page, username, email, password);
-			//await PlaywrightHelper.LoginAsync(Page, userName, password);
 			var cheepContent = PlaywrightHelper.GetAuthorOfMostRecentCheep(Page);
 			await Page.Locator("li").First.GetByRole(AriaRole.Link).ClickAsync(); //Clicks on the author and should therefore be redirected to author's timeline.
 			NUnit.Framework.Assert.True(Page.IsVisibleAsync("text = " + cheepContent + "'s Timeline").Result);
@@ -64,7 +62,6 @@ namespace Chirp.Tests.Tests
 		{
 			await Page.GotoAsync("http://localhost:5273/");
 			await PlaywrightHelper.RegisterAsync(Page, username, email, password);
-			//await PlaywrightHelper.LoginAsync(Page, userName, password);
 			await PlaywrightHelper.Cheep(Page, cheepMessage);
 			await PlaywrightHelper.AccessOwnTimeline(Page);
 			NUnit.Framework.Assert.NotNull(Page.GetByText(username + cheepMessage + " Just now", new() {Exact = true}));
