@@ -6,15 +6,15 @@ using Microsoft.EntityFrameworkCore;
 namespace Chirp.Tests.Helpers;
 
 // ref: https://learn.microsoft.com/en-us/ef/core/testing/testing-with-the-database 
-public class InMemoryDatabaseHelper : IDisposable
+public class DatabaseHelper : IDisposable
 {
 	public readonly SqliteConnection ConnectionString;
 	public readonly List<Author> Authors;
 
-	public InMemoryDatabaseHelper()
+	public DatabaseHelper(string connection)
 	{
 		// Create an in-memory SQLite connection
-		ConnectionString = new SqliteConnection("Filename=:memory:");
+		ConnectionString = new SqliteConnection(connection);
 		ConnectionString.Open();
 
 		var options = new DbContextOptionsBuilder<ChirpDBContext>()
@@ -28,9 +28,10 @@ public class InMemoryDatabaseHelper : IDisposable
 
 		// Optionally, apply pending migrations if necessary
 		context.Database.Migrate();  // Apply any pending migrations to ensure all tables (including Identity) are created
-
+		
 		// Seed the database with initial data, if necessary
 		Authors = DbInitializer.SeedDatabase(context);
+		
 		// TODO - run dbinitializer.setpasswords() somehow
 	}
 
