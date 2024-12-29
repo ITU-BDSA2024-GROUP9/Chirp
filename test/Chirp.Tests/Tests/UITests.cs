@@ -57,7 +57,6 @@ namespace Chirp.Tests.Tests
 
 		[Test]
 		[TestCase("test", "test@mail.com", "Test1!", "Hello!")]
-
 		public async Task UserRegistersAndPostsCheepAndAccessesPrivateTimeline(string username, string email, string password, string cheepMessage)
 		{
 			await Page.GotoAsync("http://localhost:5273/");
