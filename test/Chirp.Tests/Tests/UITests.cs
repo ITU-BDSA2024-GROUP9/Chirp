@@ -14,17 +14,13 @@ namespace Chirp.Tests.Tests
 	{
 		[SetUp]
 		public async Task Init()
-		{
-			var userName = "test";
-			var email = userName + "@mail.com";
-			var password = "Test1!";
+		{ 
 			await ServerHelper.StartServer(); // Starts the server before each test
 			Page.SetDefaultTimeout(12000); //Reduce the default timeout
-
 		}
 
 		[Test]
-		[TestCase("test", "test@mail.com", "Test1!")]
+		[TestCase("uitester1", "uitester1@mail.com", "Test1!")]
 		public async Task TestRegisterAndLoginAndLogout(string username, string email, string password)
 		{
 			await Page.GotoAsync("http://localhost:5273/");
@@ -45,7 +41,7 @@ namespace Chirp.Tests.Tests
 		}
 
 		[Test]
-		[TestCase("test", "test@mail.com", "Test1!")]
+		[TestCase("uitester2", "uitester2@mail.com", "Test1!")]
 		public async Task UserRegistersAndAccessesUserTimeline(string username, string email, string password)
 		{
 			await Page.GotoAsync("http://localhost:5273/");
@@ -56,7 +52,7 @@ namespace Chirp.Tests.Tests
 		}
 
 		[Test]
-		[TestCase("test", "test@mail.com", "Test1!", "Hello!")]
+		[TestCase("uitester3", "uitester3@mail.com", "Test1!", "Hello!")]
 		public async Task UserRegistersAndPostsCheepAndAccessesPrivateTimeline(string username, string email, string password, string cheepMessage)
 		{
 			await Page.GotoAsync("http://localhost:5273/");

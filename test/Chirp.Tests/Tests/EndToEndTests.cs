@@ -39,7 +39,7 @@ namespace Chirp.Tests.Tests
 		}
 
 		[Test]
-		[TestCase("test", "test@mail.com", "Test1!", "Hello!")]
+		[TestCase("John Doe", "johndoe@mail.com", "Test1!", "Hello!")]
 		public async Task E2ETest(string username, string email, string password, string cheepMessage)
 		{
 			await Page.GotoAsync("http://localhost:5273/");
@@ -105,6 +105,7 @@ namespace Chirp.Tests.Tests
 			ServerHelper.StopServer(); // Stops the server after each test
 			_context.Dispose();
 			_fixture.Dispose();
+
 		}
 
 		class TestUtils

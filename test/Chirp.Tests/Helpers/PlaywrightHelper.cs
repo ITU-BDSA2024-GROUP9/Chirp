@@ -37,7 +37,7 @@ public static class PlaywrightHelper
     {
         string roleName = "Logout [" + userName + "]";
         //await page.GetByRole(AriaRole.Link, new() { Name = roleName }).ClickAsync();
-        await page.GetByRole(AriaRole.Link, new() { Name = "Logout [test]" }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = roleName }).ClickAsync();
 
     }
 
