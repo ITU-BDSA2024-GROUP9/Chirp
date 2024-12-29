@@ -9,14 +9,14 @@ namespace Chirp.Tests.Tests
 {
 	public class UnitTests : IDisposable
 	{
-		private readonly InMemoryDatabaseHelper _fixture;
+		private readonly DatabaseHelper _fixture;
 		private readonly CheepRepository _cheepRepo;
 		private readonly ChirpDBContext _context;
 		private readonly CheepService _cheepService;
 
 		public UnitTests()
 		{
-			_fixture = new InMemoryDatabaseHelper();
+			_fixture = new DatabaseHelper("Filename=:memory:");
 			_context = _fixture.CreateContext();
 			_cheepRepo = new CheepRepository(_context);
 			_cheepService = new CheepService(_cheepRepo);
