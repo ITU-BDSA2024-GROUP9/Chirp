@@ -62,4 +62,21 @@ public static class PlaywrightHelper
     {
         await page.GetByRole(AriaRole.Link, new() { Name = "Public Timeline" }).ClickAsync();
     }
+    
+    public static async Task TearDown(IPage page, IBrowser browser)
+    {
+        // Clear cookies
+        if (page != null)
+        {
+            await page.Context.ClearCookiesAsync();
+            await page.CloseAsync();
+
+        }
+
+        // Close the page and browser to clean up between tests
+        if (browser != null)
+        {
+            await browser.CloseAsync();
+        }
+    }
 }
