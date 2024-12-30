@@ -95,7 +95,9 @@ namespace Chirp.Tests.Tests
 			await Expect(_page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).Nth(0)).ToBeVisibleAsync();
 
 			//User unfollows the user.
-			await _page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine · aug. 1, 2023 Starbuck now is what we hear the worst. Show" }).GetByRole(AriaRole.Link).ClickAsync();
+			await _page.GetByRole(AriaRole.Link, new PageGetByRoleOptions() { Name = "Jacqualine Gilcoine" }).Nth(0)
+				.ClickAsync();
+			//await _page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine · aug. 1, 2023 Starbuck now is what we hear the worst. Show" }).GetByRole(AriaRole.Link).ClickAsync();
 			await _page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
 			
 			//User goes to their timeline and confirms the user they unfollowed is not there.
