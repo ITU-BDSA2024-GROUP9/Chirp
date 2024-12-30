@@ -37,7 +37,7 @@ namespace Chirp.Tests.Tests
 			_context = _fixture.CreateContext();
 			_cheepRepo = new CheepRepository(_context);
 			_cheepService = new CheepService(_cheepRepo);
-			_browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
+			_browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
 			_page = await _browser.NewPageAsync();
 			_page.SetDefaultTimeout(6000); //Reduce the default timeout
 

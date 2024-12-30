@@ -19,7 +19,7 @@ namespace Chirp.Tests.Tests
 		public async Task Init()
 		{ 
 			//await ServerHelper.StartServer(); // Starts the server before each test
-			_browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
+			_browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
 			_page = await _browser.NewPageAsync();
 			_page.SetDefaultTimeout(6000); //Reduce the default timeout
 		}
