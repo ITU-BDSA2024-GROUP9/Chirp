@@ -75,7 +75,7 @@ namespace Chirp.Tests.Tests
 		[OneTimeTearDown]
 		public void StopServer()
 		{
-			ServerHelper.StopServer(); // Stops the server after each test
+			ServerHelper.StopServer(); //Stops the server once all tests are done.
 		}
 
 	}
