@@ -18,13 +18,16 @@ public static class ServerHelper
 				UseShellExecute = false,
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
-				CreateNoWindow = true
+				CreateNoWindow = true,
+				EnvironmentVariables = {
+					{"ASPNETCORE_ENVIRONMENT", "Development"}
+				}
 			}
 		};
-
+		
 		_serverProcess.Start();
 		bool isServerReady = false;
-		int maxAttempts = 10;
+		int maxAttempts = 5;
 		int attempt = 0;
 
 		while (!isServerReady && attempt < maxAttempts)
@@ -40,7 +43,7 @@ public static class ServerHelper
 					}
 				}
 			}
-			catch
+			catch (Exception e)
 			{
 				// Server not ready yet
 				await Task.Delay(1000); // Wait for 1 second before trying again
@@ -58,6 +61,14 @@ public static class ServerHelper
 	{
 		if (_serverProcess != null && !_serverProcess.HasExited)
 		{
+			foreach (var process in Process.GetProcessesByName("dotnet"))
+			{
+				if (process.StartTime >= _serverProcess.StartTime)
+				{
+					process.Kill();
+					process.WaitForExit();
+				}
+			}
 			_serverProcess.Kill();
 			_serverProcess.WaitForExit();
 			_serverProcess.Dispose();
