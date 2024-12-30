@@ -2,6 +2,8 @@
 using Chirp.Repositories.Repositories;
 using Chirp.Services;
 using Chirp.Tests.Helpers;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
@@ -9,64 +11,58 @@ using Assert = NUnit.Framework.Assert;
 
 namespace Chirp.Tests.Tests
 {
-	[Parallelizable(ParallelScope.Self)]
+	[NonParallelizable]
 	[TestFixture]
 	public class EndToEndTests : PageTest
 	{
 
 		// dissable nullable warnings since the fields are initialized in the setup method
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-		private InMemoryDatabaseHelper _fixture;
+		private DatabaseHelper _fixture;
 		private CheepRepository _cheepRepo;
 		private ChirpDBContext _context;
 		private CheepService _cheepService;
+		private IPage _page;
+		private IBrowser _browser;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 		[SetUp]
 		public async Task Init()
 		{
-			_fixture = new InMemoryDatabaseHelper();
+			await ServerHelper.StartServer(); // Starts the server before each test
+			var path = "../../../../../src/Chirp.Razor/Assets/chirp.db";
+			var fullPath = Path.GetFullPath(path);
+			var connectionString = $"Data Source={fullPath};";
+			_fixture = new DatabaseHelper(connectionString);
 			_context = _fixture.CreateContext();
 			_cheepRepo = new CheepRepository(_context);
 			_cheepService = new CheepService(_cheepRepo);
-			await ServerHelper.StartServer(); // Starts the server before each test
+			_browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
+			_page = await _browser.NewPageAsync();
+			_page.SetDefaultTimeout(6000); //Reduce the default timeout
+
 		}
 
 		[Test]
-		public async Task E2ETest()
+		[TestCase("Johndoe", "johndoe@mail.com", "Test1!", "Hello!")]
+		public async Task E2ETest(string username, string email, string password, string cheepMessage)
 		{
-			//User registers for the first time and accesses the homepage.
-			await Page.GotoAsync("http://localhost:5273/");
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
-			await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("Test1!");
-			await Page.GetByLabel("Password", new() { Exact = true }).PressAsync("Tab");
-			await Page.GetByLabel("Confirm Password").FillAsync("Test1!");
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
+			await _page.GotoAsync("http://localhost:5273/");
 
-			//User logs in.
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").ClickAsync();
-			await Page.GetByPlaceholder("name@example.com").FillAsync("test@mail.com");
-			await Page.GetByPlaceholder("name@example.com").PressAsync("Tab");
-			await Page.GetByPlaceholder("password").FillAsync("Test1!");
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-
+			//User registers
+			await PlaywrightHelper.RegisterAsync(_page, username, email, password);
+			
 			//User posts a cheep.
-			await Page.GetByPlaceholder("Type here!").ClickAsync();
-			await Page.GetByPlaceholder("Type here!").FillAsync("Hello, everyone!");
-			await Page.GetByPlaceholder("Type here!").ClickAsync();
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
-
+			await PlaywrightHelper.Cheep(_page, cheepMessage);
+			
 			//User goes to their timeline and confirms their cheep is there.
-			await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
-			await Page.GetByText("test@mail.com Hello, everyone").ClickAsync();
-
-			//The database has registered the user as well as the cheep.
-			var result = _cheepService.GetAuthorByEmail("test@mail.com");
+			await PlaywrightHelper.AccessOwnTimeline(_page);
+			
+			Assert.NotNull(_page.GetByText(username + cheepMessage + " Just now", new() {Exact = true}));
+			
+			//The database has registered the user as an author
+			var result = _cheepService.GetAuthorByName(username);
+			
 			Assert.NotNull(result);
 
 			//Get cheeps from the author.
@@ -76,7 +72,7 @@ namespace Chirp.Tests.Tests
 			bool cheepExists = false;
 			foreach (CheepDTO cheep in cheeps)
 			{
-				if (cheep.Text.Equals("Hello, everyone!"))
+				if (cheep.Text.Equals(cheepMessage))
 				{
 					cheepExists = true;
 				}
@@ -85,31 +81,45 @@ namespace Chirp.Tests.Tests
 			Assert.True(cheepExists);
 
 			//User goes to the public timeline and clicks on a user which isn't them.
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Public Timeline" }).ClickAsync();
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).ClickAsync();
+			await PlaywrightHelper.AccessPublicTimeline(_page);
+			//Just taking a seeded cheep by a user who we know is there.
+			await _page.GetByRole(AriaRole.Link, new PageGetByRoleOptions() { Name = "Jacqualine Gilcoine" }).Nth(0)
+				.ClickAsync();
 
 			//User follows the user.
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
-
+			await _page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
+			
+			//Assert that user is followed.
+			var follows = PlaywrightHelper.Follows(_cheepService.getFollowedInCheeps(result));
+			Assert.True(follows);
+			
 			//User goes to their timeline and confirms the user they followed is there.
-			await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
-			await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" })).ToBeVisibleAsync();
+			await PlaywrightHelper.AccessOwnTimeline(_page);
+			await Expect(_page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).Nth(0)).ToBeVisibleAsync();
 
 			//User unfollows the user.
-			await Page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
-
+			await _page.GetByRole(AriaRole.Link, new PageGetByRoleOptions() { Name = "Jacqualine Gilcoine" }).Nth(0)
+				.ClickAsync();
+			await _page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
+			
+			//Assert that they are no longer followed in the db.
+			follows = PlaywrightHelper.Follows(_cheepService.getFollowedInCheeps(result));
+			Assert.False(follows);
+			
 			//User goes to their timeline and confirms the user they unfollowed is not there.
-			await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
-			await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" })).Not.ToBeVisibleAsync();
+			await PlaywrightHelper.AccessOwnTimeline(_page);
+			await Expect(_page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).Nth(0)).Not.ToBeVisibleAsync();
+			await PlaywrightHelper.TearDown(_page, _browser);
+
 		}
 
 
 		[TearDown]
 		public void Cleanup()
-		{
-			ServerHelper.StopServer(); // Stops the server after each test
+		{ 
 			_context.Dispose();
 			_fixture.Dispose();
+
 		}
 
 		class TestUtils

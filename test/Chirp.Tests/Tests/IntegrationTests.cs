@@ -6,16 +6,16 @@ using Microsoft.EntityFrameworkCore;
 namespace Chirp.Tests.Tests
 {
 	// This class was based on https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_05/Slides.md#testing-of-web-applications--integration-testing-1
-	public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<InMemoryDatabaseHelper>
+	public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<DBFixtureHelper>
 	{
 		private readonly WebApplicationFactory<Program> _fixture;
 		private readonly HttpClient _client;
-		private readonly InMemoryDatabaseHelper _testDatabaseFixture;
+		private readonly DatabaseHelper _testDatabaseFixture;
 
 		// The constructor should accept both WebApplicationFactory<Program> and TestDatabaseFixture
-		public IntegrationTests(WebApplicationFactory<Program> fixture, InMemoryDatabaseHelper testDatabaseFixture)
+		public IntegrationTests(WebApplicationFactory<Program> fixture, DBFixtureHelper testDatabaseFixture)
 		{
-			_testDatabaseFixture = testDatabaseFixture;
+			_testDatabaseFixture = testDatabaseFixture.DatabaseHelper;
 
 			// Customize the web host to use the test-specific configuration
 			_fixture = fixture.WithWebHostBuilder(builder =>
