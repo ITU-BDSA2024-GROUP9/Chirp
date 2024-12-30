@@ -31,6 +31,13 @@ jobs:
         GITHUBCLIENTSECRET: ${{ secrets.GITHUBCLIENTSECRET }}
         CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
 
+    - name: Install playwright
+      run: ./scripts/playwrightintall
+      env:
+        GITHUBCLIENTID: ${{ secrets.GITHUBCLIENTID }}
+        GITHUBCLIENTSECRET: ${{ secrets.GITHUBCLIENTSECRET }}
+        CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
+
     - name: Test
       run: dotnet test --no-build --verbosity normal
       env:
