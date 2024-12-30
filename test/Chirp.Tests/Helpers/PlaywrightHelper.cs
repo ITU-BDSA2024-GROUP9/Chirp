@@ -1,4 +1,5 @@
-﻿using Microsoft.Playwright;
+﻿using Chirp.Core.DTO;
+using Microsoft.Playwright;
 
 namespace Chirp.Tests.Helpers;
 
@@ -15,13 +16,9 @@ public static class PlaywrightHelper
     public static async Task RegisterAsync(IPage page, string userName, string email, string password)
     {
         await page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
-        //await page.GetByPlaceholder("johndoe").ClickAsync();
         await page.GetByPlaceholder("johndoe").FillAsync(userName);
-        //await Page.GetByPlaceholder("name@example.com").ClickAsync();
         await page.GetByPlaceholder("name@example.com").FillAsync(email);
-        //await Page.GetByLabel("Password", new() { Exact = true }).ClickAsync();
         await page.GetByLabel("Password", new() { Exact = true }).FillAsync(password);
-        //await Page.GetByLabel("Confirm Password").ClickAsync();
         await page.GetByLabel("Confirm Password").FillAsync(password);
         await page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
 
@@ -36,12 +33,11 @@ public static class PlaywrightHelper
     public static async Task LogoutAsync(IPage page, string userName)
     {
         string roleName = "Logout [" + userName + "]";
-        //await page.GetByRole(AriaRole.Link, new() { Name = roleName }).ClickAsync();
         await page.GetByRole(AriaRole.Link, new() { Name = roleName }).ClickAsync();
 
     }
 
-    public static string GetAuthorOfMostRecentCheep(IPage page)
+    public static string? GetAuthorOfMostRecentCheep(IPage page)
     {
         string? cheepText = page.Locator("li").First.TextContentAsync().Result;
         if (cheepText != null)
@@ -78,5 +74,18 @@ public static class PlaywrightHelper
         {
             await browser.CloseAsync();
         }
+    }
+
+    public static bool Follows(List<AuthorDTO> list)
+    {
+        bool follows = false;
+        foreach(var dto in list){
+            if (dto.UserName.Equals("Jacqualine Gilcoine"))
+            {
+                follows = true;
+            }
+        }
+
+        return follows;
     }
 }

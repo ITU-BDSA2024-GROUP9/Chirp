@@ -46,7 +46,7 @@ public static class ServerHelper
 			catch (Exception e)
 			{
 				// Server not ready yet
-				await Task.Delay(2000); // Wait for 1 second before trying again
+				await Task.Delay(2000); // Wait for 2 seconds before trying again
 			}
 			attempt++;
 		}
