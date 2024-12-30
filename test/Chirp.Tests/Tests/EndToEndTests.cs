@@ -83,8 +83,9 @@ namespace Chirp.Tests.Tests
 			//User goes to the public timeline and clicks on a user which isn't them.
 			await PlaywrightHelper.AccessPublicTimeline(_page);
 			//Just taking a seeded cheep which is always there.
-			await _page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine · aug. 1, 2023 Starbuck now is what we hear the worst. Show" }).GetByRole(AriaRole.Link).ClickAsync();
-
+			//await _page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine · aug. 1, 2023 Starbuck now is what we hear the worst. Show" }).GetByRole(AriaRole.Link).ClickAsync();
+			await _page.GetByRole(AriaRole.Link, new PageGetByRoleOptions() { Name = "Jacqualine Gilcoine" }).Nth(0)
+				.ClickAsync();
 			//await _page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).ClickAsync();
 
 			//User follows the user.
