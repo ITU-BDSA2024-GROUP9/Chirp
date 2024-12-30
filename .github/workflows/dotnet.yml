@@ -31,12 +31,15 @@ jobs:
         GITHUBCLIENTSECRET: ${{ secrets.GITHUBCLIENTSECRET }}
         CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
 
-    - name: Install playwright
-      run: ./scripts/playwrightintall
-      env:
-        GITHUBCLIENTID: ${{ secrets.GITHUBCLIENTID }}
-        GITHUBCLIENTSECRET: ${{ secrets.GITHUBCLIENTSECRET }}
-        CHIRPDBPATH: ${{ vars.CHIRPDBPATH }}
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Playwright
+      run: |
+        npm install -D @playwright/test
+        npx playwright install
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
