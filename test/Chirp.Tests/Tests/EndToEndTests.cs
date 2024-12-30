@@ -82,15 +82,17 @@ namespace Chirp.Tests.Tests
 
 			//User goes to the public timeline and clicks on a user which isn't them.
 			await PlaywrightHelper.AccessPublicTimeline(_page);
-			//Just taking a seeded cheep which is always there.
-			//await _page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine · aug. 1, 2023 Starbuck now is what we hear the worst. Show" }).GetByRole(AriaRole.Link).ClickAsync();
+			//Just taking a seeded cheep by a user who we know is there.
 			await _page.GetByRole(AriaRole.Link, new PageGetByRoleOptions() { Name = "Jacqualine Gilcoine" }).Nth(0)
 				.ClickAsync();
-			//await _page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).ClickAsync();
 
 			//User follows the user.
 			await _page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
-
+			
+			//Assert that user is followed.
+			var follows = PlaywrightHelper.Follows(_cheepService.getFollowedInCheeps(result));
+			Assert.True(follows);
+			
 			//User goes to their timeline and confirms the user they followed is there.
 			await PlaywrightHelper.AccessOwnTimeline(_page);
 			await Expect(_page.GetByRole(AriaRole.Link, new() { Name = "Jacqualine Gilcoine" }).Nth(0)).ToBeVisibleAsync();
@@ -98,8 +100,11 @@ namespace Chirp.Tests.Tests
 			//User unfollows the user.
 			await _page.GetByRole(AriaRole.Link, new PageGetByRoleOptions() { Name = "Jacqualine Gilcoine" }).Nth(0)
 				.ClickAsync();
-			//await _page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine · aug. 1, 2023 Starbuck now is what we hear the worst. Show" }).GetByRole(AriaRole.Link).ClickAsync();
 			await _page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
+			
+			//Assert that they are no longer followed in the db.
+			follows = PlaywrightHelper.Follows(_cheepService.getFollowedInCheeps(result));
+			Assert.False(follows);
 			
 			//User goes to their timeline and confirms the user they unfollowed is not there.
 			await PlaywrightHelper.AccessOwnTimeline(_page);
